@@ -1,0 +1,90 @@
+
+\documentclass{article} 
+
+\begin{document} 
+\title{Compact Semi-Autonomous Chalking Robot}
+\author{George Karavaev - Alex Suchko}
+\maketitle
+
+\begin{abstract}
+Our project's aim is to design and  develop a compact, semi-autonomous robot capable of producing vector graphics using common off the shelf sidewalk chalk and sidewalk pavement as a medium. The development of this robot will involve the use of knowledge from a diverse range of coursework and extracurricular learning. Some topics include AC circuit analysis, circuit board design, microcontroller programming, feedback control design, sensing system design, linear algebra, and many others.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+\section{Introduction}
+Our robot's form factor will likely fit within a footprint of approximately 60cm x 30cm. The drive configuration is differential drive with a forward caster, for a total of three tires. The three tire configuration was chosen over a four tire configuration to avoid the possiblity of a tire lifting off of the ground, since any three points must lie in a plane, but if there are four points of contact, one may not lie in the plane. This drive configuration also enables unique vehicle behavior while traveling in an arc, namely, both drive tires travel along concentric paths, and that turning in place  about a point is possible. This means that mouting the chalking tool along the axis between the robot drive tires allows for both tangent following and point turns, useful for drawing both sweeping curves and corners. The chalking tool contains a stick of common off the shelf sidewalk chalk, spring loaded to apply consistent pressure against the sidewalk while drawing. The chalking tool can hold the chalk via a locking pin and can raise the tool via another actuator to move from place to place, or change the chalk out from a proposed chalk carousel, similar to a pen plotter.\\
+
+Electronic control and processing boards are arranged in a card-stack type arrangement to maximize space efficiency. Some boards are not located in the main board stack, such as the power board and motor drive board, due to thermal requirements. Sensors are distributed throughout the robot.\\
+
+High level control enables navigation from place to place as well as presenting the next low level graphics entity to the motor drive board, and handles the onboard camera. When coupled with image processing software, in our case we propose to use OpenCV, the camera images can be used to help guide the robot along known paths, such as sidewalks, when traveling to a new location. This is especially helpful as GPS is not reliably accurate enough to use alone for navigation purposes. The high level controller, implemented on a Pandaboard running Linux, also has WiFi connectivity, which on a college campus is a fairly persistent data connection. This connection can be used to administer, diagnose, monitor, and control the robot, including remote manual drive control in case the robot gets lost or in any condition where the robot must be manually moved, or under normal operation to give instructions about the next location and drawing to be performed.\\
+\subsection{Electronics}
+We will have a stack of electronic boards that plug into each other. This design gives us the flexibility to easily replace and upgrade boards  without having to change other function boards. For example, we can easily put more sensors on our sensor board and not modify our interface to the main board, thus saving money and time to not redo the main board.\\
+With that plan we plan the following boards for the initial revision. We will elaborate more on them in the next section.
+\begin{itemize}
+\item Pandaboard for high level control.
+\item Power board for generating neccesary voltages to operate processors, sensors and small actuators.
+\item Sensor board for housing sensors and sensor interfaces.
+\item Motor Drive board for motor control [either Brushless or Brushed]
+\end{itemize}
+\subsection{Mechanics}
+High level mechanical features:
+\begin{itemize}
+\item Tricycle type tire configuration, ensures all tires are on the  ground (3 points must lie in a plane)
+\item Differential drive configuration, provides concentric turning characteristic and precise turning-on-a-point
+\item Spring loaded chalking tool with retaining pin, mounted on axis with drive tires, enables tangent following and corner drawing
+\item Proposed chalk change carousel, allows multi-colored drawings and/or extended drawing distance before operator attention needed to replenish chalk
+\item Aluminum construction with polycarbonate shielding
+\item Brushless or brushed traction motors, with planetary gear reduction boxes and rigid tires
+\end{itemize}
+\section {Low-Level overview}
+\subsection{Mainboard}
+We require a powerful processor to perform any autonomous functions. We will also need a powerful OS that we can write software for easily. Therefore we've decided to use Linux as it already has all the task managment and memory managment we need. Thus we are looking at using pandaboard for our main board as it has a very powerful processor[omap4430 1GHz cpu], lots of memory [1GB], DSP and a wireless card. The last part is important as we will be able to easilly communicate with our robot anywhere on campus via wireless. It can send us messages if needed and we can monitor the status of our robot.
+\subsection{Power Board}
+We need a variaty of voltages to run our robot. Current plan is to have 12v-18v unregulated from the battery and to create all the necessary voltages from on board. This table will illustrate the current plan.
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+Voltages & Current & Purpose\\  \hline
+Special\_5V & 150mA & Runs power supervisor and current sensors.\\ \hline
+6V & 2A & Runs actuators for chalk control. \\ \hline 
+5V & 1A & Runs pandaboard and 5V sensors. \\ \hline 
+3.3V & 1A & Runs 3.3V sensors\\ \hline 
+LED\_curr & unkn & Lighting around, will need current drive.\\ 
+\hline
+\end{tabular}
+\end{center}
+Currently we have a reference design which we would like to use for all our voltage generations. It utilizes a very low resistance mosfet [3.8 $m\Omega$ ], a switching power supply with an inductor and a current sensor [ACS714, 1.2 $m\Omega$ ].  With this design we can easily replicate it 4 times to get all the needed voltages, and be able to easily supply all electronics. \\
+Now, the input mosfet will allow us to shut down voltage regulators in case of a short circuit or a low battery. This is why we need a current sensor to measure the current and to approximate the power draw.
+
+Battery power will likely be derived from a battery pack based on A123 Systems' nanophosphate Li-ion battery cells, which represent a great improvement in safety and an improvement in energy density over similar traditional Li-ion cells. Pack nominal voltage will likely be somewhere between 12v and 32v.
+
+\subsection{Sensor Board}
+Our robot will require a number of sensors in order to perform its duties. Approximate low update frequency localization will be done by GPS, while a collection of other sensors and sensing systems will provide specialized sensing for fine localization and motion sensing at high update frequencies. 
+
+\begin{center}
+\begin{tabular}{|l| p{10cm} |}
+\hline
+Sensor & Purpose \\ \hline
+Accelerometer & Will be used to figure out robot acceleration and gravity based attitude. \\ \hline
+Compass & Dual-Axis Magnetometer type sensor, provides geomagnetic direction of robot at low sample frequency. \\ \hline
+Gyroscope & When integrated over time, provides precise heading information at high sample frequency between compass samples. \\ \hline
+GPS & Will provide approximate location, velocity and direction of the robot. \\ \hline
+Encoders & Provide position, velocity, and acceleration information from the robot motors, enabling precise motion control. \\ \hline
+Ultrasonic Distancing  & Assists in obstacle avoidance. \\ \hline
+Camera & Enables remote operator feedback when operating in manual mode, and when coupled with image processing assists in navigation. \\ \hline
+Temperature & To be able to predict any overheat conditions. \\ \hline
+Humidity & To detect hazardous, and possibly condensing, humidity conditions. \\ \hline
+Ambient Light & To determine the need for headlights \\ 
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Motor Drive Board}
+Provides control of the brushless or brushed DC traction motors. This board incorporates a pair of full bridge motor drive circuits, with current sensing circuitry for each of the motors. Also housed on board are a pair of encoder feedback inputs, and among other support electronics, a processor providing low level feedback control of the motors. The local connection of feedback sensors and the motor drive electronics provides a low delay feedback control loop. This precision feedback control of the traction motors enables the precise, agile robot handling necessary to produce chalk drawings accurately and quickly. Currently, we are considering a STM32F10x series processor, due to it's proven ability to handle complex control applications and previous experience we have had with this series of parts.
+\section{Software and Control}
+\subsection{MainBoard}
+The mainboard will be runnign linux on pandaboard. It is a very widely used platform which is supported by all main distributors [Ubuntu, debian, gentoo]. We also plan on installing OpenCV for image processing. In addition, we will use Apache for our web server. We will store logs of temperature, current and other sensor output to debug in case of failure. Lastly, we will keep an ssh server running at all times so we can log in remotely to check or modify status.
+\subsection{Feedback control}
+We will have an additional processor[probably stm32fxx] on our motor drive board to do control on our drive. It will take easy primitives from the mainboard [an arc, a line, etc] and use the feedback from the encoders on the dc motors to drive the dc motors to draw the drawing. This needs to be precise and thus has to be extremely low latency, therefore we dedicate a processor entirely for this function. 
+\end{document}
