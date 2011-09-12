@@ -1,0 +1,166 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\title{ChalkBot}
+\author{George Karavaev\\ Alex Suchko\\ \normalsize Version 0.95}
+
+\begin{document}
+  \maketitle 
+ \abstract{Around the U of I campus, it's hard for a day to pass without coming across a piece of sidewalk art or advertisement. Observing this, we thought this would be an exciting focus for a study into various electronic techniques necessary to develop a robot capable of producing sidewalk drawings.}
+ \newpage
+ \tableofcontents
+ \newpage
+ \section{Introduction}
+ \subsection{Objectives}
+ Project goals are to design a robot that is capable of drawing on masonry surfaces with off the shelf chalk. 
+ 
+ Benefits to a customer of our product at end of semester include:
+ \begin{itemize}
+  \item Energy efficiency
+  \item Motor Control
+  \item On-board Linux based computing
+  \item Dedicated low-level motion processor
+  \item Power supply monitor/minder
+\end{itemize}
+Features of our product at end of semester include:
+   \begin{itemize}
+  \item Three channels of switch-mode power supply for power efficient operation of power hungry components
+  \item Two channels of full-bridge motor control, with synchronous rectification to reduce diode dissipation
+  \item Two channels of high-frequency quadrature encoder feedback
+  \item Control of chalk mechanism actuators
+  \item Inertial yaw rate sensing (MEMS gyro)
+  \item Extensive self diagnostic sensing, multiple point monitoring of voltage, current, power production/consumption, and temperature of key system components
+  \item Attention to thermal design of high performance components to enable effective passive cooling
+  \item Uses economical and environmentally friendly sidewalk chalk instead of a spray or slurry chalk, distinct from other sidewalk drawing machines that can be found on video sharing sites
+\end{itemize}
+  
+ \section{Design}
+ \subsection{Block Diagram}
+ Please find the block diagram attached to the end of the report, labeled Diagram 1.
+ \subsection{Block Descriptions} The block diagram has a number of moduler parts. Here are description of each part.
+
+ \subsubsection{Internal Battery} We will be utilizing a standard off the shelf PS-1270 battery. It is made by Power Sonic and is suitable for our needs with discharge rate and nominal capacity. The battery is 12V and is 7ampere-hour. This battery provides power for all the other circuits. It directly connects to PSU and HBridge, by providing 12volts to them. It also contains fuses for each of the wire pairs going out. Otherwise it contains no other electronics or sensors.
+ \subsubsection{PSU} We have a 3 channel step-down switching power supply. Each channel is used to drive a certain electronic piece on our robot. They are Pandaboard, carrier board and servos. Physically, each of the channels is a buck switching regulator, wide-input voltage down to 5v. They are rated to 3 amperes and take 8-20volts.  Each of them contains a current senor and a temperature sensors. All the sensors are tied via I$^{\textrm{2}}$C. They have a standarized inteface. The logical interface is 4 pins:
+ \begin{itemize} 
+   \item Enable. This pin shuts down all power to switching power supply and disables the linear regulator that provides power to sensors. 
+   \item SDA. Data for I$^{\textrm{2}}$C for temperature and current sensing.
+   \item SCL. Clock for I$^{\textrm{2}}$C.
+   \item Alert. Open drain pin that we can configure to trigger on overcurrent detection.
+ \end{itemize} The analog power interface consists of input lines and output lines. They are positioned so that you can get regulated 5V either on a header or by crimped wires.
+ \subsubsection{HBridge}
+ Hbridge is a circutry specifically designed to drive motors both in forward and reverse. This will allow us to control our robot velocity. Hbridge connects to both sides of the motors and control the robots movements. As such they require a high current drive ability. Therefore the battery connects directly to each HBridge. Then the Hbridge contains power MOSFETs and a mosfet driver to be able to handle the high currents. Lastly, the HBridge contains capacitors to handle current surges from the motors. Our HBridge is rated at 12Volts, 2amperes continous and 5 amperes peak current.  On the logical side of the Hbridge we have 11 pins:
+ \begin{itemize}
+  \item FF2 - Fault line 2. Contains a direct output status of the driver onboard.
+  \item FF1 - Fault line 1. Contains a direct output status of the driver onboard.
+  \item Reset - Resets the driver on the HBridge. This will also disable reset all sensors on board [as they are connected to regulated 5V provided by the driver].
+  \item PWMH - PWM signal for high side MOSFETs
+  \item PWML - PWM signal for low side MOSFETs.
+  \item SR - Synchronous Rectification set. Enables the driver to utilize syncronous rectification to use MOSFETs to rectify instead of catch diodes.
+  \item PHASE - Sets different phase of the motor drive.
+  \item SCL - I$^{\textrm{2}}$C  clock
+  \item SDA - I$^{\textrm{2}}$C data
+  \item ALERT - Open drain pin for overcurrent.
+  \end{itemize}
+  \subsubsection{Servos}
+     We are using standard off the shelf servos HS-485HB to provide chalk control. One servo is responsible for holding the chalk in place while the second servo moves the chalk up and down. The servos are powered by one of the switching regulators, and controlled by a processor on the carrier board.
+     \subsubsection{Motors}
+     We are using 2 off the shelf brushed DC motors MMP D22-376D-24V. They are rated for 24V, but we discovered that we do not need the torque provided at 24V. Instead we will drive them at 12V. They connect directly to HBridge board which drives the motors directly.  On the logical side there are quadrature encoders which connect directly to carrier board. These motors will actually drive our motor to where our robot needs to be. In addition motors will be used to drive chalk drawings with the robot.
+     \subsubsection{Carrier Board}
+     The carrier board of the robot will be the "hub" for the PSU and HBridge. It is necessary to bring together the modular parts of the project and interconnect them. In our current design we will have small modular PSU channels and HBridge channels which plug directly into the carrier board. This will allow us to test these parts indivudally and replace them easily. In addition this board will contain a few other parts:
+     \begin{itemize}
+    \item Small TI MSP430 processor as a supervisor for power supplies. It will monitor power supplies current, output voltage, temperature and battery voltage. This will be a critical decision processor. It will shutdown any channels which are overcurrent. This will be cruical in safety for our robot. For example, this processor will turn the channel off if we have a short circuit in our servos. It will also be used for startup and low battery shutdown. The supervisor communicates with sensors via I$^{\textrm{2}}$C bus and enable pins. It will communicatee with Pandaboard with UART and provide it with power and temperature measurments as needed.
+    \item Feedback control. We will have a LQFP64 STM32 chip to do low level feedback control on our DC motors. In order to do that it will drive HBridges with PWM and take inputs from quadrature encoders. It also communicates to Pandaboard via UART. It will recieve commands and report status and current measurments. 
+    \item Sensors for feedback. They will include a gyroscope that will connect directly to our Feedback Control chip. It will provide accurate movement data to get better movement.
+    \item Another TI processor to provide logical PWM signal to Servos. This chip will contain a very simple role, take signals from Pandaboard and drive servos accordingly. It will contain a simple state machine for chalk position and status. Will alert on low chalk condition. This might get integrated into the STM32 feedback controller.
+     \subsubsection{PandaBoard}
+     Pandaboard will contain the big "brains" for our robot. Pandaboard will be used to decide where to draw and how to draw. It will run a Linux distribution so we can extensivly add software and devices as we can see fit.
+ \subsection{Performance Requirment}
+ At the end of the semester, our control electronics should comply with the following specifications:
+ \begin{description}
+    \item[Swith-mode power supply channels] 
+    \\
+
+    \begin{itemize}
+       \item Provide +/-15\% voltage regulation over their respective design current ranges
+       \item Remain at or below a reasonable steady state temperature rise at rated continuous duty power output
+       \end{itemize}
+    \item[Full bridge motor drivers] 
+    \\
+    
+    \begin{itemize}
+       \item Operate at a reasonable temperature while providing rated continuous duty power output
+      \item  Provide smooth motor control from 0\% to 100\% duty cycle
+      \item Operate at a DC 100\% duty cycle
+      \end{itemize}
+    \item[Inertial yaw rate sensing (MEMS gyro)] 
+    \\
+    
+    \begin{itemize}
+      \item Initial zero offset compensation 
+      \item Provide reliable readings of yaw rate
+      \item Integrate signal over time to produce relative heading information
+      \end{itemize}
+    \item[Self diagnostic sensing] 
+    \\
+    
+    
+    \begin{itemize}
+      \item Output of voltage, current, power statistics from switch-mode power supply channels
+      \item Output of representative temperature from power supply board
+      \item Output of voltage, current, power statistics from both channels of full bridge motor drive
+      \end{itemize}
+    \item[Thermal design] \\
+    
+    \begin{itemize}
+      \item During testing of other parameters, external component temperature should not exceed 40 degrees celsius above the ambient temperature
+      \end{itemize}
+ \end{description}
+ 
+ \section{Verification}
+ \subsection{Testing Procedures}
+ \begin{description}
+    \item[Switch-mode power supply channels] \newline
+    
+    \begin{itemize}
+      \item A reconfigurable network of wire-wound ceramic core power resistors will be used to load the supply channels across their rated current ranges, while an attached oscilloscope monitors the voltage output from the switch-mode supply channel under test.
+      \item A thermocouple instrument will be used to read the temperature of various components.
+      \end{itemize}
+    \item[Full bridge motor drivers] \newline
+    
+    \begin{itemize}
+      \item A thermocouple instrument will be used to read the power MOSFET heatsink temperature.
+      \item The low level motion control processor will be commanded to operate the motors at varying duty cycles, from 0\% to 100\%.
+      \item A DC PWM input will be applied, while the Vgs is monitored of the active high side bridge mosfet.
+      \end{itemize}
+    \item[Inertial yaw rate sensing (MEMS gyro)] \newline
+    
+    \begin{itemize}
+      \item Control electronics will be power-on resetted with the controller physically at rest, thereafter without movement zero readings should be obtained from the gyro, regardless of the zero offset.
+      \item For a given rotation, a proportional reaing should be given.
+      \item With a protractor for reference, various rotations of the control board will be performed after intializaton has been completed, following power on reset, the reported angles should track along with each other, over a time span of about two minutes.
+      \end{itemize}
+    \item[Thermal design] \newline
+    
+    \begin{itemize}
+     \item Temperature will be monitored during other tests listed above, in a manner as listed above.
+      \end{itemize}
+      \end{description}
+ \subsection{Tolerance Analysis}
+    Tolerance analysis will be performed on the switch mode power supply chanel providing power for the on-board Linux computer board, which has fairly stringent power requirements. The associated switch-mode supply will have it's design analyzed to see which tolerances impact the performance of the supply, in particular it's regulation of output voltage to the Linux computer board.
+ \section{Cost and Schedule}
+ \subsection{Cost}
+  Need to finish BOC first.
+ \subsection{Schedule}
+ \begin{description}
+  \item[9/12] Find and order all parts for PSU and HBridge.
+  \item[9/19] Recieve PCBs for PSU and HBridge. Assemble and prelimenary tests.
+  \item[9/26] Finish testing.  Design, layout and order carrier board.
+  \item[10/3] Fix up PSU and HBridge based on tests. Re-order boards, and order parts for carrier board.
+  \item[10/10] Recieve and assemble carrier board. Test and connect.
+  \item[10/17] Recieve and assemble all boards. Connect and test them all.
+  \item[10/24] Write code for P1andaboard (George). Write code for feedback control (Alex)
+  \item[10/31] First Demo.
+\end{description}
+ 
+ \end{document}
