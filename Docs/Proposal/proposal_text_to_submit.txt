@@ -1,1 +1,68 @@
 Introduction
+	Title
+		ChalkBot
+		
+		Around the U of I campus, it's hard for a day to pass without coming across a piece of sidewalk art or advertisement. Observing this, we thought this would be an exciting focus for a study into various electronic techniques necessary to develop a robot capable of producing sidewalk drawings. 
+		
+	Objectives
+		At the completion of the semester, we plan to have completed and tested the control electronics necessary for our robot's function. As the mechanical design of our robot is not a focus of the project, it has already been completed before the start of the semester and has been tested for mechanical function. While our main focus is the control electronics, as a test and verification of our design, we also plan to demonstrate some basic application software running on our robot control electronics, which are the focus of our design.
+		
+		Benefits to a customer of our product at end of semester include:
+		> Energy efficiency
+		> Motor control
+		> On-board Linux based computing
+		> Power supply monitor/minder
+		> Dedicated low-level motion processor
+		
+		Features of our product at end of semester include:
+		> Three channels of switch-mode power supply for power efficient operation of power hungry components, with power switch mosfet to allow controlled handling of a short condition
+		> Two channels of full-bridge motor control, with synchronous rectification to reduce diode dissipation, also include voltage, current, and power monitoring for both channels
+		> Two channels of high-frequency quadrature encoder feedback
+		> Control of chalk mechanism actuators
+		> Inertial yaw rate sensing (MEMS gyro)
+		> Extensive self diagnostic sensing, multiple point monitoring of voltage, current, power production/consumption, and temperature of key system components
+		> Attention to thermal design of high performance components to enable effective passive cooling
+		> Uses economical and environmentally friendly sidewalk chalk instead of a spray or slurry chalk, distinct from other sidewalk drawing machines that can be found on video sharing sites
+		
+Design
+	Block Diagram
+		Jorge...
+	Block Descriptions
+		Jorge...
+	Performance Requirements
+		At the end of the semester, our control electronics should comply with the following specifications:
+		> Swith-mode power supply channels 
+			- Provide +/-15% voltage regulation over their respective design current ranges
+			- Remain at or below a reasonable steady state temperature rise at rated continuous duty power output
+		> Full bridge motor drivers 
+			- Operate at a reasonable temperature while providing rated continuous duty power output
+			- Provide smooth motor control from 0% to 100% duty cycle
+			- Operate at a DC 100% duty cycle
+		> Inertial yaw rate sensing (MEMS gyro)
+			- Initial zero offset compensation 
+			- Provide reliable readings of yaw rate
+			- Integrate signal over time to produce relative heading information
+		> Self diagnostic sensing
+			- Output of voltage, current, power statistics from switch-mode power supply channels
+			- Output of representative temperature from power supply board
+			- Output of voltage, current, power statistics from both channels of full bridge motor drive
+		> Thermal design
+			- During testing of other parameters, external component temperature should not exceed 40 degrees celsius above the ambient temperature
+			
+Verification
+	Testing Procedures
+		> Switch-mode power supply channels
+			- A reconfigurable network of wire-wound ceramic core power resistors will be used to load the supply channels across their rated current ranges, while an attached oscilloscope monitors the voltage output from the switch-mode supply channel under test.
+			- A thermocouple instrument will be used to read the temperature of various components.
+		> Full bridge motor drivers
+			- A thermocouple instrument will be used to read the power MOSFET heatsink temperature.
+			- The low level motion control processor will be commanded to operate the motors at varying duty cycles, from 0% to 100%.
+			- A DC PWM input will be applied, while the Vgs is monitored of the active high side bridge mosfet.
+		> Inertial yaw rate sensing (MEMS gyro)
+			- Control electronics will be power-on resetted with the controller physically at rest, thereafter without movement zero readings should be obtained from the gyro, regardless of the zero offset.
+			- For a given rotation, a proportional reaing should be given.
+			- With a protractor for reference, various rotations of the control board will be performed after intializaton has been completed, following power on reset, the reported angles should track along with each other, over a time span of about two minutes.
+		> Thermal design
+			- Temperature will be monitored during other tests listed above, in a manner as listed above.
+	Tolerance Analysis
+		Tolerance analysis will be performed on the switch mode power supply chanel providing power for the on-board linux computer board, which has fairly stringent power requirements. The associated switch-mode supply will have it's design analyzed to see which tolerances impact the performance of the supply, in particular it's regulation of output voltage to the linux computer board.
