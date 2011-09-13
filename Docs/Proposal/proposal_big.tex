@@ -3,7 +3,7 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \title{ChalkBot}
-\author{George Karavaev\\ Alex Suchko\\ \normalsize Version 0.95}
+\author{George Karavaev\\ Alex Suchko\\ \normalsize Version 0.96}
 
 \begin{document}
   \maketitle 
@@ -73,45 +73,36 @@ Features of our product at end of semester include:
     \item Feedback control. We will have a LQFP64 STM32 chip to do low level feedback control on our DC motors. In order to do that it will drive HBridges with PWM and take inputs from quadrature encoders. It also communicates to Pandaboard via UART. It will recieve commands and report status and current measurments. 
     \item Sensors for feedback. They will include a gyroscope that will connect directly to our Feedback Control chip. It will provide accurate movement data to get better movement.
     \item Another TI processor to provide logical PWM signal to Servos. This chip will contain a very simple role, take signals from Pandaboard and drive servos accordingly. It will contain a simple state machine for chalk position and status. Will alert on low chalk condition. This might get integrated into the STM32 feedback controller.
+     \end{itemize}
      \subsubsection{PandaBoard}
      Pandaboard will contain the big "brains" for our robot. Pandaboard will be used to decide where to draw and how to draw. It will run a Linux distribution so we can extensivly add software and devices as we can see fit.
  \subsection{Performance Requirment}
  At the end of the semester, our control electronics should comply with the following specifications:
  \begin{description}
-    \item[Swith-mode power supply channels] 
-    \\
-
+    \item[Swith-mode power supply channels]. 
     \begin{itemize}
        \item Provide +/-15\% voltage regulation over their respective design current ranges
        \item Remain at or below a reasonable steady state temperature rise at rated continuous duty power output
        \end{itemize}
-    \item[Full bridge motor drivers] 
-    \\
-    
+    \item[Full bridge motor drivers]. 
     \begin{itemize}
        \item Operate at a reasonable temperature while providing rated continuous duty power output
       \item  Provide smooth motor control from 0\% to 100\% duty cycle
       \item Operate at a DC 100\% duty cycle
       \end{itemize}
-    \item[Inertial yaw rate sensing (MEMS gyro)] 
-    \\
-    
+    \item[Inertial yaw rate sensing (MEMS gyro)]. 
     \begin{itemize}
       \item Initial zero offset compensation 
       \item Provide reliable readings of yaw rate
       \item Integrate signal over time to produce relative heading information
       \end{itemize}
-    \item[Self diagnostic sensing] 
-    \\
-    
-    
+    \item[Self diagnostic sensing]. 
     \begin{itemize}
       \item Output of voltage, current, power statistics from switch-mode power supply channels
       \item Output of representative temperature from power supply board
       \item Output of voltage, current, power statistics from both channels of full bridge motor drive
       \end{itemize}
-    \item[Thermal design] \\
-    
+    \item[Thermal design]. 
     \begin{itemize}
       \item During testing of other parameters, external component temperature should not exceed 40 degrees celsius above the ambient temperature
       \end{itemize}
@@ -120,28 +111,24 @@ Features of our product at end of semester include:
  \section{Verification}
  \subsection{Testing Procedures}
  \begin{description}
-    \item[Switch-mode power supply channels] \newline
-    
+    \item[Switch-mode power supply channels]. 
     \begin{itemize}
       \item A reconfigurable network of wire-wound ceramic core power resistors will be used to load the supply channels across their rated current ranges, while an attached oscilloscope monitors the voltage output from the switch-mode supply channel under test.
       \item A thermocouple instrument will be used to read the temperature of various components.
       \end{itemize}
-    \item[Full bridge motor drivers] \newline
-    
+    \item[Full bridge motor drivers]. 
     \begin{itemize}
       \item A thermocouple instrument will be used to read the power MOSFET heatsink temperature.
       \item The low level motion control processor will be commanded to operate the motors at varying duty cycles, from 0\% to 100\%.
       \item A DC PWM input will be applied, while the Vgs is monitored of the active high side bridge mosfet.
       \end{itemize}
-    \item[Inertial yaw rate sensing (MEMS gyro)] \newline
-    
+    \item[Inertial yaw rate sensing (MEMS gyro)]. 
     \begin{itemize}
       \item Control electronics will be power-on resetted with the controller physically at rest, thereafter without movement zero readings should be obtained from the gyro, regardless of the zero offset.
       \item For a given rotation, a proportional reaing should be given.
       \item With a protractor for reference, various rotations of the control board will be performed after intializaton has been completed, following power on reset, the reported angles should track along with each other, over a time span of about two minutes.
       \end{itemize}
-    \item[Thermal design] \newline
-    
+    \item[Thermal design]. 
     \begin{itemize}
      \item Temperature will be monitored during other tests listed above, in a manner as listed above.
       \end{itemize}
@@ -150,7 +137,7 @@ Features of our product at end of semester include:
     Tolerance analysis will be performed on the switch mode power supply chanel providing power for the on-board Linux computer board, which has fairly stringent power requirements. The associated switch-mode supply will have it's design analyzed to see which tolerances impact the performance of the supply, in particular it's regulation of output voltage to the Linux computer board.
  \section{Cost and Schedule}
  \subsection{Cost}
-  Need to finish BOC first.
+  Need to finish BOM first.
  \subsection{Schedule}
  \begin{description}
   \item[9/12] Find and order all parts for PSU and HBridge.
