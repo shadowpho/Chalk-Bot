@@ -3,7 +3,7 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \title{ChalkBot}
-\author{George Karavaev\\ Alex Suchko\\ \normalsize Version 0.96}
+\author{George Karavaev\\ Alex Suchko\\ \normalsize Version 0.98}
 
 \begin{document}
   \maketitle 
@@ -13,7 +13,7 @@
  \newpage
  \section{Introduction}
  \subsection{Objectives}
- Project goals are to design a robot that is capable of drawing on masonry surfaces with off the shelf chalk. 
+ Project goals are to design a robot that is capable of drawing on masonry surfaces with off the shelf chalk. Function is for organizations to easily do advertisments with chalk.
  
  Benefits to a customer of our product at end of semester include:
  \begin{itemize}
@@ -41,7 +41,7 @@ Features of our product at end of semester include:
  \subsection{Block Descriptions} The block diagram has a number of moduler parts. Here are description of each part.
 
  \subsubsection{Internal Battery} We will be utilizing a standard off the shelf PS-1270 battery. It is made by Power Sonic and is suitable for our needs with discharge rate and nominal capacity. The battery is 12V and is 7ampere-hour. This battery provides power for all the other circuits. It directly connects to PSU and HBridge, by providing 12volts to them. It also contains fuses for each of the wire pairs going out. Otherwise it contains no other electronics or sensors.
- \subsubsection{PSU} We have a 3 channel step-down switching power supply. Each channel is used to drive a certain electronic piece on our robot. They are Pandaboard, carrier board and servos. Physically, each of the channels is a buck switching regulator, wide-input voltage down to 5v. They are rated to 3 amperes and take 8-20volts.  Each of them contains a current senor and a temperature sensors. All the sensors are tied via I$^{\textrm{2}}$C. They have a standarized inteface. The logical interface is 4 pins:
+ \subsubsection{PSU} We have a 3 channel step-down switching power supply. They are used to provide power for electronics. Each channel is used to drive a certain electronic piece on our robot. The channels power Pandaboard, carrier board and servos. Physically, each of the channels is a buck switching regulator, wide-input voltage down to 5v. They are rated to 3 amperes and take 8-20volts.  Each of them contains a current senor and a temperature sensors. All the sensors are tied via I$^{\textrm{2}}$C. They have a standarized inteface. The logical interface is 4 pins:
  \begin{itemize} 
    \item Enable. This pin shuts down all power to switching power supply and disables the linear regulator that provides power to sensors. 
    \item SDA. Data for I$^{\textrm{2}}$C for temperature and current sensing.
@@ -63,7 +63,7 @@ Features of our product at end of semester include:
   \item ALERT - Open drain pin for overcurrent.
   \end{itemize}
   \subsubsection{Servos}
-     We are using standard off the shelf servos HS-485HB to provide chalk control. One servo is responsible for holding the chalk in place while the second servo moves the chalk up and down. The servos are powered by one of the switching regulators, and controlled by a processor on the carrier board.
+     We are using standard off the shelf servos HS-485HB to provide chalk control. One servo is responsible for holding the chalk in place while the second servo moves the chalk up and down. The servos are powered by one of the switching regulators, and controlled by a processor on the carrier board. The interface is a PWM wave.
      \subsubsection{Motors}
      We are using 2 off the shelf brushed DC motors MMP D22-376D-24V. They are rated for 24V, but we discovered that we do not need the torque provided at 24V. Instead we will drive them at 12V. They connect directly to HBridge board which drives the motors directly.  On the logical side there are quadrature encoders which connect directly to carrier board. These motors will actually drive our motor to where our robot needs to be. In addition motors will be used to drive chalk drawings with the robot.
      \subsubsection{Carrier Board}
@@ -87,7 +87,7 @@ Features of our product at end of semester include:
     \item[Full bridge motor drivers]. 
     \begin{itemize}
        \item Operate at a reasonable temperature while providing rated continuous duty power output
-      \item  Provide smooth motor control from 0\% to 100\% duty cycle
+      \item  Provide smooth bidirectional motor control from 0\% to 100\% duty cycle.
       \item Operate at a DC 100\% duty cycle
       \end{itemize}
     \item[Inertial yaw rate sensing (MEMS gyro)]. 
@@ -101,6 +101,7 @@ Features of our product at end of semester include:
       \item Output of voltage, current, power statistics from switch-mode power supply channels
       \item Output of representative temperature from power supply board
       \item Output of voltage, current, power statistics from both channels of full bridge motor drive
+      \item Output of battery voltage.
       \end{itemize}
     \item[Thermal design]. 
     \begin{itemize}
@@ -109,6 +110,7 @@ Features of our product at end of semester include:
  \end{description}
  
  \section{Verification}
+ Here we will discuss our testing procedures. We have designed those tests to reasonably cover our designated target goals. They cover power production, robot movement, sensing and thermal design. We will not run any tests on mechanical designs, so we will take motor datasheet for granted.
  \subsection{Testing Procedures}
  \begin{description}
     \item[Switch-mode power supply channels]. 
@@ -139,15 +141,26 @@ Features of our product at end of semester include:
  \subsection{Cost}
   Need to finish BOM first.
  \subsection{Schedule}
+ \subsubsection{George}
  \begin{description}
-  \item[9/12] Find and order all parts for PSU and HBridge.
-  \item[9/19] Recieve PCBs for PSU and HBridge. Assemble and prelimenary tests.
-  \item[9/26] Finish testing.  Design, layout and order carrier board.
-  \item[10/3] Fix up PSU and HBridge based on tests. Re-order boards, and order parts for carrier board.
+  \item[9/12] Calculate values, find and order all parts for HBridge.
+  \item[9/19] Recieve PCBs for HBridge. Assemble and prelimenary tests.
+  \item[9/26] Finish testing.  Design, layout and order supervisor portion of carrier board.
+  \item[10/3] Fix up HBridge based on tests. Re-order boards, and order feedback parts for carrier board.
   \item[10/10] Recieve and assemble carrier board. Test and connect.
   \item[10/17] Recieve and assemble all boards. Connect and test them all.
-  \item[10/24] Write code for P1andaboard (George). Write code for feedback control (Alex)
+  \item[10/24] Write code for P1andaboard.
   \item[10/31] First Demo.
 \end{description}
- 
+ \subsubsection{Alex}
+ \begin{description}
+  \item[9/12] Calculates values, find and order all parts for PSU.
+  \item[9/19] Recieve PCBs for PSU. Assemble and prelimenary tests.
+  \item[9/26] Finish testing.  Design, layout and order feedback portion of carrier board.
+  \item[10/3] Fix up PSU based on tests. Re-order boards, and order supervisor parts for carrier board.
+  \item[10/10] Recieve and assemble carrier board. Test and connect.
+  \item[10/17] Recieve and assemble all boards. Connect and test them all.
+  \item[10/24] Write code for feedback control.
+  \item[10/31] First Demo.
+\end{description}
  \end{document}
