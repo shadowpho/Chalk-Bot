@@ -1,0 +1,59 @@
+C603,  0.1 uF, 2
+C1206, 0.1uF,  4
+C1206, 1 uF,   2
+C1206, 5uF,    1
+Cpol,  ?       1
+
+R603, 1ohm,2
+
+R805, 0ohm,4
+R805, 1.3kOhms, 1
+R805, 5.1 kOhms, 3
+R805, 30kOhm,1
+r805, shunt 10mOhms, 1
+
+ina226, 1
+A3941,  1
+mosfets, 4
+10 pin header, 1 
+Motor screw terminals, 2
+Plugterminal2, 1
+
+
+Part          Value               Device              Package               Library  Sheet
+
+CURS_DEC      0.1uF               CAP0603-CAP         0603-CAP              SparkFun 1
+CURS_FILT     0.1-1 uF            CAP0603-CAP         0603-CAP              SparkFun 1
+CURS_RF1      1 ohm               RESISTOR0603-RES    0603-RES              SparkFun 1
+CURS_RF2      1 ohm               RESISTOR0603-RES    0603-RES              SparkFun 1
+CUR_SENS      INA226              INA226              PSOP-10               chlk_bot 1
+DECOUPLE_L_5V 1 uF                CAP1206             1206                  SparkFun 1
+HIGH          TEST-POINT2         TEST-POINT2         PAD.02X.02            SparkFun 1
+JP1           M10"                M10"                1X10                  SparkFun 1
+LFF1_PU       5.1 kOhm            RESISTOR0805-RES    0805                  SparkFun 1
+LOW           TEST-POINT2         TEST-POINT2         PAD.02X.02            SparkFun 1
+L_BOOTCAP     0.1 uF              CAP1206             1206                  SparkFun 1
+L_CA          .1 uF               CAP1206             1206                  SparkFun 1
+L_CB          .1 uF               CAP1206             1206                  SparkFun 1
+L_DCPL        1 uF                CAP1206             1206                  SparkFun 1
+L_DCPL_CER    0.1 uF              CAP1206             1206                  SparkFun 1
+L_DCPL_P      large               CAP_POLPTH1         CPOL-RADIAL-100UF-25V SparkFun 1
+L_FF2_PU      5.1 kOhm            RESISTOR0805-RES    0805                  SparkFun 1
+L_H1_RS       0                   RESISTOR0805-RES    0805                  SparkFun 1
+L_H1_RS1      0                   RESISTOR0805-RES    0805                  SparkFun 1
+L_H1_RS2      0                   RESISTOR0805-RES    0805                  SparkFun 1
+L_H1_RS3      0                   RESISTOR0805-RES    0805                  SparkFun 1
+L_LB          MOSFET-NCHANNELPTH2 MOSFET-NCHANNELPTH2 TO220V                SparkFun 1
+L_LT          MOSFET-NCHANNELPTH2 MOSFET-NCHANNELPTH2 TO220V                SparkFun 1
+L_MOTOR       A3941               A3941               TSSOP28_EXPOSED       chlk_bot 1
+L_MOTOR_1     SCREW_TERMINAL      SCREW_TERMINAL      SCREW_TERMINAL_7693   chlk_bot 1
+L_MOTOR_2     SCREW_TERMINAL      SCREW_TERMINAL      SCREW_TERMINAL_7693   chlk_bot 1
+L_RB          MOSFET-NCHANNELPTH2 MOSFET-NCHANNELPTH2 TO220V                SparkFun 1
+L_RDEAD       30 kOhm             RESISTOR0805-RES    0805                  SparkFun 1
+L_REGV_DCP    5 uF                CAP1206             1206                  SparkFun 1
+L_RS          10 mOhm             RESISTOR0805-RES    0805                  SparkFun 1
+L_RT          MOSFET-NCHANNELPTH2 MOSFET-NCHANNELPTH2 TO220V                SparkFun 1
+L_VDSTH_VDG   1.3 kOhm            RESISTOR0805-RES    0805                  SparkFun 1
+L_VDSTH_VDV   5.1 kOhm            RESISTOR0805-RES    0805                  SparkFun 1
+TP1           TEST-POINT2         TEST-POINT2         PAD.02X.02            SparkFun 1
+U$4           PLUG_TERM_2         PLUG_TERM_2         TERM_BLOCK_2          chlk_bot 1
