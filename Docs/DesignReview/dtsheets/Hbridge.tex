@@ -17,7 +17,7 @@
 \hrule  
 \vspace{0.1in}
 \includegraphics[width=4cm]{chalk_logo.png}
-\Huge{\quad \textbf{CB01 - DC Hbridge \quad \quad} \emph{rev1}} 
+\Huge{\quad \textbf{CB01 - DC Hbridge \quad \quad} \emph{rev3c}} 
 \vspace{0.05in}
 \hrule 
 \vspace{0.05in}
@@ -37,8 +37,8 @@
 \item Alert pin to alert of overcurrent conditions.
 \item Requires only a single battery voltage (7-30V).
 \item Diagnostics output provided over 3 pins.
-\item has an low current sleep modes.
-\item capable of 100\% duty cycle with a unique top off charge pump.
+\item Low current sleep modes.
+\item Capable of 100\% duty cycle with a unique top off charge pump.
 \end{itemize}
 \end{minipage}
 
@@ -51,10 +51,10 @@
 \\
 
 \normalsize
-CB01 is a full-bridge controller with externaal power MOSFETs. It is specifically designed to drive our high power brush DC motors. \\
-This part is specifically designed to be extremely modular. It is completely enclosed and does not require any external components. This makes the module extremely easy to test, use and develop for.\\
-We have implemented an extremely flexible modes of control. This module can be driven with fast or slow decay modes with either diode or synchronous rectification. There is deadtime set at 1 microsecond between turn on of low side mosfets and turn off of high side mosfets.\\
-Integrated diagnostics provide warnings of undervoltage, overtemperature [only on controller], overcurrent, overvoltage, power bridge faults and short circuits. The CB01 is provided in a module 1.2"x1.7" with logical pinpouts and motor screws.
+CB01 is a full-bridge controller with external power MOSFETs. It is specifically designed to drive our high power brush DC motors. \\
+This part is specifically designed to be modular and completely enclosed, without requirement for any external components. This makes the module easy to test, use and develop for.\\
+We have implemented flexible modes of motor control, allowing various brush DC bridge control strategies, at the discretion of the end designer. This module can be driven with fast or slow decay modes with either diode or synchronous rectification. There is deadtime set at 1 microsecond between turn on of low side mosfets and turn off of high side mosfets,and vice versa.\\
+Integrated diagnostics provide warnings of undervoltage, overtemperature [only on controller], overcurrent, overvoltage, power bridge faults and short circuits. The CB01 is provided in a 1.2"x1.7" footprint module with logical pinouts and motor screw terminals.
 \end{minipage}
 } %end mbox
 \\
@@ -65,7 +65,7 @@ Integrated diagnostics provide warnings of undervoltage, overtemperature [only o
 \large{\textbf{Typical Application}}
 \end{center}
 \begin{center}
-\includegraphics[width=6in]{cb01_typical.png}
+\includegraphics[width=6in]{CB01_block.png}
 \end{center}
 \hrule
 \newpage
@@ -76,8 +76,14 @@ Integrated diagnostics provide warnings of undervoltage, overtemperature [only o
 \hline
 Characteristics & Symbol &Test Conditions & Min & Typ & Max & Units \\ \hline
 Functional Voltage& $V_{bb}$& & 7&12&30&V \\ \hline 
-Output Current & $I_{motor}$ & NOT TESTED YET& -5 & 0& 5 &A \\ \hline
+Output Current & $I_{motor}$ & TBD& -5 & 0& 5 &A \\ \hline
 MOSFET resistance & $Rds_{on}$  & Datasheet values& & 7 & 8.5 & mOhms\\\hline
+Continuous duty output &$I_{cont}$ & fsw=3kHz, Rm=0.9ohms& TBD&TBD&TBD& A\\ \hline
+Impulse peak current& $I_{peak}$& t=1s square wave& TBD& TBD& TBD&I \\ \hline
+Switching rate &fsw & 50\% duty, TBD &0&&3000& Hertz\\  \hline
+Duty cycle &D& Over switching rate limits& 0&&100&\% \\ \hline
+Operating Temperature& Top& TBD& TBD& TBD&TBD&C \\\hline
+
 \hline
 \end{tabular}
 \end{center}
