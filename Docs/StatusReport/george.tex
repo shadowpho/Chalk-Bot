@@ -22,9 +22,14 @@
  \abstract{This report will contain information based on my progress in the design of a chalkbot. In my progress I will describe my work, several important decisions and work still required. \\
  
  Throughout my report I may also refer to the work of my partner, Alex Suchko. For example, most of verification work was done by him. In each case I will credit him, source his work and refer you to his report with section numbers.}
- \newpage
+\\
+\\
+{\centering
+\includegraphics[width=1.0\textwidth]{../chalk_bot_logo2.png}
+}
+\newpage
  \tableofcontents
- \listoffigures
+\listoffigures
 \newpage
  \section{Introduction}
  \subsection{Brief Project Goals}
@@ -44,11 +49,6 @@ We have designed and ordered Carrier board and all parts for it. Our plan is to 
 \end{description}
 
 
-\newpage
-\section{Power Sopply Unit}
-\subsection{Schematics}
-\figuremine{~/ece445/Chalk-Bot/Hardware/Power_board/page1.png}{PSU Schematic page1. Inputs + Inteface}
-\figuremine{~/ece445/Chalk-Bot/Hardware/Power_board/page2.png}{PSU Schematic page2. Switching supply + Outputs}
 \newpage
 \section{HBridge}
 \subsection{Schematics}
@@ -129,13 +129,104 @@ C_{vreg} &\approx C_{gate} * 20
 \captionof{figure}{Cvreg value calculation}
 As you can see we can use a 5 $\mu$Farad capacitors for our Vreg decoupling.
 \subsubsection{Current Sensor}
+For our current sensor we have a plethora of choices. I have decided to use I2C, this provides a number of benefits vs SPI or analoge outputs. Then at one point I saw an advertisment for INA226 and decided to use it, as it had extremely good characteristics. It has the lowest gain error and the lowest voltage offset from any other shunt amplifier I have looked at . In addition, it monitors bus supply voltage which is an extremely important characteristic since it saves even more pins. Lastly, it offers an incredibely useful ALERT pin which is configurable. In this configuration ALERT will toggle low anytime we have an influx of current and the processor can quickly shut down the offending HBridge. In this case the INA226 connects to feedback motion control in order for motor stall detection. 
+
+With this current sensor we have decided to implement a low pass filter as described in the datasheet\footnote{TI INA226 datasheet, from manufacturer's website, see citation}. 
+\begin{align}
+tc &= R* C
+\\&= 2 ohms * 1 \mu F
+\\&= 2 \mu s
+\\loss &= e^{-(f_{signal} / (1/tc)}
+\\&=e^{-20/500}
+\\&\approx0.96
+\end{align}
+\captionof{figure}{INA226 low pass filter}
+As we can see this low pass filter will not affect the workings of our current sensor much.
 \subsection{Inteface}
+I have made a very easy interface to our HBridge. The interface is a single row of 11 pins. Those pins allow for easy testing, verification and adoptaion to other systems and ChalkBot. You can see these connections on the HBridge schematic, and the signal names are self-explanotary.  These pins go to carrier board and connect to the feedback controller who then drives the HBridge. 
 \subsection{Testing}
+I have only done qualatative testing. Please refer to Alex Suchko's section 2.4 in his report for quantatative testing. For my testing I have hooked up the HBridge to a testing circuit which consisted of ECE110 cars' motors and a waveform generator [later replaced by a microcontroller]. I have tested with more then HBridge's rated continous current. I have ran the HBridge for 5 minutes under 4 amps load with no noticable heating from either HBridge or MOSFETs. This is an extremely nice find since we will not need to worry about mounting heatsinks to our MOSFETs, and we can run up to 20 kilohertz.
+
+However, me and Alex both found a number of glitches. Alex investigated and found that the MOSFETs were switching incredibly fast [20 nanoseconds], and the noise at each switch was unnacaptable. The ground reference jumped far enough to trigger TTL levels, and the problem was in inductance of the cable to battery.  Thus Alex recomended that I separate the digital and analog ground.
+\subsection{Next HBridge Version}
+Together we worked on redisigning HBridge. The changes weren't very large, but we also decided to add a number of protection schemes. We added capacitor snubbers to each MOSFET. We also added fast catch diodes. Then I ordered the new re-designed HBridge and all the parts for it. Once it arrives we will run it through the same tests and verify that it operates according to our standards.
+\newpage
+\section{Power Sopply Unit}
+\subsection{Schematics}
+\figuremine{~/ece445/Chalk-Bot/Hardware/Power_board/page1.png}{PSU Schematic page1. Inputs + Inteface}
+\figuremine{~/ece445/Chalk-Bot/Hardware/Power_board/page2.png}{PSU Schematic page2. Switching supply + Outputs}
+\subsection{Justification}
+\subsubsection{NCP3155A}
+I had a number of rigid design restrictions when I started working on the PSU. 
+\begin{description}
+\item{\bf Voltage} We originally wanted to use two batteries in serial for the ChalkBot. This would put as at 25 volts, and our power supply would have to be able to take it down to 5 volts. I spent a lot of time looking for a power supply that can handle it.
+\item{\bf Current} We need to make a power supply that can handle 1.0 amps for the Pandaboard or 1.2 amp for servos. So we wanted to provision and do at least 1.5 amperes.
+\item{\bf efficiency} My highest restriction on building the power supply was efficiency. I did not want to put a heatsink or an external mosfet on the board. Therefore I was looking for the newest, most efficient power supply controller on the market.
+\item{\bf external component count} I wanted to get a controller with an internal switch, and as little outside components as possible.
+\end{description}
+After a lot of searching I found NCP3155A. It has a 94\%+ efficiency over our range. This is by far the most efficienct controller with internal switch that I have found. This efficiency meant that our design is extremely simplified.
+\begin{align}
+\text{Eff} &= P_{out} / P_{total}
+\\&= P_{out} / (P_{lost} + P{out})
+\\ P_{lost} &= P_{out} * (1/\text{Eff} - 1)
+\\ P_{lost}|_{\text{our case}} &=  7.5 * (1/0.95 -1)
+\\ &\approx 0.395 W
+\\ T_{rise} &= P_{lost} * T_{JA}
+\\  &= 0.4 * 110
+\\  &= 44 C
+\\ >30C
+\end{align}
+\captionof{figure}{Peak Power disspitation and heat rise of PSU}
+The datasheet gives us a temperature rise of 44 C. However, the data we have from datasheet is measured on a board with 1 sq in. We, however, have a much wider board area, giving us a smaller Tja. In addition, 1.5 Amps is a peak value and we should not have more then 1.2 continuos current which would put us less then 30C heat rise. 
+\subsubsection{IRF9317}
+We want to be able to shut off our power supply if required. To do this we put a high side pFET on the power supply circut. When we shut this pFET off the rest of the circuit does not recieve any power and thus would shut down. The reason I chose this pFET was because of it's relative low Rds(on). Rds(on) is very important in order to not have large conductive losses, and Q(gate) is not important at all as this pFET would not switch fast.
+\subsubsection{INA226}
+Our power supply also has an INA226 as a current sensor. We have used it here because it fits perfectly and would be the same measurment device as on the HBridge saving us time in development and coding. 
+
+The only difference is that INA226 is connected to the Voltage Supervisor as opposed to feedback motion control.
+
+\subsection{Interface}
+Our power supply board has an easy interface. It has two strip of pins. One of them is for power, the other is for logic input/outputs. This way we can easily debug it on a breadboard or mount it on carrier board. On the carrier board I will directly connect my voltage supervisor to the logic pins while Alex will draw power for his feedback controller from the power pins.
+\subsection{Testing}
+For quantative testing of the Power Supply please refer to Alex Suchko's report section 2.3. However, I know that we have run 1.5 amps for half an hour with a stable voltage output. One thing that we did note was that our voltage dip was in 4.8 volts, so we should aim for 5.2 volts at 0 amps.
 
 \section{Carrier Board - Voltage Supervisor}
+\subsection{Voltage Supervisor Schematic}
 \figuremine{~/ece445/Chalk-Bot/Hardware/Carrier/page1.png}{Voltage Supervisor Schematics}
-\section{Conclusion}
-\section{Citations}
+\subsection{Justification}
+\subsubsection{PSoC5}
+We require a board that would connect all our modules together. In addition, we need a voltage supervisor which would ensure that all our expensive circuits don't get fried. The voltage supervisor needs to monitor a number of voltages, so it makes sense to put it on the carrier board as simplifies routing.
 
+Originally I planned to get a TI microcontroller. However, I realized that it would be ideal to get a processor that is 5V tolerant in order to easily interface to all the sensors. However, my other choice of PIC processors was out as they consume a lot of power and that would interfere with my plan of running voltage supervisor directly off 5V line. 
+
+In addition the processor needs to have a number of peripherals all around it, and I was having trouble selecting one. At one point though I found PSoC5. The nice thing about these chips is that they support different voltage domains so that the chip can run at 3.3V while VDDIO is 5V. Also, the routing is extremely nice as all pins are routed to both digital and analog pins.  Furthermore it has a number of peripherals which I need.
+
+The only problem was mounting the chip on carrier board would be difficult and thus I have decided to mount one of the development kits since it already has all the pins connected and routed. 
+\subsubsection{Linear Regulator}
+We want for our voltage supervisor to not depend on any switching regulators. Therefore it is powered off a single linear regulator which gives it a great flexability as a boot up supervisor. we can now decide to boot up power supply channels in any order we wish and disable any offending part of the board.
+\subsection{Interface}
+My side of the carrier board interfaces Pandaboard, Power Supplies and the voltage supervisor. The voltage supervisor talks to Pandaboard and reports voltages and current. In addition, the Pandaboard connects to the feedback motion control by the USB cable which is outside the carrier board.
+\subsection{Testing}
+We do not have the board done yet, and thus we do not have any tests run on it yet. However, once we get it I can then test the communication to I2C, the voltages monitoring and the power booting stage.
+\section{Conclusion}
+\subsection{Future Work}
+We will recieve our carrier board, our new HBridges and parts for both in the near future. I will be assembling HBridges once we recieve them. Alex Suchko will be working on his side of the Carrier board and motion control. Once the physical work is done we will test carrier board and the new HBridge. After that we will both start working on programming for both the feedback control, voltage supervisor and pandaboard.
+\subsection{Ethical}
+On our carrier board we specifically put circuitry to activate flashing lights when the robot is in motion. This will warn humans to avoid the robot when in motion and prevent damage. In addition my partner Alex Suchko has added ultrasound sensors around the robot which we can use to detect incoming motion. See his report section 2.5 for more detail. We will utilize these sensors to stop the robot whenever there is a human dangerously close.
+
+Our robot is not dangerous otherwise. We do not have high voltage \footnote{as defined by IEEE of signal voltage being less then 30Volts} anywhere on the robot, and we will have all exposed electrical signals covered in the final production.
+\subsection{Citations}
+There is a number of data that I have used from other places. I will give credit to these places on this page.
+\begin{itemize}
+\item Allegro MicroSystems A3941 page - http://www.allegromicro.com/ en/Products/Part\_Numbers/3941/
+\item STP60N3LH5 datasheet - http://www.st.com/internet/com/TECHNICAL\_RESOURCES/ TECHNICAL\_LITERATURE/DATASHEET/CD00174698.pdf
+\item TI INA226 datasheet - http://www.ti.com/product/ina226?DCMP=analog\_signalchain\_mr \&HQS=ina226-pr
+\item onsemi datasheet - http://www.onsemi.jp/pub\_link/Collateral/NCP3155-D.PDF
+\item IRF datasheet - http://www.irf.com/product-info/datasheets/data/irf9317pbf.pdf
+\item http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=04783535
+\item Infineon MOSFET Power Losses Calculation Using the Datasheet Parameters http://www.btipnow.com/library/white\_papers/MOSFET\%20Power\%20Losses \%20Calculation\%20Using\%20the\%20Data-Sheet\%20Parameters.pdf
+\item IEEE code of ethics - http://www.ieee.org/about/corporate/governance/p7-8.html
+
+\end{itemize}
 
  \end{document}
