@@ -1,0 +1,141 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+
+\newcommand{\figuremine}[2]{
+\begin{figure}[H]
+\noindent\makebox[\textwidth]{
+ \includegraphics[width=1.4\textwidth]{#1}}
+ \caption{#2}
+\end{figure}
+}
+
+\setcounter{tocdepth}{3}
+\title{ChalkBot Individual Status Report}
+\author{George Karavaev\\ \normalsize Version 1.00 \\Project\#1}
+
+\begin{document}
+  \maketitle 
+ \abstract{This report will contain information based on my progress in the design of a chalkbot. In my progress I will describe my work, several important decisions and work still required. \\
+ 
+ Throughout my report I may also refer to the work of my partner, Alex Suchko. For example, most of verification work was done by him. In each case I will credit him, source his work and refer you to his report with section numbers.}
+ \newpage
+ \tableofcontents
+ \listoffigures
+\newpage
+ \section{Introduction}
+ \subsection{Brief Project Goals}
+ We have been working on a ChalkBot this semester. Our goal is to design a robot that will draw with off the shelf chalk on sidewalk. To advance this goal we proposed making an HBridge circuit, a switching power supply and a carrier board. The HBridge circuit is used to drive the main ChalkBot motors. The Switching Power Supply is used to power the carrier board and the Pandaboard [used for main guidance]. The Carrier board is used to plug all the modules together and it also encompasses a feedback motion controller and a voltage supervisor.
+\subsection{Whole Project Progress}
+\subsubsection{Power Supply}
+Our switching power supply has been designed, assembled and tested. We have deemed our power supply efficient, stable and suitable for our needs. One of our tests was test-loading the power supply with 8 watts for half an hour with stable condition and temperature. With those comments I would like to say that we have completed this portion of the project. Further testing will be done to see how it handles power draw required by servo motors and Pandaboard.
+\subsubsection{HBridge}
+Our HBridge has been designed assembled and tested. We have deemed our HBridge extremely efficienct. However, our testing revealed that it is not stable enough for our needs [find further details in section 3]. Luckily the modifications needed are small. Therefore we have re-designed our Hbridge and ordered new parts for it. Currently those parts and the board are in shipment and should get to us by 10/28/11. With that in mind we will assemble the boards and re-test our HBridge. 
+\subsubsection{Carrier}
+We have designed and ordered Carrier board and all parts for it. Our plan is to assemble it as soon as the parts arrive and to test with it next week. With that being said, we have encountered a delay on development of our Carrier board. For financial reasons we decided to get the carrier board milled in machine shop on campus. However, did not anticipate the level of complexity that is required to route our carrier board. It took us significantly longer to route the board then we originally planned for.
+\subsection{Individual Effort}
+ \begin{description}
+  \item{\bf HBridge}. I have designed and assembled the HBridge. I did some setup and testing on it, but Alex Suchko have done the majority of verification work on it. I will also assemble the new HBridges once we get the parts. 
+  \item{\bf Power Supply}. I  have done the initial plan, schematics work, layout of the board, and board assembly. Alex Suchko did the calculations for the part values and most of verification work. 
+  \item{\bf Carrier Board}. I have completed the power supervisor portion of the Carrier Board. Alex Suchko was responsible for the feedback controller and other connections on the Carrier Board.
+\end{description}
+
+
+\newpage
+\section{Power Sopply Unit}
+\subsection{Schematics}
+\figuremine{~/ece445/Chalk-Bot/Hardware/Power_board/page1.png}{PSU Schematic page1. Inputs + Inteface}
+\figuremine{~/ece445/Chalk-Bot/Hardware/Power_board/page2.png}{PSU Schematic page2. Switching supply + Outputs}
+\newpage
+\section{HBridge}
+\subsection{Schematics}
+\figuremine{~/ece445/Chalk-Bot/Hardware/H_Bridge/page1.png}{H-Bridge Schematic.}
+\subsection{Justification}
+We have a number of requirments for our HBridge.
+\begin{description}
+\item{\bf Voltage} We run off a single lead-acid battery, and thus we require to run off a 15-10 V range. This limits our choices of drivers as they typically require more then 12 volts.
+\item{\bf Current} Our HBridge will handle a continous current of 2 amperes, and a peak current of 8 amperes.
+\item{\bf Frequency Response} Ideally we want to have our HBridge run above the hearing range [20 kHz], but we will settle for 3 kHz.
+\item{\bf Temperature} We have a strict limit of no more then 30 C above ambient. This means we require a very efficient power supply.
+\end{description}
+\subsubsection{Full Bridge Driver}
+With these goals in mind I was looing for a suitable driver. I have settled on A3941 from Allegro MicroSystems. It is a very beefy full bridge driver. It satisfies all our goals and in addition has a number of very important features. For example, it contains an integrated charge pump and allows for a DC operation which aids in debugging.A3941 runs at full gate drive from 50 down to 7 volts. This makes it very flexible for our needs as we can even run at double batteries if we require more power.  It also contains a bootstrap charge to conserve power and reduce heating.
+
+I calculated worst case temperature rise using the provided datasheet for A4941 driver. The equation 1 below is taken from the manufacturer's website\footnote{Allegro Microsystems datasheet, http://www.allegromicro.com/en/Products/Part\_Numbers/3941/3941.pdf.}. Then all the values are used at worst case scenario uses, and taken either from other components or from datasheet. 
+\begin{align}
+P_{dissipation} &= P_{bias} + P_{cpump} + P_{switching} 
+\\ P_{bias} &= V_{bb} * I_{bb} = 15 v * 14 mA = 0.21 W
+\\ P_{cpump} &=[(2 * V_{bb})-V_{reg}] * I_{av}  
+\\ I_{av}|_{Q_{gate}=20 nC} &= Q_{gate} * N  * f_{pwm} = 0.8 mA
+\\ P_{cpump} &= [(2 * 14 v) - 13] * 0.8 mA = 0.004 W
+\\
+P_{switching} &=Q_{gate} * V_{reg} * N * f_{pwm} * Ratio \\
+    &= 20 nC * 14 v * 2 * 20 kHz = 0.011 W
+ \\ P_{dissipation} &= 0.21 W + 0.004 W + 0.011 W 
+ \\ &=0.23 watts
+\end{align} \captionof{figure}{Power dissipation of A3941}
+Now that we know the power dissipation of our driver we can calculate temperature rise. Here we are forced to deviate from known datasheet values. The datasheet gives a number for a 2 layer board with 3.8 sq in of copper on each side. However, we have half that area and we do not have the exposed pad soldered. Therefore I went out to research R-theta-JA for TSSOP-28. I found that it would be around 45 C/W\footnote{TSOP-28 parts with no exposed pad from allegro}, so I used 60 C/W to have a safety margin of error.
+\begin{align}
+T_{junction} &= T_{ambient} + T_{JA} * P_{dissipated}
+\\T_{rise} &= T_{JA} * P_{dissipated}
+\\T_{rise} &= 60 C/W * 0.23 W
+\\&=13.8 C
+\\T_{rise}&<30 C
+\end{align}
+\captionof{figure}{Temperature rise of A3941}
+Therefore our super pessimistic heating value of A3941 is 14 degrees Celsius. However, this assumption is based on no heat dissipation through the exposed pad. 
+\subsubsection{MOSFETs}
+We have a large number of MOSFETs to choose from. Therefore, I have made a very strict criteria for looking at mosfets.
+\begin{description}
+\item{Rds(on)} One of the most important heating values is how resistive the MOSFET is in an active state. Thus the lower the Rds(on) the less heating losses our ChalkBot will encounter. With the 2 amperes continuous restriction I decided to limit myself to less then 25 milliohms, which correspands to 0.1 W losses.
+\item{Q\_gate)} The second most important loss consideration is how much charge we need to charge our MOSFET to to turn it on. This determines how fast we can turn them on and how much losses they will take while undergoing active stage. I limited myself to less then 20 nanoColoumbs. I will describe why I chose 20 nanoColoumbs in the next section.
+\item{Package} We want to use a TO-220 package since it's easy to mount and heatsink. 
+\item{Price} The last consideration for MOSFETs were how expensive they were.
+\end{description}
+I've decided to use STP60N3LH5. This MOSFET is available for TO-220 package, has 12 nC gate charge, 8 milliOhms Rds(on) and costs \$0.83/part. 
+\begin{align}
+P_{total} &= P_{cond} + P_{switch} \\
+P_{conductive} &= I^{2} * R =  8 A * 8 mOhms 
+\\ &= 0.032 W
+\\ P_{switch} &= 1/2 * I_{D} * V_{D} * (t_{off} + t_{on}) * f_{sw} 
+\\  &\approx 0.5 * 2A * 15 V * (300 ns) * 20 kHz
+\\ &\approx 0.1 W
+\\T_{rise}&\approx P_{total} * T_{JA} = 
+\\ &\approx 0.132 W * 100 C/W = 13.2 C
+\\ &<30C
+\end{align}
+\captionof{figure}{Power dissipation and temperature rise of MOSFETs}
+With these numbers we can see our absolute worst case scenario having our MOSFETs 13.2 C rise. The switching losses \footnote{ieee research, see footnote} is a very approximate linear fit approach combined with a pessimistic switch time of 300 nanoseconds.
+\subsubsection{Design Choices for HBrdige}
+We have selected our approximate dead time to be 1 microsecond. This was taken by a length calculation which I have left out due to time constraints. Similarly other calculations in this section have been cut due to size constraints. However, this dead time value correspands to a safe margin for preventing shootthrough while prevents mininimum disruption to PWM driving.
+
+We have selected VDth to be 1 volt. This value should have been safe to find problems in our circuits like broken FETs causing shorts to ground or VCC. This value is way above the 0.1 volts we would have otherwise.
+
+For capacitor values I have followed A3941 guidilines step for step.  
+\begin{align}
+C_{boot} &\approx Q_{gate} * 20 / V_{boot}
+\\ &\approx 20 nC * 20 / 7 volts
+\\ &\approx 0.05 \mu F
+\end{align}
+\captionof{figure}{Cboot value calculation}
+Therefore we can see that a value of 0.1 $\mu$Farads is suitable.
+\begin{align}
+C_{vreg} &\approx C_{gate} * 20
+\\ &\approx 2 \mu F
+\end{align}
+\captionof{figure}{Cvreg value calculation}
+As you can see we can use a 5 $\mu$Farad capacitors for our Vreg decoupling.
+\subsubsection{Current Sensor}
+\subsection{Inteface}
+\subsection{Testing}
+
+\section{Carrier Board - Voltage Supervisor}
+\figuremine{~/ece445/Chalk-Bot/Hardware/Carrier/page1.png}{Voltage Supervisor Schematics}
+\section{Conclusion}
+\section{Citations}
+
+
+ \end{document}
