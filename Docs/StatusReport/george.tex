@@ -1,0 +1,251 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+
+\newcommand{\figuremine}[2]{
+\begin{figure}[H]
+\noindent\makebox[\textwidth]{
+ \includegraphics[width=1.4\textwidth]{#1}}
+ \caption{#2}
+\end{figure}
+}
+
+\setcounter{tocdepth}{3}
+\title{ChalkBot Individual Status Report}
+\author{George Karavaev\\ \normalsize Version 4.2f \\Project\#1}
+
+\begin{document}
+  \maketitle 
+ \abstract{This report will contain information based on my progress in the design of a chalkbot. In my progress I will describe my work, several important decisions and work still required. \\
+ 
+ Throughout my report I may also refer to the work of my partner, Alex Suchko. For example, most of verification work was done by him. In each case I will credit him, source his work and refer you to his report with section numbers.
+ 
+ I would like to say that all my calculations eered on the safe side. In all heating examples I was very careful to assume worst case voltage and current leading to worst case heating. 
+
+Lastly, note that I did not include any board layout due to size limitation. If you want to see any then feel free to check our revision control or ask me directly.
+}
+\\
+\\
+{\centering
+\includegraphics[width=1.0\textwidth]{../chalk_bot_logo2.png}
+}
+\newpage
+ \tableofcontents
+\listoffigures
+\newpage
+ \section{Introduction}
+ \subsection{Brief Project Goals}
+ My partner Alex Suchko, and I have been working on a ChalkBot this semester. Our goal is to design a robot that will draw with off the shelf chalk on sidewalk. To advance this goal we proposed making an HBridge circuit, a switching power supply and a carrier board. The HBridge circuit is used to drive the main ChalkBot motors. The Switching Power Supply is used to power the carrier board and the Pandaboard [used for main guidance] from a 12V battery. The Carrier board is used to plug all the modules together and it also encompasses a feedback motion controller and a voltage supervisor.
+\subsection{Whole Project Progress}
+\subsubsection{Power Supply}
+Our switching power supply has been designed, assembled and tested. We have deemed our power supply efficient, stable and suitable for our needs. One of our tests was test-loading the power supply with 8 watts for half an hour. Our power supply passed with stable output and temperature. With those comments I would like to say that we have completed this portion of the project. Further testing will be done to see how it handles power draw required by servo motors and Pandaboard.
+\subsubsection{HBridge}
+Our HBridge has been designed assembled and tested. We have deemed our HBridge extremely efficient. However, our testing revealed that it is not stable enough for our needs [find further details in section 2]. Luckily the modifications needed are small. Therefore we have re-designed our HBridge and ordered new parts for it. Currently those parts and the board are in shipment and should get to us by 10/28/11. With that in mind we will assemble the boards and re-test our HBridge at that time. 
+\subsubsection{Carrier}
+We have designed and ordered Carrier board and all parts for it. Our plan is to assemble it as soon as the parts arrive and to test with it next week. With that being said, we have encountered a delay on the development of our Carrier board. For financial reasons we decided to get the carrier board milled in machine shop on campus. However, did not anticipate the level of complexity that is required to route our carrier board. It took us significantly longer to route the board then we originally planned for.
+\subsection{Individual Effort}
+ \begin{description}
+  \item{\bf HBridge}. I have designed and assembled the HBridge. I did some setup and testing on it, but Alex Suchko have done the majority of verification work on it. I will also assemble the new HBridges once we get the parts. 
+  \item{\bf Power Supply}. I  have done the initial plan, schematics work, layout of the board, and board assembly. Alex Suchko did the calculations for the part values and most of verification work. 
+  \item{\bf Carrier Board}. I have completed the power supervisor portion of the Carrier Board. Alex Suchko was responsible for the feedback controller and other connections on the Carrier Board.
+\end{description}
+
+
+\newpage
+\section{HBridge}
+\subsection{Schematics}
+\figuremine{~/ece445/Chalk-Bot/Hardware/H_Bridge/page1.png}{H-Bridge Schematic.}
+\subsection{Justification}
+\subsubsection{Requirements}
+We have a number of requirements for our HBridge.
+\begin{description}
+\item{\bf Voltage} We run off a single lead-acid battery, and thus we require to run off a 15-10 V range. This limits our choices of drivers as they typically require more then 12 volts, and we want to be able to run the battery down to 10 volts.
+\item{\bf Current} Our HBridge will handle a continuous current of 2 amperes, and a peak current of 8 amperes.
+\item{\bf Frequency Response} Ideally we want to have our HBridge run above the hearing range [20 kHz], but we will settle for 3 kHz due to switching power losses.
+\item{\bf Temperature} We have a strict limit of no more then 30 C above ambient. This means we require a very efficient HBridge.
+\end{description}
+\subsubsection{Full Bridge Driver(A3941)}
+With these goals in mind I was looking for a suitable driver. I have settled on A3941 from Allegro MicroSystems. It is a very beefy full bridge driver. It satisfies all our goals and in addition has a number of very important features. For example, it contains an integrated charge pump and allows for a DC operation which aids in debugging.A3941 runs at full gate drive from 50 down to 7 volts. This makes it very flexible for our needs as we can even run at double batteries if we require more power.  It also contains a bootstrap charge to conserve power and reduce heating. Lastly, it includes a synchronous rectification option which saves us power by utilizing MOSFETs instead of diodes for catch diodes.
+
+I calculated worst case temperature rise using the provided datasheet for A4941 driver. The equation 1 below is taken from the manufacturer's website\footnote{Allegro Microsystems datasheet, http://www.allegromicro.com/en/Products/Part\_Numbers/3941/3941.pdf.}. Then all the values are used at worst case scenario uses, and taken either from other components or from datasheet. 
+\begin{align}
+P_{dissipation} &= P_{bias} + P_{cpump} + P_{switching} 
+\\ P_{bias} &= V_{bb} * I_{bb} = 15 v * 14 mA = 0.21 W
+\\ P_{cpump} &=[(2 * V_{bb})-V_{reg}] * I_{av}  
+\\ I_{av}|_{Q_{gate}=20 nC} &= Q_{gate} * N  * f_{pwm} = 0.8 mA
+\\ P_{cpump} &= [(2 * 14 v) - 13] * 0.8 mA = 0.004 W
+\\
+P_{switching} &=Q_{gate} * V_{reg} * N * f_{pwm} * Ratio \\
+    &= 20 nC * 14 v * 2 * 20 kHz = 0.011 W
+ \\ P_{dissipation} &= 0.21 W + 0.004 W + 0.011 W 
+ \\ &=0.23 watts
+\end{align} \captionof{figure}{Power dissipation of A3941}
+Now that we know the power dissipation of our driver we can calculate temperature rise. Here we are forced to deviate from known datasheet values. The datasheet gives a number for a 2 layer board with 3.8 sq in of copper on each side. However, we have half that area and we do not have the exposed pad soldered. Therefore I went out to research R-theta-JA for TSSOP-28. I found that it would be around 45 C/W \footnote{TSOP-28 parts with no exposed pad from allegro}, so I used 60 C/W to have a safety margin of error.
+\begin{align}
+T_{junction} &= T_{ambient} + T_{JA} * P_{dissipated}
+\\T_{rise} &= T_{JA} * P_{dissipated}
+\\T_{rise} &= 60 C/W * 0.23 W
+\\&=13.8 C
+\\T_{rise}&<30 C
+\end{align}
+\captionof{figure}{Temperature rise of A3941}
+Therefore our super pessimistic heating value of A3941 is 14 degrees Celsius. However, this assumption is based on no heat dissipation through the exposed pad. 
+\subsubsection{MOSFETs}
+We have a large number of MOSFETs to choose from. Therefore, I have made a very strict criteria for looking at MOSFETs.
+\begin{description}
+\item{\bf Rds(on)} One of the most important heating values is how resistive the MOSFET is in an active state. Thus the lower the Rds(on) the less heating losses our ChalkBot will encounter. With the 2 amperes continuous restriction I decided to limit myself to less then 25 milliohms, which corresponds to 0.1 W losses.
+\item{\bf Q(gate)} The second most important loss consideration is how much charge we need to charge our MOSFET to to turn it on. This determines how fast we can turn them on and how much losses they will take while undergoing active stage. In addition, lower Q(gate) means lower losses for our controller. I limited myself to less then 20 nanoColoumbs. I will describe why I chose 20 nanoColoumbs in the upcoming sections.
+\item{\bf Package} We want to use a TO-220 package since it's easy to mount and heatsink. 
+\item{\bf Price} The last consideration for MOSFETs were how expensive they were.
+\end{description}
+I've decided to use STP60N3LH5. This MOSFET is available for TO-220 package, has 12 nC gate charge, 8 milliohms Rds(on)\footnote{stm page on stp60n3lh5, see datasheet} and costs \$0.83/part\footnote{at avnet with 25 piece order}. Here are my calculations on worst cast power dissipation in the MOSFETs. 
+\begin{align}
+P_{total} &= P_{cond} + P_{switch} \\
+P_{conductive} &= I^{2} * R =  8 A * 8 mOhms 
+\\ &= 0.032 W
+\\ P_{switch} &= 1/2 * I_{D} * V_{D} * (t_{off} + t_{on}) * f_{sw} 
+\\  &\approx 0.5 * 2A * 15 V * (300 ns) * 20 kHz
+\\ &\approx 0.1 W
+\\T_{rise}&\approx P_{total} * T_{JA} = 
+\\ &\approx 0.132 W * 100 C/W 
+\\ &=13.2 C
+\\ &<30C
+\end{align}
+\captionof{figure}{Power dissipation and temperature rise of MOSFETs}
+With these numbers we can see our absolute worst case scenario having our MOSFETs 13.2 C rise. The switching losses \footnote{IEEE research, see citation} is a very approximate linear fit approach combined with a pessimistic switch time of 300 nanoseconds.
+\subsubsection{Design Calculations for HBridge}
+We have selected our approximate dead time to be 1 $\mu$second. This was taken by a length calculation which I have left out due to space constraints\footnote{short version is that it allowed to use nice numbers with timers for PWM drive control, while providing an extremely safe through-shoot protection}. Similarly other calculations in this section have been cut due to size constraints. However, this dead time value corresponds to a safe margin for preventing shoot-through while prevents minimum disruption to PWM driving.
+
+We have selected Vd(th) to be 1 volt. This value should have been safe to find problems in our circuits like broken FETs causing shorts to ground or VCC. This value is way above the 0.1 volts we would have otherwise.
+
+For capacitor values I have followed A3941 guidelines step for step.  
+\begin{align}
+C_{boot} &\approx Q_{gate} * 20 / V_{boot}
+\\ &\approx 20 nC * 20 / 7 volts
+\\ &\approx 0.05 \mu F
+\end{align}
+\captionof{figure}{Cboot value calculation}
+Therefore we can see that a value of 0.1 $\mu$Farads is suitable.
+\begin{align}
+C_{vreg} &\approx C_{gate} * 20
+\\ &\approx 2 \mu F
+\end{align}
+\captionof{figure}{Cvreg value calculation}
+As you can see we can use a 5 $\mu$Farad capacitors for our Vreg decoupling.
+\subsubsection{Current Sensor(INA226)}
+For our current sensor we have a plethora of choices. First I was looking at communication choices. I have decided to use I2C, this provides a number of benefits vs SPI or analog outputs. This mostly includes a benefit of having a lot of current sensors on only two lines. Then at one point I saw an advertisement for INA226 and decided to use it, as it had extremely good characteristics. It has the lowest gain error and the lowest voltage offset from any other shunt amplifier I have looked at . In addition, it monitors bus supply voltage which is an extremely important characteristic since it saves even more pins. Lastly, it offers an incredibly useful ALERT pin which is configurable. In this configuration ALERT will toggle low anytime we have an influx of current and the processor can quickly shut down the offending HBridge. In the HBridge the INA226 connects to feedback motion control in order for motor stall detection, and torque approximation. 
+
+With this current sensor we have decided to implement a low pass filter as described in the datasheet\footnote{TI INA226 datasheet, from manufacturer's website, see citation}. 
+\begin{align}
+tc &= R* C
+\\&= 2 ohms * 1 \mu F
+\\&= 2 \mu s
+\\loss &= e^{-(f_{signal} / (1/tc)}
+\\&=e^{-20/500}
+\\&\approx0.96
+\end{align}
+\captionof{figure}{INA226 low pass filter}
+As we can see this low pass filter will not negatively affect the measurement of our PWM drive.
+\subsection{Interface}
+I have made a very easy interface to our HBridge. The interface is a single row of 11 pins. Those pins allow for easy testing, verification and adoption to other systems and ChalkBot. You can see these connections on the HBridge schematic, and the signal names are self-explanatory.  These pins go to carrier board and connect to the feedback controller who then drives the HBridge. 
+\subsection{Testing}
+I have only done qualitative testing. For my testing I have hooked up the HBridge to a testing circuit which consisted of ECE110 cars' motors and a waveform generator [later replaced by a microcontroller]. I have tested with more then HBridge's rated continuous current. I have ran the HBridge for 5 minutes under 4 amps load with no noticeable heating from either HBridge or MOSFETs. This is an extremely nice find since we will not need to worry about mounting heatsinks to our MOSFETs, and we can run up to 20 kilohertz. I would approximate that both the MOSFET and the controller were heating up less then 10C.  I can attribute this to the fact that I used worst case scenario in all my calculations, and thus real world results are much cooler and we do not require any heatsink on our HBridge.
+
+However, me and Alex both found a number of glitches. Please refer to Alex Suchko's section 2.4 in his report for quantitative testing. Alex investigated and found that the MOSFETs were switching incredibly fast [20 nanoseconds], and the noise at each switch was unacceptable. This switching time of 20 nanoseconds is extremely fast, and we see a need to slow them down. The ground reference jumped far enough to trigger TTL levels, and the problem was in inductance of the cable to battery.  Thus Alex recommended that I separate the digital and analog ground.
+\subsection{Next HBridge Version}
+Together we worked on redesigning HBridge. The changes weren't very large, but we also decided to add a number of protection schemes. We added capacitor snubbers to each MOSFET. We also added fast catch diodes. Then I ordered the new re-designed HBridge and all the parts for it. Once it arrives we will run it through the same tests and verify that it operates according to our standards.
+\newpage
+\section{Power Supply Unit}
+\subsection{Schematics}
+\figuremine{~/ece445/Chalk-Bot/Hardware/Power_board/page1.png}{PSU Schematic page1. Inputs + Interface}
+\figuremine{~/ece445/Chalk-Bot/Hardware/Power_board/page2.png}{PSU Schematic page2. Switching supply + Outputs}
+\subsection{Justification}
+\subsubsection{Requirements}
+I had a number of rigid design restrictions when I started working on the PSU. 
+\begin{description}
+\item{\bf Voltage} We originally wanted to use two batteries in serial for the ChalkBot. This would put as at 25 volts, and our power supply would have to be able to take it down to 5 volts. I spent a lot of time looking for a power supply that can handle it.
+\item{\bf Current} We need to make a power supply that can handle 1.0 amps for the Pandaboard or 1.2 amp for servos. So we wanted to provision and do at least 1.5 amperes.
+\item{\bf Efficiency} My highest restriction on building the power supply was efficiency. I did not want to put a heatsink or an external MOSFET on the board. Therefore I was looking for the newest, most efficient power supply controller on the market.
+\item{\bf External component count} I wanted to get a controller with an internal switch, and as little outside components as possible.
+\end{description}
+\subsubsection{Controller(NCP3155A)}
+After a lot of searching I found NCP3155A. It has a 94\%+\footnote{ncp3155 datasheet} efficiency over our range. This is by far the most efficient controller with internal switch that I have found. This efficiency meant that our design is extremely simplified.
+\begin{align}
+\text{Eff} &= P_{out} / P_{total}
+\\&= P_{out} / (P_{lost} + P{out})
+\\ P_{lost} &= P_{out} * (1/\text{Eff} - 1)
+\\ P_{lost}|_{\text{our case}} &=  7.5 * (1/0.95 -1)
+\\ &\approx 0.395 W
+\\ T_{rise} &= P_{lost} * T_{JA}
+\\  &= 0.4 * 110
+\\  &= 44 C
+\\ &>30C
+\end{align}
+\captionof{figure}{Peak Power dissipation and heat rise of PSU}
+The datasheet gives us a temperature rise of 44 C. However, the data we have from datasheet is measured on a board with 1 sq in. We, however, have a much wider board area, giving us a smaller Tja. In addition, 1.5 Amps is a peak value and we should not have more then 1.2 continuous current which would put us less then 30C heat rise. 
+\subsubsection{High Side Switch(IRF9317)}
+We want to be able to shut off our power supply if required. To do this we put a high side pFET on the power supply circuit. When we shut this pFET off the rest of the circuit does not receive any power and thus would shut down. The reason I chose this pFET was because of it's relative low Rds(on). Rds(on) is very important in order to not have large conductive losses, and Q(gate) is not important at all as this pFET would not switch fast. This choice allows us to quickly shut down and misbehaving circuit in our robot. Here are the calculations for power loss of our pFET. I have ignored the pull-up/pull-down resistors as their effect is negligeble\footnote{Two LEDs that indicate status consume more power then the pull-up/down resistors}.
+\begin{align}
+P_{lost} &= I_{max}^{2} * Rds(on)
+\\&=(1.5 A)^{2} * 10 mOhm
+\\&=0.02 W
+\\T_{rise}&= P_{lost} * T_{JA}
+\\&=0.02 * 65
+\\&= 1.3 C
+\\&<30C
+\end{align}
+\captionof{figure}{Peak power dissipation and heat rise of PSU off-switch}
+\subsubsection{Current and Voltage Sensor(INA226)}
+Our power supply also has an INA226 as a current sensor. We have used it here because it fits perfectly and would be the same measurement device as on the HBridge saving us time in development and coding. 
+
+The only difference is that INA226 is connected to the Voltage Supervisor as opposed to feedback motion control.
+
+\subsection{Interface}
+Our power supply board has an easy interface. It has two strip of pins. One of them is for power, the other is for logic input/outputs. This way we can easily debug it on a breadboard or mount it on carrier board. On the carrier board I will directly connect my voltage supervisor to the logic pins while Alex will draw power for his feedback controller from the power pins.
+\subsection{Testing}
+For quantitative testing of the Power Supply please refer to Alex Suchko's report section 2.3. However, I know that we have run 1.5 amps for half an hour with a stable voltage output. One thing that we did note was that our voltage dip was in 4.8 volts, so we should aim for 5.2 volts at 0 amps.
+
+\section{Carrier Board - Voltage Supervisor}
+\subsection{Voltage Supervisor Schematic}
+\figuremine{~/ece445/Chalk-Bot/Hardware/Carrier/page1.png}{Voltage Supervisor Schematics}
+\subsection{Justification}
+\subsubsection{PSoC5}
+We require a board that would connect all our modules together. In addition, we need a voltage supervisor which would ensure that all our expensive circuits don't get fried. The voltage supervisor needs to monitor a number of voltages, so it makes sense to put it on the carrier board as simplifies routing.
+
+Originally I planned to get a TI microcontroller. However, I realized that it would be ideal to get a processor that is 5V tolerant in order to easily interface to all the sensors. However, my other choice of PIC processors was out as they consume a lot of power and that would interfere with my plan of running voltage supervisor directly off 5V line. 
+
+In addition the processor needs to have a number of peripherals all around it, and I was having trouble selecting one. At one point though I found PSoC5. The nice thing about these chips is that they support different voltage domains so that the chip can run at 3.3V while VDDIO is 5V. Also, the routing is extremely nice as all pins are routed to both digital and analog pins.  Furthermore it has a number of peripherals which I need.
+
+The only problem was mounting the chip on carrier board would be difficult and thus I have decided to mount one of the development kits since it already has all the pins connected and routed. 
+\subsubsection{Linear Regulator}
+We want for our voltage supervisor to not depend on any switching regulators. Therefore it is powered off a single linear regulator which gives it a great flexibility as a boot up supervisor. we can now decide to boot up power supply channels in any order we wish and disable any offending part of the board.
+\subsection{Interface}
+My side of the carrier board interfaces Pandaboard, Power Supplies and the voltage supervisor. The voltage supervisor talks to Pandaboard and reports voltages and current. In addition, the Pandaboard connects to the feedback motion control by the USB cable which is outside the carrier board.
+\subsection{Testing}
+We do not have the board done yet, and thus we do not have any tests run on it yet. However, once we get it I can then test the communication to I2C, the voltages monitoring and the power booting stage. The final test for the carrier board will be to run the ChalkBot.
+\section{Conclusion}
+\subsection{Future Work}
+We will receive our carrier board, our new HBridges and parts for both in the near future. I will be assembling HBridges once we receive them. Alex Suchko will be working on his side of the Carrier board and motion control. Once the physical work is done we will test carrier board and the new HBridge. After that we will both start working on programming for both the feedback control, voltage supervisor and Pandaboard.
+\subsection{Ethical}
+On our carrier board we specifically put circuitry to activate flashing lights when the robot is in motion. This will warn humans to avoid the robot when in motion and prevent damage. In addition my partner Alex Suchko has added ultrasound sensors around the robot which we can use to detect incoming motion. See his report section 2.5 for more detail. We will utilize these sensors to stop the robot whenever there is a human dangerously close.
+
+Our robot is not dangerous otherwise. We do not have high voltage \footnote{as defined by IEEE of signal voltage being less then 30Volts} anywhere on the robot, and we will have all exposed electrical signals covered in the final production.
+\subsection{Citations}
+There is a number of data that I have used from other places. I will give credit to these places on this page.
+\begin{itemize}
+\item My partner Alex Suchko for a lot of his data.
+\item Allegro MicroSystems A3941 page - http://www.allegromicro.com/ en/Products/Part\_Numbers/3941/
+\item STP60N3LH5 datasheet - http://www.st.com/internet/com/TECHNICAL\_RESOURCES/ TECHNICAL\_LITERATURE/DATASHEET/CD00174698.pdf
+\item TI INA226 datasheet - http://www.ti.com/product/ina226?DCMP=analog\_signalchain\_mr \&HQS=ina226-pr
+\item onsemi datasheet - http://www.onsemi.jp/pub\_link/Collateral/NCP3155-D.PDF
+\item IRF datasheet - http://www.irf.com/product-info/datasheets/data/irf9317pbf.pdf
+\item http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=04783535
+\item Infineon MOSFET Power Losses Calculation Using the Datasheet Parameters http://www.btipnow.com/library/white\_papers/MOSFET\%20Power\%20Losses \%20Calculation\%20Using\%20the\%20Data-Sheet\%20Parameters.pdf
+\item IEEE code of ethics - http://www.ieee.org/about/corporate/governance/p7-8.html
+\item Open Source Motor Control (OSMC)  - http://robotpower.com/
+\end{itemize}
+
+ \end{document}
