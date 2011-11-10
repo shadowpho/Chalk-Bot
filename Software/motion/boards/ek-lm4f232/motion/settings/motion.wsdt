@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<Workspace>
+  <ConfigDictionary>
+    
+  <CurrentConfigs><Project>motion/Debug</Project></CurrentConfigs></ConfigDictionary>
+  <Desktop>
+    <Static>
+      <Workspace>
+        <ColumnWidths>
+          
+          
+          
+          
+        <Column0>124</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
+      </Workspace>
+      <Build>
+        
+        
+        
+        
+      <ColumnWidth0>20</ColumnWidth0><ColumnWidth1>1035</ColumnWidth1><ColumnWidth2>276</ColumnWidth2><ColumnWidth3>69</ColumnWidth3></Build>
+    </Static>
+    <Windows>
+      
+      
+    <Wnd2>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-10108-10015</Identity>
+            <TabName>Workspace</TabName>
+            <Factory>Workspace</Factory>
+            <Session>
+              
+            <NodeDict><ExpandedNode>motion</ExpandedNode><ExpandedNode>motion/Source</ExpandedNode></NodeDict></Session>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd2><Wnd3>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-10004-11040</Identity>
+            <TabName>Build</TabName>
+            <Factory>Build</Factory>
+            <Session/>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd3></Windows>
+    <Editor>
+      
+      
+      
+      
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\motion.c</Filename><XPos>0</XPos><YPos>741</YPos><SelStart>23510</SelStart><SelEnd>23510</SelEnd></Tab><ActiveTab>0</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\motion.h</Filename><XPos>0</XPos><YPos>20</YPos><SelStart>843</SelStart><SelEnd>843</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\acquire.c</Filename><XPos>0</XPos><YPos>29</YPos><SelStart>1744</SelStart><SelEnd>1744</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\third_party\fatfs\src\ff.c</Filename><XPos>0</XPos><YPos>1240</YPos><SelStart>48165</SelStart><SelEnd>48165</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\flashstore.c</Filename><XPos>0</XPos><YPos>15</YPos><SelStart>1345</SelStart><SelEnd>1345</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\menus.c</Filename><XPos>0</XPos><YPos>22</YPos><SelStart>1582</SelStart><SelEnd>1582</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\stripchartmanager.c</Filename><XPos>0</XPos><YPos>21</YPos><SelStart>1534</SelStart><SelEnd>1534</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\usbserial.c</Filename><XPos>0</XPos><YPos>17</YPos><SelStart>1416</SelStart><SelEnd>1416</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\usbstick.c</Filename><XPos>0</XPos><YPos>20</YPos><SelStart>1441</SelStart><SelEnd>1441</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Positions>
+      
+      
+      
+      
+      
+    <Top><Row0><Sizes><Toolbar-01348b20><key>iaridepm.enu1</key></Toolbar-01348b20></Sizes></Row0></Top><Left><Row0><Sizes><Wnd2><Rect><Top>-2</Top><Left>-2</Left><Bottom>582</Bottom><Right>198</Right><x>-2</x><y>-2</y><xscreen>200</xscreen><yscreen>200</yscreen><sizeHorzCX>138889</sizeHorzCX><sizeHorzCY>242718</sizeHorzCY><sizeVertCX>138889</sizeVertCX><sizeVertCY>708738</sizeVertCY></Rect></Wnd2></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd3><Rect><Top>-2</Top><Left>-2</Left><Bottom>198</Bottom><Right>1442</Right><x>-2</x><y>-2</y><xscreen>1444</xscreen><yscreen>200</yscreen><sizeHorzCX>1002778</sizeHorzCX><sizeHorzCY>242718</sizeHorzCY><sizeVertCX>138889</sizeVertCX><sizeVertCY>242718</sizeVertCY></Rect></Wnd3></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+  </Desktop>
+</Workspace>
+
+

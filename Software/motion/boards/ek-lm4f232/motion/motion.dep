@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>2</fileVersion>
+  <fileChecksum>4064320289</fileChecksum>
+  <configuration>
+    <name>Debug</name>
+    <outputs>
+      <file>$PROJ_DIR$\ewarm\Obj\cfal96x64x16.o</file>
+      <file>$PROJ_DIR$\..\..\..\usblib\device\usbdevice.h</file>
+      <file>$PROJ_DIR$\ewarm\Obj\motion.pbd</file>
+      <file>$PROJ_DIR$\..\..\..\utils\ustdlib.c</file>
+      <file>$PROJ_DIR$\flashstore.h</file>
+      <file>$PROJ_DIR$\ewarm\Obj\flashstore.o</file>
+      <file>$PROJ_DIR$\images.h</file>
+      <file>$PROJ_DIR$\ewarm\Obj\usbserial.pbi</file>
+      <file>$PROJ_DIR$\ewarm\Obj\acquire.o</file>
+      <file>$PROJ_DIR$\..\..\..\usblib\usb-ids.h</file>
+      <file>$PROJ_DIR$\..\..\..\driverlib\uart.h</file>
+      <file>$PROJ_DIR$\..\..\..\usblib\usbcdc.h</file>
+      <file>$PROJ_DIR$\ewarm\Obj\ff.o</file>
+      <file>$PROJ_DIR$\ewarm\Obj\fat_usbmsc.o</file>
+      <file>$PROJ_DIR$\usbstick.c</file>
+      <file>$PROJ_DIR$\ewarm\Obj\stripchartmanager.pbi</file>
+      <file>$PROJ_DIR$\ewarm\Obj\slidemenuwidget.pbi</file>
+      <file>$PROJ_DIR$\ewarm\Obj\usbstick.pbi</file>
+      <file>$PROJ_DIR$\ewarm\Obj\stripchartwidget.pbi</file>
+      <file>$PROJ_DIR$\ewarm\Obj\uartstdio.pbi</file>
+      <file>$PROJ_DIR$\usbserial.c</file>
+      <file>$PROJ_DIR$\ewarm\Obj\images.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\utils\uartstdio.c</file>
+      <file>$PROJ_DIR$\ewarm\Obj\usb_serial_structs.o</file>
+      <file>$PROJ_DIR$\ewarm\Obj\ustdlib.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\third_party\fatfs\src\diskio.h</file>
+      <file>$PROJ_DIR$\ewarm\Obj\fat_usbmsc.pbi</file>
+      <file>$PROJ_DIR$\..\drivers\buttons.h</file>
+      <file>$PROJ_DIR$\..\..\..\driverlib\debug.h</file>
+      <file>$PROJ_DIR$\ewarm\Obj\startup_ewarm.o</file>
+      <file>$PROJ_DIR$\..\..\..\driverlib\interrupt.h</file>
+      <file>$PROJ_DIR$\..\..\..\utils\uartstdio.h</file>
+      <file>$PROJ_DIR$\..\..\..\inc\hw_gpio.h</file>
+      <file>$PROJ_DIR$\..\..\..\inc\hw_uart.h</file>
+      <file>$PROJ_DIR$\..\..\..\inc\hw_ints.h</file>
+      <file>$PROJ_DIR$\ewarm\Obj\menus.o</file>
+      <file>$PROJ_DIR$\motion.h</file>
+      <file>$PROJ_DIR$\ewarm\Obj\cfal96x64x16.pbi</file>
+      <file>$PROJ_DIR$\acquire.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
+      <file>$PROJ_DIR$\..\..\..\driverlib\fpu.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
+      <file>$PROJ_DIR$\ewarm\Obj\usbserial.o</file>
+      <file>$PROJ_DIR$\ewarm\Obj\stripchartmanager.o</file>
+      <file>$PROJ_DIR$\..\..\..\inc\hw_memmap.h</file>
+      <file>$PROJ_DIR$\..\..\..\driverlib\rom_map.h</file>
+      <file>$PROJ_DIR$\ewarm\Obj\motion.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
+      <file>$PROJ_DIR$\..\..\..\driverlib\adc.h</file>
+      <file>$PROJ_DIR$\..\..\..\driverlib\gpio.h</file>
+      <file>$PROJ_DIR$\..\..\..\grlib\widget.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Threads.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
+      <file>$PROJ_DIR$\ewarm\Obj\uartstdio.o</file>
+      <file>$PROJ_DIR$\ewarm\Obj\buttons.o</file>
+      <file>$PROJ_DIR$\ewarm\Obj\ustdlib.o</file>
+      <file>$PROJ_DIR$\ewarm\Obj\buttons.pbi</file>
+      <file>$PROJ_DIR$\usbstick.h</file>
+      <file>$PROJ_DIR$\flashstore.c</file>
+      <file>$PROJ_DIR$\..\..\..\grlib\canvas.h</file>
+      <file>$PROJ_DIR$\..\drivers\slidemenuwidget.h</file>
+      <file>$PROJ_DIR$\clocksetwidget.h</file>
+      <file>$PROJ_DIR$\usbserial.h</file>
+      <file>$PROJ_DIR$\ewarm\Obj\slidemenuwidget.o</file>
+      <file>$PROJ_DIR$\ewarm\Obj\motion.o</file>
+      <file>$PROJ_DIR$\..\..\..\utils\ustdlib.h</file>
+      <file>$PROJ_DIR$\..\..\..\usblib\usbmsc.h</file>
+      <file>$PROJ_DIR$\..\..\..\usblib\device\usbdcdc.h</file>
+      <file>$PROJ_DIR$\..\..\..\inc\hw_sysctl.h</file>
+      <file>$PROJ_DIR$\..\..\..\grlib\grlib.h</file>
+      <file>$PROJ_DIR$\..\..\..\third_party\fatfs\src\integer.h</file>
+      <file>$PROJ_DIR$\..\..\..\driverlib\flash.h</file>
+      <file>$PROJ_DIR$\acquire.c</file>
+      <file>$PROJ_DIR$\ewarm\Obj\usb_serial_structs.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\driverlib\pin_map.h</file>
+      <file>$PROJ_DIR$\..\..\..\driverlib\ssi.h</file>
+      <file>$PROJ_DIR$\..\..\..\inc\hw_types.h</file>
+      <file>$PROJ_DIR$\..\..\..\driverlib\sysctl.h</file>
+      <file>$PROJ_DIR$\ewarm\Obj\images.o</file>
+      <file>$PROJ_DIR$\..\..\..\driverlib\rom.h</file>
+      <file>$PROJ_DIR$\ewarm\Exe\motion.out</file>
+      <file>$PROJ_DIR$\..\..\..\driverlib\usb.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
+      <file>$PROJ_DIR$\..\..\..\driverlib\systick.h</file>
+      <file>$PROJ_DIR$\ewarm\Obj\usbstick.o</file>
+      <file>$PROJ_DIR$\..\..\..\usblib\usblib.h</file>
+      <file>$PROJ_DIR$\ewarm\Obj\stripchartwidget.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\string.h</file>
+      <file>$PROJ_DIR$\ewarm\Obj\startup_ewarm.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\driverlib\udma.h</file>
+      <file>$PROJ_DIR$\ewarm\Obj\acquire.pbi</file>
+      <file>$PROJ_DIR$\ewarm\Exe\motion.bin</file>
+      <file>$PROJ_DIR$\..\..\..\driverlib\hibernate.h</file>
+      <file>$PROJ_DIR$\..\..\..\third_party\fatfs\src\ff.h</file>
+      <file>$PROJ_DIR$\..\..\..\usblib\host\usbhmsc.h</file>
+      <file>$PROJ_DIR$\..\drivers\cfal96x64x16.h</file>
+      <file>$PROJ_DIR$\..\..\..\usblib\host\usbhost.h</file>
+      <file>$PROJ_DIR$\stripchartmanager.c</file>
+      <file>$PROJ_DIR$\usb_serial_structs.h</file>
+      <file>$PROJ_DIR$\..\..\..\inc\hw_hibernate.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdarg.h</file>
+      <file>$PROJ_DIR$\ewarm\Obj\clocksetwidget.o</file>
+      <file>$PROJ_DIR$\..\drivers\buttons.c</file>
+      <file>$PROJ_DIR$\stripchartwidget.h</file>
+      <file>$PROJ_DIR$\ewarm\Obj\ff.pbi</file>
+      <file>$PROJ_DIR$\stripchartmanager.h</file>
+      <file>$PROJ_DIR$\usb_serial_structs.c</file>
+      <file>$PROJ_DIR$\ewarm\Obj\clocksetwidget.pbi</file>
+      <file>$PROJ_DIR$\ewarm\Obj\flashstore.pbi</file>
+      <file>$PROJ_DIR$\menus.c</file>
+      <file>$PROJ_DIR$\motion.c</file>
+      <file>$PROJ_DIR$\images.c</file>
+      <file>$PROJ_DIR$\stripchartwidget.c</file>
+      <file>$PROJ_DIR$\..\drivers\slidemenuwidget.c</file>
+      <file>$PROJ_DIR$\startup_ewarm.c</file>
+      <file>$PROJ_DIR$\..\..\..\third_party\fatfs\port\fat_usbmsc.c</file>
+      <file>$PROJ_DIR$\menus.h</file>
+      <file>$PROJ_DIR$\..\drivers\cfal96x64x16.c</file>
+      <file>$PROJ_DIR$\clocksetwidget.c</file>
+      <file>$PROJ_DIR$\ewarm\Obj\menus.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\third_party\fatfs\src\ff.c</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\ewarm\Obj\motion.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 92 57 37 109 26 106 110 21 121 47 16 90 15 18 19 74 7 17 24</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\utils\ustdlib.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 56</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 24</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 89 84 48 39 40 83 52 53 42 28 66 102</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>ILINK</name>
+          <file> 81</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\usbstick.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 86</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 17</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 89 84 48 39 40 83 52 53 42 77 28 78 91 80 87 67 98 96 66 102 95 71 36 58</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\usbserial.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 43</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 7</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 89 84 48 39 40 83 52 53 42 77 28 87 11 68 100 36</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\utils\uartstdio.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 54</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 19</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 102 84 48 39 40 83 52 34 45 77 33 28 30 80 46 78 10 31</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\flashstore.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 5</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 110</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 89 84 48 39 40 83 52 53 42 77 28 72 66 102 36 58 4</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\acquire.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 8</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 92</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 89 84 48 39 40 83 52 53 42 77 45 34 32 28 49 50 75 94 78 80 70 51 60 66 102 61 105 107 62 36 58 63 4 118 38</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\ewarm\Exe\motion.out</name>
+      <outputs>
+        <tool>
+          <name>OBJCOPY</name>
+          <file> 93</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\stripchartmanager.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 44</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 15</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 89 84 48 39 40 83 52 53 42 77 70 51 60 97 61 66 102 105 107 62 36 118</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\drivers\buttons.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 55</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 57</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 77 45 78 80 75 50 27</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\usb_serial_structs.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 23</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 74</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 77 82 87 11 9 1 68 100</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\menus.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 35</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 121</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 89 84 48 39 40 83 52 53 42 77 28 70 51 60 66 102 97 61 105 107 62 36 38 118</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\motion.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 65</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 47</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 89 84 48 39 40 83 52 53 42 77 45 69 28 41 49 94 78 85 80 75 70 51 60 87 97 27 66 102 50 10 61 105 62 36 6 118 38 32 101 58 63 4</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\images.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 79</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 21</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 70</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\stripchartwidget.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 88</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 18</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 77 28 70 51 105</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\drivers\slidemenuwidget.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 64</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 16</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 77 28 31 70 51 61</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\startup_ewarm.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 29</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 90</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\third_party\fatfs\port\fat_usbmsc.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 13</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 26</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 77 78 87 67 98 96 25 71 95</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\drivers\cfal96x64x16.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 0</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 37</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 45 77 50 75 76 78 80 70 97</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\clocksetwidget.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 103</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 109</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 77 28 31 70 51 66 102 84 48 39 40 83 52 62</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\third_party\fatfs\src\ff.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 12</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 106</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 89 84 48 39 40 83 52 53 42 95 71 25</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+</project>
+
+
