@@ -56,6 +56,7 @@
 #include "usbstick.h"
 #include "usbserial.h"
 #include "flashstore.h"
+#include "hbridge.h"                // definition file for hbridge interface
 
 //*****************************************************************************
 //
@@ -1078,12 +1079,21 @@ main(void)
     // sent to this widget
     //
     g_ulKeyFocusWidgetHandle = (unsigned long)&g_sMenuWidget;
+    
+    //
+    // Prepare interface to hbridges
+    //
+    hbr_init();                                   // initialize interface
+    hbr_set_reset(HBR_LEFT, 1);
+    hbr_set_reset(HBR_LEFT, 1);
+    hbr_set_effort(HBR_LEFT, 256);
+    hbr_set_effort(HBR_RIGHT, 512);
 
     //
     // Forever loop to run the application
     //
     while(1)
-    {
+    { 
         static unsigned long ulLastTickCount = 0;
 
         //

@@ -10,5 +10,11 @@
 // Function Prototypes
 
 void hbr_init(void);                  // setup pins and PWM hardware to talk to hbridge
+void hbr_set_reset(unsigned char ucHbr, unsigned char new_state);
+void hbr_set_pwml(unsigned char ucHbr, unsigned char new_state);
+void hbr_set_phase(unsigned char ucHbr, unsigned char new_state);
+void hbr_set_pulse(unsigned char ucHbr, unsigned long ulWidth);
+void hbr_set_effort(unsigned char ucHbr, signed short ssEffort);
+
 
 // EOF

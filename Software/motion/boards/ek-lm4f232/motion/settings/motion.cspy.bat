@@ -10,6 +10,6 @@
 @REM 
 
 
-"C:\Program Files\IAR Systems\Embedded Workbench 6.0_3\common\bin\cspybat" "C:\Program Files\IAR Systems\Embedded Workbench 6.0_3\arm\bin\armproc.dll" "C:\Program Files\IAR Systems\Embedded Workbench 6.0_3\arm\bin\armsim2.dll"  %1 --plugin "C:\Program Files\IAR Systems\Embedded Workbench 6.0_3\arm\bin\armbat.dll" --backend -B "--endian=little" "--cpu=Cortex-M4F" "--fpu=VFPv4" "-p" "C:\Program Files\IAR Systems\Embedded Workbench 6.0_3\arm\CONFIG\debugger\TexasInstruments\lm4f232h5qd.svd.xml" "--semihosting" "--device=LM4F232H5QD" 
+"C:\Program Files\IAR Systems\Embedded Workbench 6.0_3\common\bin\cspybat" "C:\Program Files\IAR Systems\Embedded Workbench 6.0_3\arm\bin\armproc.dll" "C:\Program Files\IAR Systems\Embedded Workbench 6.0_3\arm\bin\armlmiftdi.dll"  %1 --plugin "C:\Program Files\IAR Systems\Embedded Workbench 6.0_3\arm\bin\armbat.dll" --flash_loader "C:\Program Files\IAR Systems\Embedded Workbench 6.0_3\arm\config\flashloader\TexasInstruments\FlashLM4FxxxHxx.board" --backend -B "--endian=little" "--cpu=Cortex-M4F" "--fpu=VFPv4" "-p" "C:\Program Files\IAR Systems\Embedded Workbench 6.0_3\arm\CONFIG\debugger\TexasInstruments\lm4f232h5qd.svd.xml" "--drv_verify_download" "--semihosting" "--device=LM4F232H5QD" "--lmiftdi_speed=500" "--lmiftdi_interface=SWD" 
 
 

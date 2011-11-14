@@ -950,6 +950,9 @@
       <name>$PROJ_DIR$\flashstore.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\hbridge.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\images.c</name>
     </file>
     <file>
