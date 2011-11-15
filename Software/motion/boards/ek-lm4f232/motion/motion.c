@@ -1000,7 +1000,7 @@ main(void)
     // skip it is if the application was in sleep-logging mode and the user
     // just waked it up with the select button.
     //
-    if(!bSkipSplash)
+    if(!bSkipSplash && 0) // splash screen disabled 11/14/2011 7:23pm
     {
         const unsigned char *pucSplashLogo = g_pucImage_TI_Black;
 
@@ -1085,7 +1085,7 @@ main(void)
     //
     hbr_init();                                   // initialize interface
     hbr_set_reset(HBR_LEFT, 1);
-    hbr_set_reset(HBR_LEFT, 1);
+    hbr_set_reset(HBR_RIGHT, 1); // right side not going high 11/14/2011 7:19pm
     hbr_set_effort(HBR_LEFT, 256);
     hbr_set_effort(HBR_RIGHT, 512);
 

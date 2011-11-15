@@ -20,11 +20,11 @@
         
         
       <ColumnWidth0>20</ColumnWidth0><ColumnWidth1>1035</ColumnWidth1><ColumnWidth2>276</ColumnWidth2><ColumnWidth3>69</ColumnWidth3></Build>
-    <TerminalIO/><Find-in-Files><ColumnWidth0>496</ColumnWidth0><ColumnWidth1>70</ColumnWidth1><ColumnWidth2>850</ColumnWidth2></Find-in-Files></Static>
+    <TerminalIO/><Find-in-Files><ColumnWidth0>496</ColumnWidth0><ColumnWidth1>70</ColumnWidth1><ColumnWidth2>850</ColumnWidth2></Find-in-Files><Debug-Log><ColumnWidth0>20</ColumnWidth0><ColumnWidth1>1381</ColumnWidth1></Debug-Log></Static>
     <Windows>
       
       
-    <Wnd0>
+    <Wnd2>
         <Tabs>
           <Tab>
             <Identity>TabID-10108-10015</Identity>
@@ -36,7 +36,7 @@
           </Tab>
         </Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd0><Wnd1>
+      <SelectedTab>0</SelectedTab></Wnd2><Wnd3>
         <Tabs>
           <Tab>
             <Identity>TabID-10004-11040</Identity>
@@ -44,22 +44,22 @@
             <Factory>Build</Factory>
             <Session/>
           </Tab>
-        <Tab><Identity>TabID-20128-44</Identity><TabName>Find in Files</TabName><Factory>Find-in-Files</Factory><Session/></Tab></Tabs>
+        <Tab><Identity>TabID-20128-44</Identity><TabName>Find in Files</TabName><Factory>Find-in-Files</Factory><Session/></Tab><Tab><Identity>TabID-8125-8288</Identity><TabName>Debug Log</TabName><Factory>Debug-Log</Factory><Session/></Tab></Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd1></Windows>
+      <SelectedTab>0</SelectedTab></Wnd3></Windows>
     <Editor>
       
       
       
       
-    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\motion.c</Filename><XPos>0</XPos><YPos>1075</YPos><SelStart>34001</SelStart><SelEnd>34001</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\drivers\cfal96x64x16.c</Filename><XPos>0</XPos><YPos>164</YPos><SelStart>7439</SelStart><SelEnd>7439</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\acquire.c</Filename><XPos>0</XPos><YPos>208</YPos><SelStart>8333</SelStart><SelEnd>8333</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\menus.c</Filename><XPos>0</XPos><YPos>27</YPos><SelStart>831</SelStart><SelEnd>831</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\hbridge.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>371</SelStart><SelEnd>371</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\driverlib\pin_map.h</Filename><XPos>0</XPos><YPos>55695</YPos><SelStart>1894554</SelStart><SelEnd>1894554</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\drivers\buttons.h</Filename><XPos>0</XPos><YPos>30</YPos><SelStart>1858</SelStart><SelEnd>1858</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\drivers\buttons.c</Filename><XPos>0</XPos><YPos>151</YPos><SelStart>6018</SelStart><SelEnd>6018</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\driverlib\gpio.h</Filename><XPos>0</XPos><YPos>30</YPos><SelStart>1979</SelStart><SelEnd>1979</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\driverlib\sysctl.h</Filename><XPos>0</XPos><YPos>120</YPos><SelStart>5922</SelStart><SelEnd>5922</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\inc\hw_types.h</Filename><XPos>0</XPos><YPos>18</YPos><SelStart>1455</SelStart><SelEnd>1455</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\inc\hw_memmap.h</Filename><XPos>0</XPos><YPos>52</YPos><SelStart>3341</SelStart><SelEnd>3341</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\driverlib\pwm.h</Filename><XPos>0</XPos><YPos>135</YPos><SelStart>7796</SelStart><SelEnd>7796</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\startup_ewarm.c</Filename><XPos>0</XPos><YPos>298</YPos><SelStart>660</SelStart><SelEnd>660</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\hbridge.c</Filename><XPos>0</XPos><YPos>81</YPos><SelStart>5157</SelStart><SelEnd>5157</SelEnd></Tab><ActiveTab>14</ActiveTab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\drivers\cfal96x64x16.c</Filename><XPos>0</XPos><YPos>164</YPos><SelStart>7439</SelStart><SelEnd>7439</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\acquire.c</Filename><XPos>0</XPos><YPos>208</YPos><SelStart>8333</SelStart><SelEnd>8333</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\hbridge.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>446</SelStart><SelEnd>446</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\driverlib\pin_map.h</Filename><XPos>0</XPos><YPos>55695</YPos><SelStart>1894554</SelStart><SelEnd>1894554</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\drivers\buttons.h</Filename><XPos>0</XPos><YPos>30</YPos><SelStart>1858</SelStart><SelEnd>1858</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\drivers\buttons.c</Filename><XPos>0</XPos><YPos>151</YPos><SelStart>6018</SelStart><SelEnd>6018</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\driverlib\gpio.h</Filename><XPos>0</XPos><YPos>33</YPos><SelStart>2153</SelStart><SelEnd>2153</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\inc\hw_types.h</Filename><XPos>0</XPos><YPos>18</YPos><SelStart>1455</SelStart><SelEnd>1455</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\inc\hw_memmap.h</Filename><XPos>0</XPos><YPos>52</YPos><SelStart>3341</SelStart><SelEnd>3341</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\driverlib\pwm.h</Filename><XPos>0</XPos><YPos>44</YPos><SelStart>1944</SelStart><SelEnd>1961</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\startup_ewarm.c</Filename><XPos>0</XPos><YPos>51</YPos><SelStart>660</SelStart><SelEnd>660</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\hbridge.c</Filename><XPos>0</XPos><YPos>34</YPos><SelStart>2927</SelStart><SelEnd>2927</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\grlib\grlib.h</Filename><XPos>0</XPos><YPos>993</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><ActiveTab>12</ActiveTab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
     <Positions>
       
       
       
       
       
-    <Top><Row0><Sizes><Toolbar-01348b18><key>iaridepm.enu1</key></Toolbar-01348b18></Sizes></Row0></Top><Left><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>582</Bottom><Right>198</Right><x>-2</x><y>-2</y><xscreen>200</xscreen><yscreen>200</yscreen><sizeHorzCX>138889</sizeHorzCX><sizeHorzCY>242718</sizeHorzCY><sizeVertCX>138889</sizeVertCX><sizeVertCY>708738</sizeVertCY></Rect></Wnd0></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>198</Bottom><Right>1442</Right><x>-2</x><y>-2</y><xscreen>1444</xscreen><yscreen>200</yscreen><sizeHorzCX>1002778</sizeHorzCX><sizeHorzCY>242718</sizeHorzCY><sizeVertCX>138889</sizeVertCX><sizeVertCY>242718</sizeVertCY></Rect></Wnd1></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+    <Top><Row0><Sizes><Toolbar-01348600><key>iaridepm.enu1</key></Toolbar-01348600></Sizes></Row0><Row1><Sizes/></Row1></Top><Left><Row0><Sizes><Wnd2><Rect><Top>-2</Top><Left>-2</Left><Bottom>582</Bottom><Right>198</Right><x>-2</x><y>-2</y><xscreen>200</xscreen><yscreen>200</yscreen><sizeHorzCX>138889</sizeHorzCX><sizeHorzCY>242718</sizeHorzCY><sizeVertCX>138889</sizeVertCX><sizeVertCY>708738</sizeVertCY></Rect></Wnd2></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd3><Rect><Top>-2</Top><Left>-2</Left><Bottom>198</Bottom><Right>1442</Right><x>-2</x><y>-2</y><xscreen>1444</xscreen><yscreen>200</yscreen><sizeHorzCX>1002778</sizeHorzCX><sizeHorzCY>242718</sizeHorzCY><sizeVertCX>138889</sizeVertCX><sizeVertCY>242718</sizeVertCY></Rect></Wnd3></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
   </Desktop>
 </Workspace>
 

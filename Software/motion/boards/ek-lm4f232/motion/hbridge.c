@@ -27,15 +27,18 @@
 
 #define HBR_OUTPUT_PORT       (SYSCTL_PERIPH_GPIOD)
 #define HBR_OUTPUT_PORT_BASE  (GPIO_PORTD_BASE)
-#define HBR_OUTPUT_PINS       (GPIO_PIN_4 | GPIO_PIN_1 | GPIO_PIN_3 | GPIO_PIN_2 | GPIO_PIN_7 | GPIO_PIN_0 | GPIO_PIN_6 | GPIO_PIN_5)
+#define HBR_OUTPUT_PINS       (GPIO_PIN_4 | GPIO_PIN_1 | GPIO_PIN_3 | GPIO_PIN_2 | GPIO_PIN_0 | GPIO_PIN_6 | GPIO_PIN_5) // pin D7 dead 11/15/2011
 #define HBR_1_RESET           (GPIO_PIN_4)
 #define HBR_1_PWMH            (GPIO_PIN_1)    // this pin will be operated by PWM hardware
 #define HBR_1_PWML            (GPIO_PIN_3)
 #define HBR_1_PHASE           (GPIO_PIN_2)
-#define HBR_2_RESET           (GPIO_PIN_7)
 #define HBR_2_PWMH            (GPIO_PIN_0)    // this pin will be operated by PWM hardware
 #define HBR_2_PWML            (GPIO_PIN_6)
 #define HBR_2_PHASE           (GPIO_PIN_5)
+                                              // dead pin workaround(s)
+#define HBR_WORKAROUND_PORT   (SYSCTL_PERIPH_GPIOF)   // this port is shared with QEI
+#define HBR_WORKAROUND_PORT_BASE  (GPIO_PORTF_BASE)
+#define HBR_2_RESET           (GPIO_PIN_2)    // F2 has been tied to D7 on carrier board 11/15/2011
                               // pins for outputting to hbridge
 #define HBR_1_PWM_MUX         (GPIO_PD1_M1PWM1)
                               // pin mux setting to access hardware as desired
@@ -76,6 +79,9 @@ void hbr_init(void)
                                                           // configure output pads 
   GPIOPinTypeGPIOOutput(HBR_OUTPUT_PORT_BASE, HBR_OUTPUT_PINS);
   
+  ROM_SysCtlPeripheralEnable(HBR_WORKAROUND_PORT);        // configure workaround pin(s) for dead pin(s)
+  GPIOPinTypeGPIOOutput(HBR_WORKAROUND_PORT_BASE, HBR_2_RESET);
+  
   
                                                           // configure PWM
   ROM_SysCtlPeripheralEnable(HBR_PWM_MODULE);             // enable clock to pwm module 0
@@ -83,13 +89,15 @@ void hbr_init(void)
                                                           // wrap 16b PWM counter at 1041 for 3kHz pwm output
   ROM_PWMDeadBandDisable(HBR_PWM_BASE, HBR_PWM_GEN);      // allow PWM0, PWM1 to behave independently
   ROM_PWMGenConfigure(HBR_PWM_BASE, HBR_PWM_GEN,          // configure pwm generator
-                      PWM_GEN_MODE_UP_DOWN |
-                      PWM_GEN_MODE_SYNC |
-                      PWM_GEN_MODE_DBG_STOP |
-                      PWM_GEN_MODE_GEN_SYNC_LOCAL |
-                      PWM_GEN_MODE_DB_NO_SYNC |
-                      PWM_GEN_MODE_FAULT_UNLATCHED |
-                      PWM_GEN_MODE_FAULT_NO_MINPER);
+//                      PWM_GEN_MODE_UP_DOWN |
+//                      PWM_GEN_MODE_SYNC |
+//                      PWM_GEN_MODE_DBG_STOP |
+//                      PWM_GEN_MODE_GEN_SYNC_LOCAL |
+//                      PWM_GEN_MODE_DB_NO_SYNC |
+//                      PWM_GEN_MODE_FAULT_UNLATCHED |
+//                      PWM_GEN_MODE_FAULT_NO_MINPER);
+                      PWM_GEN_MODE_UP_DOWN |              // up/down count for center timed PWM
+                      PWM_GEN_MODE_NO_SYNC);              // outputs from generator behave independently
   ROM_PWMGenPeriodSet(HBR_PWM_BASE, HBR_PWM_GEN,          // sets period for generator to appropriate period
                       HBR_PWM_PERIOD_TICKS);
   ROM_PWMPulseWidthSet(HBR_PWM_BASE, HBR_1_PWM, 0);       // set initial pulse widths to 0 for safety
@@ -124,7 +132,9 @@ void hbr_set_reset(unsigned char ucHbr, unsigned char new_state)
   if(ucHbr == 1)
     ROM_GPIOPinWrite(HBR_OUTPUT_PORT_BASE,HBR_1_RESET,valtemp & HBR_1_RESET);
   else if(ucHbr == 2)
-    ROM_GPIOPinWrite(HBR_OUTPUT_PORT_BASE,HBR_2_RESET,valtemp & HBR_2_RESET);
+    ROM_GPIOPinWrite(HBR_WORKAROUND_PORT_BASE, HBR_2_RESET,valtemp & HBR_2_RESET);
+                                                            // workaround, F2 taking place of D7 (dead pin)
+                                                            // jumper on reverse of board
 }
 
 // * hbr_set_pwml *************************************************************
