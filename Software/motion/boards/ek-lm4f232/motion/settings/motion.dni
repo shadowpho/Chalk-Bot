@@ -30,7 +30,7 @@ ActionState=1
 Enabled=0
 ShowSource=1
 [DebugChecksum]
-Checksum=483830989
+Checksum=-1054505001
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0

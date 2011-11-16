@@ -57,6 +57,7 @@
 #include "usbserial.h"
 #include "flashstore.h"
 #include "hbridge.h"                // definition file for hbridge interface
+#include "svm.h"                    // definition file for svm interface and timing tick
 
 //*****************************************************************************
 //
@@ -1087,7 +1088,11 @@ main(void)
     hbr_set_reset(HBR_LEFT, 1);
     hbr_set_reset(HBR_RIGHT, 1); // right side not going high 11/14/2011 7:19pm
     hbr_set_effort(HBR_LEFT, 256);
-    hbr_set_effort(HBR_RIGHT, 512);
+    hbr_set_effort(HBR_RIGHT, 900);
+    
+    svm_init();
+    svm_set_us(SVM_1, 700);
+    svm_set_us(SVM_2, 2300);
 
     //
     // Forever loop to run the application

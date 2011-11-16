@@ -974,6 +974,9 @@
       <name>$PROJ_DIR$\stripchartwidget.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\svm.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\..\..\utils\uartstdio.c</name>
     </file>
     <file>
