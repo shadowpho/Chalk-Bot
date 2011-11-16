@@ -1091,6 +1091,7 @@ main(void)
     hbr_set_effort(HBR_RIGHT, 900);
     
     svm_init();
+    svm_int_init();
     svm_set_us(SVM_1, 700);
     svm_set_us(SVM_2, 2300);
 

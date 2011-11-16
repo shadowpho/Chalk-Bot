@@ -11,6 +11,7 @@
 
 void svm_init(void);                  // setup pins and PWM hardware to talk to SVM, provide main system
                                       // update tick
+void svm_int_init(void);              // setup and enable interrupts for svm pwm
 void svm_set_pulse(unsigned char ucSvm, unsigned long ulWidth);
                                       // update pulse width for given SVM output
 void svm_set_us(unsigned char ucSvm, unsigned long ulMicroseconds);

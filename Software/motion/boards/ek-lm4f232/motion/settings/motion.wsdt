@@ -24,7 +24,7 @@
     <Windows>
       
       
-    <Wnd2>
+    <Wnd0>
         <Tabs>
           <Tab>
             <Identity>TabID-10108-10015</Identity>
@@ -36,7 +36,7 @@
           </Tab>
         </Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd2><Wnd3>
+      <SelectedTab>0</SelectedTab></Wnd0><Wnd1>
         <Tabs>
           <Tab>
             <Identity>TabID-10004-11040</Identity>
@@ -46,20 +46,20 @@
           </Tab>
         <Tab><Identity>TabID-20128-44</Identity><TabName>Find in Files</TabName><Factory>Find-in-Files</Factory><Session/></Tab><Tab><Identity>TabID-8125-8288</Identity><TabName>Debug Log</TabName><Factory>Debug-Log</Factory><Session/></Tab></Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd3></Windows>
+      <SelectedTab>0</SelectedTab></Wnd1></Windows>
     <Editor>
       
       
       
       
-    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\svm.c</Filename><XPos>0</XPos><YPos>106</YPos><SelStart>6978</SelStart><SelEnd>6978</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\svm.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>818</SelStart><SelEnd>818</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\driverlib\pin_map.h</Filename><XPos>0</XPos><YPos>55858</YPos><SelStart>1900477</SelStart><SelEnd>1900492</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\driverlib\sysctl.h</Filename><XPos>0</XPos><YPos>129</YPos><SelStart>6423</SelStart><SelEnd>6423</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\inc\hw_memmap.h</Filename><XPos>0</XPos><YPos>52</YPos><SelStart>3275</SelStart><SelEnd>3275</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\driverlib\pwm.h</Filename><XPos>0</XPos><YPos>31</YPos><SelStart>1502</SelStart><SelEnd>1502</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\hbridge.c</Filename><XPos>0</XPos><YPos>93</YPos><SelStart>6423</SelStart><SelEnd>6433</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\motion.c</Filename><XPos>0</XPos><YPos>1072</YPos><SelStart>33993</SelStart><SelEnd>33993</SelEnd></Tab><ActiveTab>7</ActiveTab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\svm.c</Filename><XPos>0</XPos><YPos>23</YPos><SelStart>3139</SelStart><SelEnd>3139</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\svm.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>542</SelStart><SelEnd>542</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\driverlib\pin_map.h</Filename><XPos>0</XPos><YPos>55858</YPos><SelStart>1900477</SelStart><SelEnd>1900492</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\driverlib\sysctl.h</Filename><XPos>0</XPos><YPos>129</YPos><SelStart>6423</SelStart><SelEnd>6423</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\inc\hw_memmap.h</Filename><XPos>0</XPos><YPos>52</YPos><SelStart>3275</SelStart><SelEnd>3275</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\driverlib\pwm.h</Filename><XPos>0</XPos><YPos>90</YPos><SelStart>5217</SelStart><SelEnd>5217</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\hbridge.c</Filename><XPos>0</XPos><YPos>118</YPos><SelStart>7684</SelStart><SelEnd>7684</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\motion.c</Filename><XPos>0</XPos><YPos>741</YPos><SelStart>23661</SelStart><SelEnd>23661</SelEnd></Tab><ActiveTab>7</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\menus.c</Filename><XPos>0</XPos><YPos>142</YPos><SelStart>4670</SelStart><SelEnd>4670</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\startup_ewarm.c</Filename><XPos>0</XPos><YPos>263</YPos><SelStart>14059</SelStart><SelEnd>14059</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\acquire.c</Filename><XPos>0</XPos><YPos>380</YPos><SelStart>14406</SelStart><SelEnd>14406</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\inc\hw_ints.h</Filename><XPos>0</XPos><YPos>44</YPos><SelStart>2488</SelStart><SelEnd>2488</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\hbridge.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>153</SelStart><SelEnd>161</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
     <Positions>
       
       
       
       
       
-    <Top><Row0><Sizes><Toolbar-01349e70><key>iaridepm.enu1</key></Toolbar-01349e70></Sizes></Row0><Row1><Sizes/></Row1></Top><Left><Row0><Sizes><Wnd2><Rect><Top>-2</Top><Left>-2</Left><Bottom>582</Bottom><Right>198</Right><x>-2</x><y>-2</y><xscreen>200</xscreen><yscreen>200</yscreen><sizeHorzCX>138889</sizeHorzCX><sizeHorzCY>242718</sizeHorzCY><sizeVertCX>138889</sizeVertCX><sizeVertCY>708738</sizeVertCY></Rect></Wnd2></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd3><Rect><Top>-2</Top><Left>-2</Left><Bottom>198</Bottom><Right>1442</Right><x>-2</x><y>-2</y><xscreen>1444</xscreen><yscreen>200</yscreen><sizeHorzCX>1002778</sizeHorzCX><sizeHorzCY>242718</sizeHorzCY><sizeVertCX>138889</sizeVertCX><sizeVertCY>242718</sizeVertCY></Rect></Wnd3></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+    <Top><Row0><Sizes><Toolbar-01349e70><key>iaridepm.enu1</key></Toolbar-01349e70></Sizes></Row0><Row1><Sizes/></Row1></Top><Left><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>582</Bottom><Right>198</Right><x>-2</x><y>-2</y><xscreen>200</xscreen><yscreen>200</yscreen><sizeHorzCX>138889</sizeHorzCX><sizeHorzCY>242718</sizeHorzCY><sizeVertCX>138889</sizeVertCX><sizeVertCY>708738</sizeVertCY></Rect></Wnd0></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>198</Bottom><Right>1442</Right><x>-2</x><y>-2</y><xscreen>1444</xscreen><yscreen>200</yscreen><sizeHorzCX>1002778</sizeHorzCX><sizeHorzCY>242718</sizeHorzCY><sizeVertCX>138889</sizeVertCX><sizeVertCY>242718</sizeVertCY></Rect></Wnd1></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
   </Desktop>
 </Workspace>
 

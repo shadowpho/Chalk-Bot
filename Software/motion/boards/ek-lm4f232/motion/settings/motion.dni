@@ -30,7 +30,7 @@ ActionState=1
 Enabled=0
 ShowSource=1
 [DebugChecksum]
-Checksum=-1054505001
+Checksum=128206237
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -64,6 +64,7 @@ A0=_ "C:\cygwin\sandbox\DriverLib\build\DriverLib.test\driverlib\gpio.c" ""
 A1=_ "C:\cygwin\sandbox\DriverLib\build\DriverLib.test\grlib\charmap.c" ""
 A2=_ "C:\cygwin\sandbox\DriverLib\build\DriverLib.test\grlib\offscr4bpp.c" ""
 A3=_ "C:\cygwin\sandbox\DriverLib\build\DriverLib.test\usblib\device\usbdcdc.c" ""
-A4=_ "C:\cygwin\sandbox\DriverLib\build\DriverLib.test\usblib\usbmode.c" ""
-Count=5
+A4=_ "C:\cygwin\sandbox\DriverLib\build\DriverLib.test\usblib\device\usbdconfig.c" ""
+A5=_ "C:\cygwin\sandbox\DriverLib\build\DriverLib.test\usblib\usbmode.c" ""
+Count=6
 SuppressDialog=1

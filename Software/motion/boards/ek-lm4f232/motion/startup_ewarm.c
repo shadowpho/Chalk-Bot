@@ -48,6 +48,7 @@ extern void ADC0SS0Handler(void);
 extern void RTCHandler(void);
 extern void SysTickIntHandler(void);
 extern void USB0OTGModeIntHandler(void);
+extern void svm_pwm_gen_ISR(void);                          // from "svm.c"
 
 //*****************************************************************************
 //
@@ -113,7 +114,7 @@ __root const uVectorEntry __vector_table[] @ ".intvec" =
     IntDefaultHandler,                      // I2C0 Master and Slave
     IntDefaultHandler,                      // PWM Fault
     IntDefaultHandler,                      // PWM Generator 0
-    IntDefaultHandler,                      // PWM Generator 1
+    svm_pwm_gen_ISR,                        // PWM Generator 1
     IntDefaultHandler,                      // PWM Generator 2
     IntDefaultHandler,                      // Quadrature Encoder 0
     ADC0SS0Handler,                         // ADC Sequence 0

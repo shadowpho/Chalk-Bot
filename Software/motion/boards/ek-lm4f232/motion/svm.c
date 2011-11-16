@@ -11,6 +11,10 @@
 #include "svm.h"              // definition file for this file
 #include "driverlib/rom.h"    // definitions for rom functions
 #include "driverlib/sysctl.h" // definitions for system control
+#include "driverlib/interrupt.h"
+                              // NVIC API INT_PWM0
+#include "inc/hw_ints.h"      // NVIC hardware interrupt vector enumerations/aliases
+#include "hbridge.h"          // for debug I/O
 
 // Definitions
 
@@ -30,6 +34,9 @@
 #define SVM_PWM_MODULE        (SYSCTL_PERIPH2_PWM0)   // SVM (and accessory) control on PWM Module 0
 #define SVM_PWM_BASE          (PWM0_BASE)             // pwm module base address
 #define SVM_PWM_GEN           (PWM_GEN_1)             // pwm generator reference for SVM (accessory on PWM_GEN_0)
+#define SVM_PWM_INT_GEN       (PWM_INT_GEN_1)         // interrupt enable bit for SVM pwm generator
+#define SVM_PWM_GEN_INTVECT   (INT_PWM0_1)            // interrupt vector for SVM pwm generator
+                                                      // if you change this, update entry in vector table (see "startup_ewarm.c")
 #define SVM_PWM_FPWM_DIV      (SYSCTL_PWMDIV_16)      // div16 to enable ~50Hz PWM output for SVM control
                                                       // when Fsys = 50MHz, yields Fpwm=3.125MHz
                                                       // this setup is also performed in hbridge.c\hbr_init(),
@@ -37,7 +44,7 @@
                                                       // init functions
                                                       // Resulting resolution: 3.125ticks/us
                                                       // Reference max range for RC servo control: 700us-2300us, 1500us center
-#define SVM_PWM_PERIOD_TICKS  (52082)                 // (desired divide for Fsw on pwm ouptut) - 1, from Fpwm
+#define SVM_PWM_PERIOD_TICKS  (52081)                 // (desired divide for Fsw on pwm ouptut) - 1, from Fpwm
                                                       // specifically, this specifies the pwm counter rollover
                                                       // 52082 yields Fsvm of approximatly 60Hz
 #define SVM_1_PWM             (PWM_OUT_2)             // pwm channel for SVM_1
@@ -89,6 +96,41 @@ void svm_init(void)
   ROM_PWMGenEnable(SVM_PWM_BASE, SVM_PWM_GEN);            // enable pwm output generator
 }
 
+// * svm_int_init *************************************************************
+// * setup counter reload interrupt from pwm generator for svm                *
+// * Assumes system clock already configured                                  *
+// ****************************************************************************
+void svm_int_init(void)
+{
+  ROM_IntMasterEnable();                                    // enable NVIC interrupts
+  ROM_PWMIntEnable(SVM_PWM_BASE, SVM_PWM_INT_GEN);          // enable interrupt assertion from our specific generator in module
+  ROM_PWMGenIntTrigEnable(SVM_PWM_BASE, SVM_PWM_GEN, PWM_INT_CNT_LOAD);
+                                                            // enable counter load interrupt from our generator
+  ROM_IntEnable(SVM_PWM_GEN_INTVECT);                       // enable NVIC vector for our generator
+                                                            // load interrupt for our generator is now active
+}
+
+// * svm_pwm_gen_ISR **********************************************************
+// * ISR for our svm pwm generator                                            *
+// ****************************************************************************
+void svm_pwm_gen_ISR(void)
+{
+  static unsigned char toggle = 0;    // test code
+                                      // for now the only thing that can get us here
+                                      // is the timer load interrupt
+  ROM_PWMGenIntClear(SVM_PWM_BASE, SVM_PWM_GEN, PWM_INT_CNT_LOAD);
+                                      // clear timer load interrupt or else nothiing else will run
+  toggle ^= 0xFF;                     // test code
+  if(toggle)
+  {
+    hbr_set_reset(HBR_LEFT, 1);
+  }
+  else
+  {
+    hbr_set_reset(HBR_LEFT, 0);
+  }
+}
+  
 // * svm_set_pulse ************************************************************
 // * update state of svm line                                                 *
 // * ucSvm should be one of: SVM_1, SVM_2                                     *
@@ -124,7 +166,7 @@ void svm_set_us(unsigned char ucSvm, unsigned long ulMicroseconds)
   ulTicks <<= SVM_USTOTICK_SHIFT;                           // shift up to perform fractional operation
   ulTicks += ulMicroseconds * SVM_USTOTICK_FRACTION;        // add on fractional part of product
   ulTicks >>= SVM_USTOTICK_SHIFT;                           // truncate fractonal part of result, done.
-  svm_set_pulse(ucSvm, ulTicks);
+  svm_set_pulse(ucSvm, ulTicks);                            // output pulse
 }
 
 // EOF
