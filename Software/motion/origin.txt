@@ -1,0 +1,9 @@
+This project is based off of the TI "EKK-LM4F232" and StellarisWare library packages.
+
+It is a subset of both of these, specifically for the IAR EWARM toolchain.
+
+It has been modified for motion control purposes for the ChalkBot project.
+
+Customized/'forked' from original 11/10/2011 8:28PM.
+
+Path to workspace from here: "\boards\ek-lm4f232\motion\motion.eww"

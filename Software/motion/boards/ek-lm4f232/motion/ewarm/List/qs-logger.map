@@ -1,0 +1,1047 @@
+###############################################################################
+#                                                                             #
+# IAR ELF Linker V6.30.1.53127/W32 for ARM              09/Nov/2011  18:51:19 #
+# Copyright 2007-2011 IAR Systems AB.                                         #
+#                                                                             #
+#    Output file  =  C:\StellarisWare\boards\ek-lm4f232\qs-logger\ewarm\Exe\q #
+#                    s-logger.out                                             #
+#    Map file     =  C:\StellarisWare\boards\ek-lm4f232\qs-logger\ewarm\List\ #
+#                    qs-logger.map                                            #
+#    Command line =  C:\StellarisWare\boards\ek-lm4f232\qs-logger\ewarm\Obj\a #
+#                    cquire.o C:\StellarisWare\boards\ek-lm4f232\qs-logger\ew #
+#                    arm\Obj\buttons.o C:\StellarisWare\boards\ek-lm4f232\qs- #
+#                    logger\ewarm\Obj\cfal96x64x16.o                          #
+#                    C:\StellarisWare\boards\ek-lm4f232\qs-logger\ewarm\Obj\c #
+#                    locksetwidget.o C:\StellarisWare\boards\ek-lm4f232\qs-lo #
+#                    gger\ewarm\Obj\fat_usbmsc.o                              #
+#                    C:\StellarisWare\boards\ek-lm4f232\qs-logger\ewarm\Obj\f #
+#                    f.o C:\StellarisWare\boards\ek-lm4f232\qs-logger\ewarm\O #
+#                    bj\flashstore.o C:\StellarisWare\boards\ek-lm4f232\qs-lo #
+#                    gger\ewarm\Obj\images.o C:\StellarisWare\boards\ek-lm4f2 #
+#                    32\qs-logger\ewarm\Obj\menus.o                           #
+#                    C:\StellarisWare\boards\ek-lm4f232\qs-logger\ewarm\Obj\q #
+#                    s-logger.o C:\StellarisWare\boards\ek-lm4f232\qs-logger\ #
+#                    ewarm\Obj\slidemenuwidget.o                              #
+#                    C:\StellarisWare\boards\ek-lm4f232\qs-logger\ewarm\Obj\s #
+#                    tartup_ewarm.o C:\StellarisWare\boards\ek-lm4f232\qs-log #
+#                    ger\ewarm\Obj\stripchartmanager.o                        #
+#                    C:\StellarisWare\boards\ek-lm4f232\qs-logger\ewarm\Obj\s #
+#                    tripchartwidget.o C:\StellarisWare\boards\ek-lm4f232\qs- #
+#                    logger\ewarm\Obj\uartstdio.o                             #
+#                    C:\StellarisWare\boards\ek-lm4f232\qs-logger\ewarm\Obj\u #
+#                    sb_serial_structs.o C:\StellarisWare\boards\ek-lm4f232\q #
+#                    s-logger\ewarm\Obj\usbserial.o                           #
+#                    C:\StellarisWare\boards\ek-lm4f232\qs-logger\ewarm\Obj\u #
+#                    sbstick.o C:\StellarisWare\boards\ek-lm4f232\qs-logger\e #
+#                    warm\Obj\ustdlib.o C:\StellarisWare\driverlib\ewarm-cm4f #
+#                    \Exe\driverlib-cm4f.a C:\StellarisWare\grlib\ewarm-cm4f\ #
+#                    Exe\grlib-cm4f.a C:\StellarisWare\usblib\ewarm-cm4f\Exe\ #
+#                    usblib-cm4f.a --redirect _Printf=_PrintfTiny --redirect  #
+#                    _Scanf=_ScanfSmall -o C:\StellarisWare\boards\ek-lm4f232 #
+#                    \qs-logger\ewarm\Exe\qs-logger.out --map                 #
+#                    C:\StellarisWare\boards\ek-lm4f232\qs-logger\ewarm\List\ #
+#                    qs-logger.map --config C:\StellarisWare\boards\ek-lm4f23 #
+#                    2\qs-logger\qs-logger.icf --semihosting --entry          #
+#                    __iar_program_start --vfe                                #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+*******************************************************************************
+*** RUNTIME MODEL ATTRIBUTES
+***
+
+CppFlavor       = *
+__SystemLibrary = DLib
+
+
+*******************************************************************************
+*** PLACEMENT SUMMARY
+***
+
+"A1":  place at start of [0x00000000-0x0003ffff] { ro section .intvec };
+"P1":  place in [from 0x00000000 to 0x0003ffff] { ro };
+"P2":  place in [from 0x20000000 to 0x20007fff] { rw, block HEAP };
+
+  Section            Kind        Address    Size  Object
+  -------            ----        -------    ----  ------
+"A1":                                      0x26c
+  .intvec            const    0x00000000   0x26c  startup_ewarm.o [1]
+                            - 0x0000026c   0x26c
+
+"P1":                                     0xbcf4
+  .rodata            const    0x0000026c  0x2054  images.o [1]
+  .text              ro code  0x000022c0   0xfd4  usbhostenum.o [9]
+  .text              ro code  0x00003294   0x124  udma.o [4]
+  .text              ro code  0x000033b8   0x59c  usb.o [4]
+  .text              ro code  0x00003954    0x6c  usbtick.o [9]
+  .text              ro code  0x000039c0    0xf4  interrupt.o [4]
+  .text              ro code  0x00003ab4   0x348  sysctl.o [4]
+  .text              ro code  0x00003dfc   0x238  usbmode.o [9]
+  .text              ro code  0x00004034    0xae  usbdesc.o [9]
+  .text              ro code  0x000040e2    0x22  zero_init3.o [7]
+  .text              ro code  0x00004104    0x10  cpu.o [4]
+  .text              ro code  0x00004114   0x910  usbdenum.o [9]
+  .text              ro code  0x00004a24   0x158  usbdcdesc.o [9]
+  .text              ro code  0x00004b7c   0x2a8  usbdconfig.o [9]
+  .text              ro code  0x00004e24    0x76  ABImemcpy.o [7]
+  .text              ro code  0x00004e9a     0x6  startup_ewarm.o [1]
+  .text              ro code  0x00004ea0   0xbf0  ff.o [1]
+  .text              ro code  0x00005a90    0xb4  fat_usbmsc.o [1]
+  .text              ro code  0x00005b44    0x66  ABImemset.o [7]
+  .text              ro code  0x00005bac    0x62  memcmp.o [7]
+  .text              ro code  0x00005c10     0x6  ABImemclr.o [7]
+  .text              ro code  0x00005c18     0x6  ABImemclr4.o [7]
+  .text              ro code  0x00005c20   0x212  usbhmsc.o [9]
+  .text              ro code  0x00005e34    0x3a  ABImemset48.o [7]
+  .text              ro code  0x00005e70   0x1c4  usbhscsi.o [9]
+  .text              ro code  0x00006034   0x6dc  acquire.o [1]
+  .text              ro code  0x00006710   0x114  menus.o [1]
+  .text              ro code  0x00006824   0x134  hibernate.o [4]
+  .text              ro code  0x00006958   0x374  ustdlib.o [1]
+  .text              ro code  0x00006ccc   0x124  stripchartmanager.o [1]
+  .text              ro code  0x00006df0   0x354  usbstick.o [1]
+  .text              ro code  0x00007144    0xf8  usbserial.o [1]
+  .text              ro code  0x0000723c   0x348  flashstore.o [1]
+  .text              ro code  0x00007584   0x466  offscr4bpp.o [5]
+  .text              ro code  0x000079ec   0x2fc  stripchartwidget.o [1]
+  .text              ro code  0x00007ce8    0x78  ABImemmove.o [7]
+  .text              ro code  0x00007d60   0x25c  widget.o [5]
+  .text              ro code  0x00007fbc    0x36  strlen.o [7]
+  .text              ro code  0x00007ff2   0x1f4  usbbuffer.o [9]
+  .text              ro code  0x000081e8   0x6ac  usbdcdc.o [9]
+  .text              ro code  0x00008894   0x62c  qs-logger.o [1]
+  .text              ro code  0x00008ec0    0xac  flash.o [4]
+  .text              ro code  0x00008f6c   0x114  rectangle.o [5]
+  .text              ro code  0x00009080    0x90  line.o [5]
+  .text              ro code  0x00009110   0x544  string.o [5]
+  .text              ro code  0x00009654    0xdc  context.o [5]
+  .text              ro code  0x00009730   0x2a0  image.o [5]
+  .text              ro code  0x000099d0   0x114  usbringbuf.o [9]
+  .text              ro code  0x00009ae4    0x42  strcmp.o [7]
+  .text              ro code  0x00009b28    0x20  fpu.o [4]
+  .text              ro code  0x00009b48   0x3f4  cfal96x64x16.o [1]
+  .text              ro code  0x00009f3c    0x9c  buttons.o [1]
+  .text              ro code  0x00009fd8   0x504  slidemenuwidget.o [1]
+  .text              ro code  0x0000a4dc   0x538  clocksetwidget.o [1]
+  .rodata            const    0x0000aa14   0x3c0  fontfixed6x8.o [5]
+  .text              ro code  0x0000add4   0x1aa  canvas.o [5]
+  .rodata            const    0x0000af80   0x184  menus.o [1]
+  .rodata            const    0x0000b104   0x16c  usb_serial_structs.o [1]
+  .text              ro code  0x0000b270    0xa0  packbits_init3.o [7]
+  .rodata            const    0x0000b310    0x78  usbdenum.o [9]
+  .rodata            const    0x0000b388    0x70  usbdcdc.o [9]
+  .rodata            const    0x0000b3f8    0x50  stripchartmanager.o [1]
+  .text              ro code  0x0000b448    0x2c  data_init3.o [7]
+  .rodata            const    0x0000b474    0x28  cfal96x64x16.o [1]
+  .iar.init_table    const    0x0000b49c    0x2c  - Linker created -
+  .text              ro code  0x0000b4c8    0x1a  fpinit_M.o [6]
+  .text              ro code  0x0000b4e4    0x16  cmain.o [7]
+  .text              ro code  0x0000b4fa     0x4  low_level_init.o [3]
+  .text              ro code  0x0000b4fe     0x4  exit.o [3]
+  .text              ro code  0x0000b504     0xa  cexit.o [7]
+  .text              ro code  0x0000b510    0x14  exit.o [8]
+  .rodata            const    0x0000b524    0x10  usbstick.o [1]
+  .rodata            const    0x0000b534    0x10  usbhmsc.o [9]
+  .text              ro code  0x0000b544     0xc  cstartup_M.o [7]
+  .text              ro code  0x0000b550     0x8  charmap.o [5]
+  .rodata            const    0x0000b558     0x0  bwt_init3c.o [7]
+  Initializer bytes  ro data  0x0000b558   0xa05  <for P2 s0>
+                            - 0x0000bf5d  0xbcf1
+
+"P2", part 1 of 3:                        0x2c0c
+  P2 s0                       0x20000000  0x2c09  <Init block>
+    .data            inited   0x20000000  0x1a84  menus.o [1]
+    .data            inited   0x20001a84   0x440  stripchartmanager.o [1]
+    .data            inited   0x20001ec4    0xf0  menus.o [1]
+    .data            inited   0x20001fb4    0xc8  stripchartmanager.o [1]
+    .data            inited   0x2000207c    0xa0  menus.o [1]
+    .data            inited   0x2000211c    0x70  menus.o [1]
+    .data            inited   0x2000218c    0x60  menus.o [1]
+    .data            inited   0x200021ec    0x54  usbdcdc.o [9]
+    .data            inited   0x20002240    0x50  menus.o [1]
+    .data            inited   0x20002290    0x50  menus.o [1]
+    .data            inited   0x200022e0    0x40  acquire.o [1]
+    .data            inited   0x20002320    0x40  menus.o [1]
+    .data            inited   0x20002360    0x40  menus.o [1]
+    .data            inited   0x200023a0    0x40  menus.o [1]
+    .data            inited   0x200023e0    0x40  menus.o [1]
+    .data            inited   0x20002420    0x40  menus.o [1]
+    .data            inited   0x20002460    0x40  menus.o [1]
+    .data            inited   0x200024a0    0x40  menus.o [1]
+    .data            inited   0x200024e0    0x40  menus.o [1]
+    .data            inited   0x20002520    0x40  menus.o [1]
+    .data            inited   0x20002560    0x40  menus.o [1]
+    .data            inited   0x200025a0    0x40  menus.o [1]
+    .data            inited   0x200025e0    0x40  menus.o [1]
+    .data            inited   0x20002620    0x40  menus.o [1]
+    .data            inited   0x20002660    0x40  menus.o [1]
+    .data            inited   0x200026a0    0x40  menus.o [1]
+    .data            inited   0x200026e0    0x40  menus.o [1]
+    .data            inited   0x20002720    0x40  menus.o [1]
+    .data            inited   0x20002760    0x40  menus.o [1]
+    .data            inited   0x200027a0    0x40  menus.o [1]
+    .data            inited   0x200027e0    0x40  menus.o [1]
+    .data            inited   0x20002820    0x40  menus.o [1]
+    .data            inited   0x20002860    0x40  menus.o [1]
+    .data            inited   0x200028a0    0x40  menus.o [1]
+    .data            inited   0x200028e0    0x40  menus.o [1]
+    .data            inited   0x20002920    0x40  menus.o [1]
+    .data            inited   0x20002960    0x40  menus.o [1]
+    .data            inited   0x200029a0    0x40  menus.o [1]
+    .data            inited   0x200029e0    0x3c  menus.o [1]
+    .data            inited   0x20002a1c    0x38  menus.o [1]
+    .data            inited   0x20002a54    0x34  usbhostenum.o [9]
+    .data            inited   0x20002a88    0x24  widget.o [5]
+    .data            inited   0x20002aac    0x20  menus.o [1]
+    .data            inited   0x20002acc    0x1c  menus.o [1]
+    .data            inited   0x20002ae8    0x1c  menus.o [1]
+    .data            inited   0x20002b04    0x1c  menus.o [1]
+    .data            inited   0x20002b20    0x1c  menus.o [1]
+    .data            inited   0x20002b3c    0x18  stripchartmanager.o [1]
+    .data            inited   0x20002b54    0x18  stripchartmanager.o [1]
+    .data            inited   0x20002b6c    0x14  cfal96x64x16.o [1]
+    .data            inited   0x20002b80    0x14  images.o [1]
+    .data            inited   0x20002b94    0x14  usbdcdc.o [9]
+    .data            inited   0x20002ba8    0x10  menus.o [1]
+    .data            inited   0x20002bb8    0x10  usbmode.o [9]
+    .data            inited   0x20002bc8    0x10  usbdcdc.o [9]
+    .data            inited   0x20002bd8     0xc  usbserial.o [1]
+    .data            inited   0x20002be4     0xc  usbdcdc.o [9]
+    .data            inited   0x20002bf0     0xc  usbhostenum.o [9]
+    .data            inited   0x20002bfc     0x8  usbdcdc.o [9]
+    .data            inited   0x20002c04     0x3  buttons.o [1]
+    .data            inited   0x20002c07     0x1  fat_usbmsc.o [1]
+    .data            inited   0x20002c08     0x1  qs-logger.o [1]
+                            - 0x20002c09  0x2c09
+
+"P2", part 2 of 3:                        0x125c
+  .bss               zero     0x20002c0c   0x434  usbhostenum.o [9]
+  .bss               zero     0x20003040   0x22c  usbstick.o [1]
+  .bss               zero     0x2000326c   0x224  usbstick.o [1]
+  .bss               zero     0x20003490   0x140  widget.o [5]
+  .bss               zero     0x200035d0   0x11c  usbstick.o [1]
+  .bss               zero     0x200036ec   0x100  usb_serial_structs.o [1]
+  .bss               zero     0x200037ec   0x100  usb_serial_structs.o [1]
+  .bss               zero     0x200038ec    0xb4  qs-logger.o [1]
+  .bss               zero     0x200039a0    0x80  flashstore.o [1]
+  .bss               zero     0x20003a20    0x68  acquire.o [1]
+  .bss               zero     0x20003c00    0x60  usbstick.o [1]
+  .bss               zero     0x20003c60    0x58  usbdenum.o [9]
+  .bss               zero     0x20003cb8    0x40  usbdenum.o [9]
+  .bss               zero     0x20003cf8    0x38  usbtick.o [9]
+  .bss               zero     0x20003d30    0x2c  usb_serial_structs.o [1]
+  .bss               zero     0x20003d5c    0x24  acquire.o [1]
+  .bss               zero     0x20003d80    0x20  flashstore.o [1]
+  .bss               zero     0x20003da0    0x20  qs-logger.o [1]
+  .bss               zero     0x20003dc0    0x20  image.o [5]
+  .bss               zero     0x20003de0    0x1c  usbhmsc.o [9]
+  .bss               zero     0x20003dfc    0x18  acquire.o [1]
+  .bss               zero     0x20003e14    0x10  usb_serial_structs.o [1]
+  .bss               zero     0x20003e24    0x10  usb_serial_structs.o [1]
+  .bss               zero     0x20003e34     0xc  ff.o [1]
+  .bss               zero     0x20003e40     0xc  widget.o [5]
+  .bss               zero     0x20003e4c     0x8  menus.o [1]
+  .bss               zero     0x20003e54     0x4  flashstore.o [1]
+  .bss               zero     0x20003e58     0x4  hibernate.o [4]
+  .bss               zero     0x20003e5c     0x4  context.o [5]
+  .bss               zero     0x20003e60     0x4  usbhostenum.o [9]
+  .bss               zero     0x20003e64     0x4  usbtick.o [9]
+                            - 0x20003e68  0x125c
+
+"P2", part 3 of 3:                         0x400
+  .noinit            uninit   0x20003e68   0x400  startup_ewarm.o [1]
+                            - 0x20004268   0x400
+
+
+*******************************************************************************
+*** INIT TABLE
+***
+
+          Address     Size
+          -------     ----
+Zero (__iar_zero_init3)
+    1 destination range, total size 0x125c:
+          0x20002c0c  0x125c
+
+Copy/packbits (__iar_packbits_init3)
+    1 source range, total size 0xa05 (22% of destination):
+          0x0000b558   0xa05
+    1 destination range, total size 0x2c09:
+          0x20000000  0x2c09
+
+
+
+*******************************************************************************
+*** MODULE SUMMARY
+***
+
+    Module                ro code  ro data  rw data
+    ------                -------  -------  -------
+C:\StellarisWare\boards\ek-lm4f232\qs-logger\ewarm\Obj: [1]
+    acquire.o               1 756       14      228
+    buttons.o                 156        1        3
+    cfal96x64x16.o          1 012       44       20
+    clocksetwidget.o        1 336
+    fat_usbmsc.o              180                 1
+    ff.o                    3 056                12
+    flashstore.o              840               164
+    images.o                         8 281       20
+    menus.o                   276    2 562    9 568
+    qs-logger.o             1 580        1      213
+    slidemenuwidget.o       1 284
+    startup_ewarm.o             6      620    1 024
+    stripchartmanager.o       292      385    1 336
+    stripchartwidget.o        764
+    usb_serial_structs.o               364      588
+    usbserial.o               248        3       12
+    usbstick.o                852       16    1 484
+    ustdlib.o                 884
+    -----------------------------------------------
+    Total:                 14 522   12 291   14 673
+
+command line: [2]
+    -----------------------------------------------
+    Total:
+
+dl7M_tln.a: [3]
+    exit.o                      4
+    low_level_init.o            4
+    -----------------------------------------------
+    Total:                      8
+
+driverlib-cm4f.a: [4]
+    cpu.o                      16
+    flash.o                   172
+    fpu.o                      32
+    hibernate.o               308                 4
+    interrupt.o               244
+    sysctl.o                  840
+    udma.o                    292
+    usb.o                   1 436
+    -----------------------------------------------
+    Total:                  3 340                 4
+
+grlib-cm4f.a: [5]
+    canvas.o                  426
+    charmap.o                   8
+    context.o                 220                 4
+    fontfixed6x8.o                     960
+    image.o                   672                32
+    line.o                    144
+    offscr4bpp.o            1 126
+    rectangle.o               276
+    string.o                1 348
+    widget.o                  604        8      368
+    -----------------------------------------------
+    Total:                  4 824      968      404
+
+m7M_tlv.a: [6]
+    fpinit_M.o                 26
+    -----------------------------------------------
+    Total:                     26
+
+rt7M_tl.a: [7]
+    ABImemclr.o                 6
+    ABImemclr4.o                6
+    ABImemcpy.o               118
+    ABImemmove.o              120
+    ABImemset.o               102
+    ABImemset48.o              58
+    bwt_init3c.o
+    cexit.o                    10
+    cmain.o                    22
+    cstartup_M.o               12
+    data_init3.o               44
+    memcmp.o                   98
+    packbits_init3.o          160
+    strcmp.o                   66
+    strlen.o                   54
+    zero_init3.o               34
+    -----------------------------------------------
+    Total:                    910
+
+shb_l.a: [8]
+    exit.o                     20
+    -----------------------------------------------
+    Total:                     20
+
+usblib-cm4f.a: [9]
+    usbbuffer.o               500
+    usbdcdc.o               1 708      143      140
+    usbdcdesc.o               344
+    usbdconfig.o              680
+    usbdenum.o              2 320      120      152
+    usbdesc.o                 174
+    usbhmsc.o                 530       16       28
+    usbhostenum.o           4 052       15    1 144
+    usbhscsi.o                452
+    usbmode.o                 568        4       16
+    usbringbuf.o              276
+    usbtick.o                 108                60
+    -----------------------------------------------
+    Total:                 11 712      298    1 540
+
+    Gaps                       24        2      376
+    Linker created                      44
+---------------------------------------------------
+    Grand Total:           35 386   13 603   16 997
+
+
+*******************************************************************************
+*** ENTRY LIST
+***
+
+Entry                      Address   Size  Type      Object
+-----                      -------   ----  ----      ------
+?main                   0x0000b4e5         Code  Gb  cmain.o [7]
+ADC0SS0Handler          0x00006271   0x50  Code  Gb  acquire.o [1]
+AcquireInit             0x0000656f   0xd2  Code  Gb  acquire.o [1]
+AcquireRun              0x00006381   0x96  Code  Gb  acquire.o [1]
+AcquireStart            0x00006417  0x114  Code  Gb  acquire.o [1]
+AcquireStop             0x0000652b   0x44  Code  Gb  acquire.o [1]
+ButtonsInit             0x00009f8f   0x38  Code  Gb  buttons.o [1]
+ButtonsPoll             0x00009f3d   0x52  Code  Gb  buttons.o [1]
+CDCTickHandler          0x00008631   0x78  Code  Lc  usbdcdc.o [9]
+CFAL96x64x16ColorTranslate
+                        0x00009dd1   0x16  Code  Lc  cfal96x64x16.o [1]
+CFAL96x64x16Flush       0x00009de7    0x2  Code  Lc  cfal96x64x16.o [1]
+CFAL96x64x16Init        0x00009de9  0x118  Code  Gb  cfal96x64x16.o [1]
+CFAL96x64x16LineDrawH   0x00009ccf   0x54  Code  Lc  cfal96x64x16.o [1]
+CFAL96x64x16LineDrawV   0x00009d29   0x72  Code  Lc  cfal96x64x16.o [1]
+CFAL96x64x16PixelDraw   0x00009bc1   0x2c  Code  Lc  cfal96x64x16.o [1]
+CFAL96x64x16PixelDrawMultiple
+                        0x00009bf3   0xb4  Code  Lc  cfal96x64x16.o [1]
+CFAL96x64x16RectFill    0x00009da5   0x2c  Code  Lc  cfal96x64x16.o [1]
+CFAL96x64x16WriteCommand
+                        0x00009b49   0x32  Code  Lc  cfal96x64x16.o [1]
+CFAL96x64x16WriteData   0x00009b7b   0x30  Code  Lc  cfal96x64x16.o [1]
+CPUcpsid                0x00004105    0x8  Code  Gb  cpu.o [4]
+CPUcpsie                0x0000410d    0x8  Code  Gb  cpu.o [4]
+CanvasMsgProc           0x0000af69   0x16  Code  Gb  canvas.o [5]
+CanvasPaint             0x0000add5  0x17e  Code  Lc  canvas.o [5]
+ClockSetKeyDown         0x0000a8a9   0x9e  Code  Lc  clocksetwidget.o [1]
+ClockSetKeyHandler      0x0000a957   0x78  Code  Lc  clocksetwidget.o [1]
+ClockSetKeyUp           0x0000a7e9   0xc0  Code  Lc  clocksetwidget.o [1]
+ClockSetMsgProc         0x0000a9cf   0x2a  Code  Gb  clocksetwidget.o [1]
+ClockSetOkCallback      0x00008a49   0x22  Code  Lc  qs-logger.o [1]
+ClockSetPaint           0x0000a4dd  0x2d2  Code  Lc  clocksetwidget.o [1]
+ControlHandler          0x00007145   0x46  Code  Gb  usbserial.o [1]
+DeviceConsumedAllData   0x00008207   0x18  Code  Lc  usbdcdc.o [9]
+FIFOAlloc               0x00002333   0x6e  Code  Lc  usbhostenum.o [9]
+FIFOFree                0x00002309   0x2a  Code  Lc  usbhostenum.o [9]
+FPUEnable               0x00009b29    0xc  Code  Gb  fpu.o [4]
+FPULazyStackingEnable   0x00009b35    0xc  Code  Gb  fpu.o [4]
+FatFs                   0x20003e38    0x8  Data  Lc  ff.o [1]
+FaultISR                0x00004e9d    0x2  Code  Lc  startup_ewarm.o [1]
+FileInit                0x00006df1   0x12  Code  Lc  usbstick.o [1]
+FlashErase              0x00008ec1   0x20  Code  Gb  flash.o [4]
+FlashProgram            0x00008ee1   0x70  Code  Gb  flash.o [4]
+FlashStoreErase         0x0000742d   0x40  Code  Gb  flashstore.o [1]
+FlashStoreGetAddr       0x00007427    0x6  Code  Gb  flashstore.o [1]
+FlashStoreOpenLogFile   0x0000734b   0x4e  Code  Gb  flashstore.o [1]
+FlashStoreReport        0x0000746d   0x66  Code  Gb  flashstore.o [1]
+FlashStoreSave          0x0000723d  0x108  Code  Gb  flashstore.o [1]
+FlashStoreWriteRecord   0x00007399   0x8e  Code  Gb  flashstore.o [1]
+FontGlyphDataGet        0x00009559   0x36  Code  Lc  string.o [5]
+FontWideGlyphDataGet    0x0000958f   0x48  Code  Lc  string.o [5]
+GetEPDescriptorType     0x00004bb9   0x4e  Code  Lc  usbdconfig.o [9]
+GetEndpointFIFOSize     0x00004b7d   0x3c  Code  Lc  usbdconfig.o [9]
+GetTickms               0x000088fb   0x18  Code  Gb  qs-logger.o [1]
+GrContextClipRegionSet  0x000096c1   0x5e  Code  Gb  context.o [5]
+GrContextFontSet        0x00009651    0x4  Code  Gb  string.o [5]
+GrContextInit           0x00009655   0x62  Code  Gb  context.o [5]
+GrDefaultStringRenderer
+                        0x00009185   0xaa  Code  Gb  string.o [5]
+GrFontBaselineGet       0x000094f9   0x18  Code  Gb  string.o [5]
+GrFontCodepageGet       0x000095f1   0x1c  Code  Gb  string.o [5]
+GrFontGlyphDataGet      0x000095d7   0x1a  Code  Gb  string.o [5]
+GrFontGlyphRender       0x00009265  0x250  Code  Gb  string.o [5]
+GrFontHeightGet         0x00009511   0x16  Code  Gb  string.o [5]
+GrFontInfoGet           0x000094cf   0x2a  Code  Gb  string.o [5]
+GrFontMaxWidthGet       0x0000953d   0x1c  Code  Gb  string.o [5]
+GrImageDraw             0x00009731  0x2a0  Code  Gb  image.o [5]
+GrLineDrawH             0x00009081   0x48  Code  Gb  line.o [5]
+GrLineDrawV             0x000090c9   0x48  Code  Gb  line.o [5]
+GrMapISO8859_1_Unicode  0x0000b551    0x8  Code  Gb  charmap.o [5]
+GrOffScreen4BPPColorTranslate
+                        0x00007585   0x4c  Code  Lc  offscr4bpp.o [5]
+GrOffScreen4BPPFlush    0x00007963    0x2  Code  Lc  offscr4bpp.o [5]
+GrOffScreen4BPPInit     0x00007965   0x3a  Code  Gb  offscr4bpp.o [5]
+GrOffScreen4BPPLineDrawH
+                        0x00007723   0xa4  Code  Lc  offscr4bpp.o [5]
+GrOffScreen4BPPLineDrawV
+                        0x000077c7   0x4e  Code  Lc  offscr4bpp.o [5]
+GrOffScreen4BPPPaletteSet
+                        0x000079bd   0x2e  Code  Gb  offscr4bpp.o [5]
+GrOffScreen4BPPPixelDraw
+                        0x000075d1   0x3a  Code  Lc  offscr4bpp.o [5]
+GrOffScreen4BPPPixelDrawMultiple
+                        0x0000760b  0x10a  Code  Lc  offscr4bpp.o [5]
+GrOffScreen4BPPRectFill
+                        0x00007815  0x14e  Code  Lc  offscr4bpp.o [5]
+GrRectDraw              0x00008f6d   0x62  Code  Gb  rectangle.o [5]
+GrRectFill              0x00008fcf   0xb2  Code  Gb  rectangle.o [5]
+GrStringDraw            0x00009173   0x12  Code  Gb  string.o [5]
+GrStringNextCharGet     0x00009235   0x30  Code  Gb  string.o [5]
+GrStringWidthGet        0x00009111   0x62  Code  Gb  string.o [5]
+HandleConfigChange      0x0000844f   0x2a  Code  Lc  usbdcdc.o [9]
+HandleDevice            0x000084c5   0x68  Code  Lc  usbdcdc.o [9]
+HandleDisconnect        0x000085f7   0x1e  Code  Lc  usbdcdc.o [9]
+HandleEP0Data           0x00008479   0x44  Code  Lc  usbdcdc.o [9]
+HandleEndpoints         0x00008401   0x4e  Code  Lc  usbdcdc.o [9]
+HandleRequests          0x0000852d   0xb8  Code  Lc  usbdcdc.o [9]
+HandleResume            0x00008621    0xa  Code  Lc  usbdcdc.o [9]
+HandleRxAvailable       0x00008061   0xa2  Code  Lc  usbbuffer.o [9]
+HandleSuspend           0x00008615    0xc  Code  Lc  usbdcdc.o [9]
+HibernateDataGet        0x000068d5   0x16  Code  Gb  hibernate.o [4]
+HibernateDataSet        0x000068b5   0x20  Code  Gb  hibernate.o [4]
+HibernateEnableExpClk   0x00006845   0x36  Code  Gb  hibernate.o [4]
+HibernateIntClear       0x00006909    0x2  Code  Gb  hibernate.o [4]
+HibernateIntEnable      0x000068f5    0x4  Code  Gb  hibernate.o [4]
+HibernateIntStatus      0x000068f9   0x10  Code  Gb  hibernate.o [4]
+HibernateIsActive       0x00006913    0xe  Code  Gb  hibernate.o [4]
+HibernateRTCEnable      0x0000687b    0x8  Code  Gb  hibernate.o [4]
+HibernateRTCGet         0x00006897    0x6  Code  Gb  hibernate.o [4]
+HibernateRTCMatch0Set   0x0000689d    0x4  Code  Gb  hibernate.o [4]
+HibernateRTCSSGet       0x000068a7    0xa  Code  Gb  hibernate.o [4]
+HibernateRTCSSMatch0Set
+                        0x000068a1    0x6  Code  Gb  hibernate.o [4]
+HibernateRTCSet         0x00006893    0x4  Code  Gb  hibernate.o [4]
+HibernateRTCTrimSet     0x000068b1    0x4  Code  Gb  hibernate.o [4]
+HibernateRequest        0x000068eb    0xa  Code  Gb  hibernate.o [4]
+HibernateWakeSet        0x00006887    0xc  Code  Gb  hibernate.o [4]
+HibernateWriteComplete  0x00006825   0x20  Code  Gb  hibernate.o [4]
+IntDefaultHandler       0x00004e9f    0x2  Code  Lc  startup_ewarm.o [1]
+IntDisable              0x00003a2d   0x58  Code  Gb  interrupt.o [4]
+IntEnable               0x000039d5   0x58  Code  Gb  interrupt.o [4]
+IntMasterDisable        0x000039cb    0xa  Code  Gb  interrupt.o [4]
+IntMasterEnable         0x000039c1    0xa  Code  Gb  interrupt.o [4]
+InternalUSBHCDSendEvent
+                        0x00002ddf   0x32  Code  Gb  usbhostenum.o [9]
+InternalUSBRegisterTickHandler
+                        0x00003971   0x24  Code  Gb  usbtick.o [9]
+InternalUSBStartOfFrameTick
+                        0x00003995   0x26  Code  Gb  usbtick.o [9]
+InternalUSBTickInit     0x00003955   0x1c  Code  Gb  usbtick.o [9]
+MSCCallback             0x00006e03   0x16  Code  Lc  usbstick.o [1]
+MenuGetDefaultState     0x0000678d   0x12  Code  Gb  menus.o [1]
+MenuGetState            0x00006733   0x1c  Code  Gb  menus.o [1]
+MenuInit                0x0000679f   0x60  Code  Gb  menus.o [1]
+MenuSetState            0x0000674f   0x3e  Code  Gb  menus.o [1]
+MenuUpdateText          0x00006711   0x22  Code  Gb  menus.o [1]
+ModeCallback            0x00008913    0x8  Code  Lc  qs-logger.o [1]
+NextConfigDescGet       0x00004a25   0x32  Code  Lc  usbdcdesc.o [9]
+NmiSR                   0x00004e9b    0x2  Code  Lc  startup_ewarm.o [1]
+OTGDeviceDisconnect     0x00003fad   0x14  Code  Gb  usbmode.o [9]
+ProcessDataFromHost     0x00008313   0x5e  Code  Gb  usbdcdc.o [9]
+ProcessDataItems        0x0000617d   0xf4  Code  Lc  acquire.o [1]
+ProcessDataToHost       0x000083ab   0x56  Code  Gb  usbdcdc.o [9]
+ProcessNotificationToHost
+                        0x00008377   0x34  Code  Gb  usbdcdc.o [9]
+RTCHandler              0x000062c1   0xc0  Code  Gb  acquire.o [1]
+Region$$Table$$Base     0x0000b49c          --   Gb  - Linker created -
+Region$$Table$$Limit    0x0000b4c8          --   Gb  - Linker created -
+RxHandler               0x0000718f   0x10  Code  Gb  usbserial.o [1]
+ScheduleNextTransmission
+                        0x00007ff3   0x6e  Code  Lc  usbbuffer.o [9]
+SendBreak               0x0000821f   0x36  Code  Lc  usbdcdc.o [9]
+SendLineCodingChange    0x00008255   0x18  Code  Lc  usbdcdc.o [9]
+SendLineStateChange     0x0000826d   0x16  Code  Lc  usbdcdc.o [9]
+SendSerialState         0x0000828f   0x7a  Code  Lc  usbdcdc.o [9]
+SendUnknownConnect      0x000022c1   0x48  Code  Lc  usbhostenum.o [9]
+SendWidgetKeyMessage    0x00008945   0x1e  Code  Lc  qs-logger.o [1]
+SetDeferredOpFlag       0x000081e9   0x1e  Code  Lc  usbdcdc.o [9]
+SetSavedState           0x0000891b   0x2a  Code  Lc  qs-logger.o [1]
+SetStatusText           0x00008895   0x5a  Code  Gb  qs-logger.o [1]
+SlideMenuDown           0x0000a1a7   0x72  Code  Lc  slidemenuwidget.o [1]
+SlideMenuDraw           0x00009fd9  0x18a  Code  Gb  slidemenuwidget.o [1]
+SlideMenuLeft           0x0000a3a7   0x84  Code  Lc  slidemenuwidget.o [1]
+SlideMenuMsgProc        0x0000a435   0x66  Code  Gb  slidemenuwidget.o [1]
+SlideMenuPaint          0x0000a177   0x30  Code  Lc  slidemenuwidget.o [1]
+SlideMenuRight          0x0000a2d1   0xc2  Code  Lc  slidemenuwidget.o [1]
+SlideMenuUp             0x0000a225   0x6c  Code  Lc  slidemenuwidget.o [1]
+StripChartAdvance       0x00007c95   0x16  Code  Gb  stripchartwidget.o [1]
+StripChartDraw          0x000079ed  0x24e  Code  Gb  stripchartwidget.o [1]
+StripChartMgrAddItems   0x00006d21   0xb0  Code  Gb  stripchartmanager.o [1]
+StripChartMgrConfigure  0x00006ccd   0x54  Code  Gb  stripchartmanager.o [1]
+StripChartMgrInit       0x00006dd1    0xc  Code  Gb  stripchartmanager.o [1]
+StripChartMsgProc       0x00007cc7   0x22  Code  Gb  stripchartwidget.o [1]
+StripChartPaint         0x00007c57   0x3e  Code  Lc  stripchartwidget.o [1]
+StripChartSeriesAdd     0x00007cab   0x16  Code  Gb  stripchartwidget.o [1]
+SysCtlClockGet          0x00003b85  0x1a6  Code  Gb  sysctl.o [4]
+SysCtlDelay             0x00003b7d    0x8  Code  Gb  sysctl.o [4]
+SysCtlPeripheralEnable  0x00003b35   0x1c  Code  Gb  sysctl.o [4]
+SysCtlPeripheralReset   0x00003ab5   0x80  Code  Gb  sysctl.o [4]
+SysCtlUSBPLLEnable      0x00003d2b    0xc  Code  Gb  sysctl.o [4]
+SysTickIntHandler       0x000088ef    0xc  Code  Gb  qs-logger.o [1]
+TxHandler               0x0000718b    0x4  Code  Gb  usbserial.o [1]
+USB0OTGModeIntHandler   0x00003f07   0xa6  Code  Gb  usbmode.o [9]
+USBBufferEventCallback  0x0000815b   0x8c  Code  Gb  usbbuffer.o [9]
+USBBufferFlush          0x00008155    0x6  Code  Gb  usbbuffer.o [9]
+USBBufferInit           0x00008111   0x12  Code  Gb  usbbuffer.o [9]
+USBBufferWrite          0x00008123   0x2c  Code  Gb  usbbuffer.o [9]
+USBDCDCCompositeInit    0x000086bf   0x86  Code  Gb  usbdcdc.o [9]
+USBDCDCInit             0x00008751   0x2c  Code  Gb  usbdcdc.o [9]
+USBDCDCPacketRead       0x000087cd   0x74  Code  Gb  usbdcdc.o [9]
+USBDCDCPacketWrite      0x0000877d   0x50  Code  Gb  usbdcdc.o [9]
+USBDCDCRxPacketAvailable
+                        0x00008851   0x2c  Code  Gb  usbdcdc.o [9]
+USBDCDCTxPacketAvailable
+                        0x00008841   0x10  Code  Gb  usbdcdc.o [9]
+USBDCDConfigDescGet     0x00004a97   0x4c  Code  Gb  usbdcdesc.o [9]
+USBDCDConfigDescGetNum  0x00004a75   0x22  Code  Gb  usbdcdesc.o [9]
+USBDCDConfigDescGetSize
+                        0x00004a57   0x1e  Code  Gb  usbdcdesc.o [9]
+USBDCDConfigGetInterface
+                        0x00004af3   0x4c  Code  Gb  usbdcdesc.o [9]
+USBDCDConfigGetInterfaceEndpoint
+                        0x00004b47   0x36  Code  Gb  usbdcdesc.o [9]
+USBDCDInit              0x00004115   0xdc  Code  Gb  usbdenum.o [9]
+USBDCDRequestDataEP0    0x000041f1   0x10  Code  Gb  usbdenum.o [9]
+USBDCDSendDataEP0       0x00004201    0xe  Code  Gb  usbdenum.o [9]
+USBDCDStallEP0          0x0000420f   0x18  Code  Gb  usbdenum.o [9]
+USBDClearFeature        0x00004411   0x6c  Code  Lc  usbdenum.o [9]
+USBDEP0StateTx          0x000047a7   0x66  Code  Lc  usbdenum.o [9]
+USBDEP0StateTxConfig    0x0000480d  0x134  Code  Lc  usbdenum.o [9]
+USBDGetConfiguration    0x00004641   0x22  Code  Lc  usbdenum.o [9]
+USBDGetDescriptor       0x0000450d  0x122  Code  Lc  usbdenum.o [9]
+USBDGetInterface        0x000046d5   0x24  Code  Lc  usbdenum.o [9]
+USBDGetStatus           0x000043bd   0x4e  Code  Lc  usbdenum.o [9]
+USBDReadAndDispatchRequest
+                        0x00004269   0x58  Code  Lc  usbdenum.o [9]
+USBDSetAddress          0x000044e9   0x14  Code  Lc  usbdenum.o [9]
+USBDSetConfiguration    0x0000466b   0x6a  Code  Lc  usbdenum.o [9]
+USBDSetDescriptor       0x0000463b    0x6  Code  Lc  usbdenum.o [9]
+USBDSetFeature          0x0000448f   0x5a  Code  Lc  usbdenum.o [9]
+USBDSetInterface        0x00004711   0x76  Code  Lc  usbdenum.o [9]
+USBDSyncFrame           0x00004797    0x4  Code  Lc  usbdenum.o [9]
+USBDescGet              0x0000405d   0x2e  Code  Gb  usbdesc.o [9]
+USBDescGetInterface     0x0000408b   0x3e  Code  Gb  usbdesc.o [9]
+USBDescGetInterfaceEndpoint
+                        0x000040c9   0x1a  Code  Gb  usbdesc.o [9]
+USBDescGetNum           0x00004035   0x28  Code  Gb  usbdesc.o [9]
+USBDevAddrSet           0x000035bd    0x4  Code  Gb  usb.o [4]
+USBDevConnect           0x000035a5    0xc  Code  Gb  usb.o [4]
+USBDevDisconnect        0x000035b1    0xc  Code  Gb  usb.o [4]
+USBDevEndpointConfigSet
+                        0x00003671   0x76  Code  Gb  usb.o [4]
+USBDevEndpointDataAck   0x000037c9   0x20  Code  Gb  usb.o [4]
+USBDevEndpointStall     0x00003535   0x30  Code  Gb  usb.o [4]
+USBDevEndpointStallClear
+                        0x00003565   0x40  Code  Gb  usb.o [4]
+USBDevEndpointStatusClear
+                        0x000034c7   0x4e  Code  Gb  usb.o [4]
+USBDevMode              0x00003941    0x2  Code  Gb  usb.o [4]
+USBDeviceConfig         0x00004c07  0x16a  Code  Gb  usbdconfig.o [9]
+USBDeviceConfigAlternate
+                        0x00004d7f   0xa0  Code  Gb  usbdconfig.o [9]
+USBDeviceEnumHandler    0x000042c5   0xc0  Code  Gb  usbdenum.o [9]
+USBDeviceEnumResetHandler
+                        0x00004385   0x38  Code  Gb  usbdenum.o [9]
+USBDeviceIntHandlerInternal
+                        0x00004941   0x98  Code  Gb  usbdenum.o [9]
+USBDeviceResumeTickHandler
+                        0x00004227   0x42  Code  Gb  usbdenum.o [9]
+USBEndpointDMAChannel   0x00003923   0x1a  Code  Gb  usb.o [4]
+USBEndpointDMADisable   0x00003749   0x20  Code  Gb  usb.o [4]
+USBEndpointDMAEnable    0x00003729   0x20  Code  Gb  usb.o [4]
+USBEndpointDataAvail    0x00003769   0x1e  Code  Gb  usb.o [4]
+USBEndpointDataGet      0x00003787   0x42  Code  Gb  usb.o [4]
+USBEndpointDataPut      0x000037fb   0x30  Code  Gb  usb.o [4]
+USBEndpointDataSend     0x00003831   0x22  Code  Gb  usb.o [4]
+USBEndpointDataToggleClear
+                        0x00003515   0x20  Code  Gb  usb.o [4]
+USBEndpointStatus       0x00003489    0xe  Code  Gb  usb.o [4]
+USBFIFOAddrGet          0x00003911    0x8  Code  Gb  usb.o [4]
+USBFIFOConfigSet        0x000036e7   0x3c  Code  Gb  usb.o [4]
+USBFIFOFlush            0x00003853   0x44  Code  Gb  usb.o [4]
+USBHCDClearFeature      0x00002ad3   0x6c  Code  Lc  usbhostenum.o [9]
+USBHCDControlTransfer   0x000030df   0x6c  Code  Gb  usbhostenum.o [9]
+USBHCDDeviceDisconnected
+                        0x00002e11   0x72  Code  Lc  usbhostenum.o [9]
+USBHCDEnumHandler       0x00003151  0x108  Code  Lc  usbhostenum.o [9]
+USBHCDEvents            0x00006e19   0x1e  Code  Gb  usbstick.o [1]
+USBHCDInit              0x000029bd   0xa4  Code  Gb  usbhostenum.o [9]
+USBHCDInitInternal      0x00002875   0xe8  Code  Lc  usbhostenum.o [9]
+USBHCDMain              0x00002e99  0x208  Code  Gb  usbhostenum.o [9]
+USBHCDPipeAllocSize     0x000023a1  0x142  Code  Gb  usbhostenum.o [9]
+USBHCDPipeConfig        0x0000252d   0xaa  Code  Gb  usbhostenum.o [9]
+USBHCDPipeFree          0x0000281f   0x56  Code  Gb  usbhostenum.o [9]
+USBHCDPipeRead          0x000026ef  0x126  Code  Gb  usbhostenum.o [9]
+USBHCDPipeWrite         0x000025d7  0x118  Code  Gb  usbhostenum.o [9]
+USBHCDPowerAutomatic    0x000029ab   0x12  Code  Gb  usbhostenum.o [9]
+USBHCDPowerConfigGet    0x00002965    0x8  Code  Gb  usbhostenum.o [9]
+USBHCDPowerConfigInit   0x0000295d    0x8  Code  Gb  usbhostenum.o [9]
+USBHCDPowerConfigSet    0x0000296d   0x3e  Code  Gb  usbhostenum.o [9]
+USBHCDRegisterDrivers   0x00002a61    0xe  Code  Gb  usbhostenum.o [9]
+USBHCDReset             0x00002a6f   0x30  Code  Gb  usbhostenum.o [9]
+USBHCDSetAddress        0x00002aa7   0x2c  Code  Gb  usbhostenum.o [9]
+USBHCDSetConfig         0x00002b4b   0x1a  Code  Gb  usbhostenum.o [9]
+USBHMSCBlockRead        0x00005de9   0x1a  Code  Gb  usbhmsc.o [9]
+USBHMSCBlockWrite       0x00005e03   0x1a  Code  Gb  usbhmsc.o [9]
+USBHMSCClose            0x00005ca9   0x2c  Code  Lc  usbhmsc.o [9]
+USBHMSCDriveOpen        0x00005dcb   0x14  Code  Gb  usbhmsc.o [9]
+USBHMSCDriveReady       0x00005cd5   0xd8  Code  Gb  usbhmsc.o [9]
+USBHMSCOpen             0x00005c21   0x88  Code  Lc  usbhmsc.o [9]
+USBHSCSIInquiry         0x00005ef9   0x2a  Code  Gb  usbhscsi.o [9]
+USBHSCSIRead10          0x00005fbb   0x1e  Code  Gb  usbhscsi.o [9]
+USBHSCSIReadCapacity    0x00005f23   0x10  Code  Gb  usbhscsi.o [9]
+USBHSCSIRequestSense    0x00005fa3   0x18  Code  Gb  usbhscsi.o [9]
+USBHSCSISendCommand     0x00005e71   0x7c  Code  Lc  usbhscsi.o [9]
+USBHSCSITestUnitReady   0x00005f67   0x3c  Code  Gb  usbhscsi.o [9]
+USBHSCSIWrite10         0x00005fd9   0x16  Code  Gb  usbhscsi.o [9]
+USBHostAddrSet          0x000038b3   0x12  Code  Gb  usb.o [4]
+USBHostCheckPipes       0x00002b81   0x54  Code  Gb  usbhostenum.o [9]
+USBHostEndpointConfig   0x000035c1   0xb0  Code  Gb  usb.o [4]
+USBHostEndpointDataAck  0x000037e9   0x12  Code  Gb  usb.o [4]
+USBHostEndpointStatusClear
+                        0x0000349d   0x2a  Code  Gb  usb.o [4]
+USBHostIntHandlerInternal
+                        0x00002bd5  0x1ee  Code  Gb  usbhostenum.o [9]
+USBHostMode             0x0000393d    0x4  Code  Gb  usb.o [4]
+USBHostPwrConfig        0x000038c5   0x1a  Code  Gb  usb.o [4]
+USBHostPwrDisable       0x000038ed    0xa  Code  Gb  usb.o [4]
+USBHostPwrEnable        0x000038df    0xe  Code  Gb  usb.o [4]
+USBHostRequestIN        0x00003897   0x12  Code  Gb  usb.o [4]
+USBHostRequestStatus    0x000038a9    0xa  Code  Gb  usb.o [4]
+USBHostReset            0x000033df   0x14  Code  Gb  usb.o [4]
+USBHostResume           0x000033f3   0x14  Code  Gb  usb.o [4]
+USBHostSuspend          0x000033d3    0xc  Code  Gb  usb.o [4]
+USBIndexWrite           0x000033b9   0x1a  Code  Lc  usb.o [4]
+USBIntEnableControl     0x00003407   0x26  Code  Gb  usb.o [4]
+USBIntEnableEndpoint    0x00003469   0x1a  Code  Gb  usb.o [4]
+USBIntStatusControl     0x0000342d   0x34  Code  Gb  usb.o [4]
+USBIntStatusEndpoint    0x00003483    0x6  Code  Gb  usb.o [4]
+USBModeGet              0x00003919    0xa  Code  Gb  usb.o [4]
+USBOTGMain              0x00003fc5   0x62  Code  Gb  usbmode.o [9]
+USBOTGMode              0x00003949    0x4  Code  Gb  usb.o [4]
+USBOTGModeInit          0x00003e7f   0x66  Code  Gb  usbmode.o [9]
+USBOTGSessionRequest    0x000038fd   0x14  Code  Gb  usb.o [4]
+USBOTGSetMode           0x00003dfd   0x6a  Code  Lc  usbmode.o [9]
+USBRingBufAdvanceRead   0x00009a5b   0x1e  Code  Gb  usbringbuf.o [9]
+USBRingBufAdvanceWrite  0x00009a79   0x36  Code  Gb  usbringbuf.o [9]
+USBRingBufContigFree    0x00009a3f   0x1c  Code  Gb  usbringbuf.o [9]
+USBRingBufContigUsed    0x00009a2d   0x12  Code  Gb  usbringbuf.o [9]
+USBRingBufFlush         0x000099f7   0x14  Code  Gb  usbringbuf.o [9]
+USBRingBufFree          0x00009a1f    0xe  Code  Gb  usbringbuf.o [9]
+USBRingBufInit          0x00009ad9    0xc  Code  Gb  usbringbuf.o [9]
+USBRingBufUsed          0x00009a0b   0x14  Code  Gb  usbringbuf.o [9]
+USBRingBufWrite         0x00009abd   0x1c  Code  Gb  usbringbuf.o [9]
+USBRingBufWriteOne      0x00009aaf    0xe  Code  Gb  usbringbuf.o [9]
+USBSerialInit           0x0000719f   0x1a  Code  Gb  usbserial.o [1]
+USBSerialRun            0x000071b9    0x2  Code  Gb  usbserial.o [1]
+USBSerialWriteRecord    0x000071bb   0x72  Code  Gb  usbserial.o [1]
+USBStackModeSet         0x00003e67   0x18  Code  Gb  usbmode.o [9]
+USBStat                 0x20002c07    0x1  Data  Lc  fat_usbmsc.o [1]
+USBStickCloseFile       0x00006edd   0x14  Code  Gb  usbstick.o [1]
+USBStickInit            0x00006e37   0x48  Code  Gb  usbstick.o [1]
+USBStickOpenLogFile     0x00006ef1   0xc4  Code  Gb  usbstick.o [1]
+USBStickRun             0x00006e7f   0x5e  Code  Gb  usbstick.o [1]
+USBStickWriteRecord     0x00006fb5   0xb8  Code  Gb  usbstick.o [1]
+UpdateContextCharMapping
+                        0x0000960d   0x44  Code  Lc  string.o [5]
+UpdateIndexAtomic       0x000099d1   0x26  Code  Lc  usbringbuf.o [9]
+UpdateViewerData        0x00006035  0x12e  Code  Lc  acquire.o [1]
+WidgetActivated         0x00008963   0xe6  Code  Lc  qs-logger.o [1]
+WidgetAdd               0x00007da7   0x22  Code  Gb  widget.o [5]
+WidgetDefaultMsgProc    0x00007da3    0x4  Code  Gb  widget.o [5]
+WidgetIsInTree          0x00007d75   0x2e  Code  Lc  widget.o [5]
+WidgetMessageQueueAdd   0x00007ea9   0xc2  Code  Gb  widget.o [5]
+WidgetMessageQueueProcess
+                        0x00007f6b   0x44  Code  Gb  widget.o [5]
+WidgetMessageSendPostOrder
+                        0x00007e15   0x8a  Code  Gb  widget.o [5]
+WidgetMessageSendPreOrder
+                        0x00007dc9   0x4c  Code  Gb  widget.o [5]
+WidgetMutexGet          0x00007d61   0x14  Code  Gb  widget.o [5]
+__aeabi_memclr          0x00005c11         Code  Gb  ABImemclr.o [7]
+__aeabi_memclr4         0x00005c19         Code  Gb  ABImemclr4.o [7]
+__aeabi_memcpy          0x00004e25         Code  Gb  ABImemcpy.o [7]
+__aeabi_memcpy4         0x00004e45         Code  Gb  ABImemcpy.o [7]
+__aeabi_memcpy8         0x00004e45         Code  Gb  ABImemcpy.o [7]
+__aeabi_memmove         0x00007ce9         Code  Gb  ABImemmove.o [7]
+__aeabi_memmove4        0x00007ce9         Code  Gb  ABImemmove.o [7]
+__aeabi_memmove8        0x00007ce9         Code  Gb  ABImemmove.o [7]
+__aeabi_memset          0x00005b45         Code  Gb  ABImemset.o [7]
+__aeabi_memset4         0x00005e35         Code  Gb  ABImemset48.o [7]
+__aeabi_memset8         0x00005e35         Code  Gb  ABImemset48.o [7]
+__cmain                 0x0000b4e5         Code  Gb  cmain.o [7]
+__exit                  0x0000b511   0x14  Code  Gb  exit.o [8]
+__iar_Memset            0x00005b45         Code  Gb  ABImemset.o [7]
+__iar_Memset4_word      0x00005e3d         Code  Gb  ABImemset48.o [7]
+__iar_Memset8_word      0x00005e3d         Code  Gb  ABImemset48.o [7]
+__iar_Memset_word       0x00005b4d         Code  Gb  ABImemset.o [7]
+__iar_SB                0x0000b558         Data  Gb  bwt_init3c.o [7]
+__iar_data_init3        0x0000b449   0x2c  Code  Gb  data_init3.o [7]
+__iar_init_vfp          0x0000b4c9         Code  Gb  fpinit_M.o [6]
+__iar_packbits_init3    0x0000b271   0xa0  Code  Gb  packbits_init3.o [7]
+__iar_program_start     0x0000b545         Code  Gb  cstartup_M.o [7]
+__iar_strcmp            0x00009ae5         Code  Gb  strcmp.o [7]
+__iar_zero_init3        0x000040e3   0x22  Code  Gb  zero_init3.o [7]
+__low_level_init        0x0000b4fb    0x4  Code  Gb  low_level_init.o [3]
+__vector_table          0x00000000  0x26c  Data  Gb  startup_ewarm.o [1]
+_call_main              0x0000b4f1         Code  Gb  cmain.o [7]
+_exit                   0x0000b505         Code  Gb  cexit.o [7]
+_main                   0x0000b4f7         Code  Gb  cmain.o [7]
+auto_mount              0x00005497  0x152  Code  Lc  ff.o [1]
+check_fs                0x00005441   0x56  Code  Lc  ff.o [1]
+clust2sect              0x00005177   0x1c  Code  Lc  ff.o [1]
+create_chain            0x000050fd   0x7a  Code  Lc  ff.o [1]
+disk_initialize         0x00005a91   0x26  Code  Gb  fat_usbmsc.o [1]
+disk_ioctl              0x00005b1d   0x18  Code  Gb  fat_usbmsc.o [1]
+disk_read               0x00005ac3   0x24  Code  Gb  fat_usbmsc.o [1]
+disk_status             0x00005ab7    0xc  Code  Gb  fat_usbmsc.o [1]
+disk_write              0x00005ae7   0x36  Code  Gb  fat_usbmsc.o [1]
+exit                    0x0000b4ff    0x4  Code  Gb  exit.o [3]
+f_close                 0x00005961   0x10  Code  Gb  ff.o [1]
+f_lseek                 0x00005971   0xf6  Code  Gb  ff.o [1]
+f_mount                 0x00005609   0x30  Code  Gb  ff.o [1]
+f_open                  0x00005641  0x12c  Code  Gb  ff.o [1]
+f_sync                  0x000058ed   0x74  Code  Gb  ff.o [1]
+f_write                 0x0000576d  0x130  Code  Gb  ff.o [1]
+fsid                    0x20003e34    0x2  Data  Lc  ff.o [1]
+g_USBHMSCDevice         0x20003de0   0x1c  Data  Lc  usbhmsc.o [9]
+g_USBHostMSCClassDriver
+                        0x0000b534   0x10  Data  Gb  usbhmsc.o [9]
+g_bNeedKeepAlive        0x20003a20    0x1  Data  Lc  acquire.o [1]
+g_bUSBDevConnected      0x20002bd8    0x1  Data  Lc  usbserial.o [1]
+g_bUSBTimerInitialized  0x20003cf8    0x1  Data  Gb  usbtick.o [9]
+g_bUseDMAWA             0x20002a74    0x4  Data  Lc  usbhostenum.o [9]
+g_cCSVHeaderLine        0x000070b0   0x8c  Data  Lc  usbstick.o [1]
+g_eCurrentUSBMode       0x20002c08    0x1  Data  Gb  qs-logger.o [1]
+g_eDualMode             0x20002bba    0x1  Data  Lc  usbmode.o [9]
+g_eOTGModeState         0x20002bb9    0x1  Data  Gb  usbmode.o [9]
+g_eState                0x200035e0    0x1  Data  Gb  usbstick.o [1]
+g_eUSBMode              0x20002bb8    0x1  Data  Gb  usbmode.o [9]
+g_lUSBHActiveDriver     0x20002a7c    0x4  Data  Lc  usbhostenum.o [9]
+g_pCDCCompSerConfigDescriptors
+                        0x0000b3f4    0x4  Data  Gb  usbdcdc.o [9]
+g_pCDCSerCommInterface  0x0000b398   0x24  Data  Gb  usbdcdc.o [9]
+g_pCDCSerConfigDescriptors
+                        0x00008890    0x4  Data  Gb  usbdcdc.o [9]
+g_pCDCSerDataInterface  0x0000b3c4   0x18  Data  Gb  usbdcdc.o [9]
+g_pCDCSerDescriptor     0x200021ec    0xc  Data  Gb  usbdcdc.o [9]
+g_pCDCSerDeviceDescriptor
+                        0x20002b94   0x14  Data  Gb  usbdcdc.o [9]
+g_pConfigState          0x20003a84    0x4  Data  Lc  acquire.o [1]
+g_pConfigString         0x0000b1ac   0x38  Data  Gb  usb_serial_structs.o [1]
+g_pControlInterfaceString
+                        0x0000b180   0x2c  Data  Gb  usb_serial_structs.o [1]
+g_pHCDPool              0x20003920   0x80  Data  Gb  qs-logger.o [1]
+g_pIADSerDescriptor     0x20002bfc    0x8  Data  Gb  usbdcdc.o [9]
+g_pLangDescriptor       0x0000b104    0x4  Data  Gb  usb_serial_structs.o [1]
+g_pMQ                   0x20003490  0x140  Data  Lc  widget.o [5]
+g_pManufacturerString   0x0000b108   0x24  Data  Gb  usb_serial_structs.o [1]
+g_pPointerWidget        0x20002a88    0x4  Data  Lc  widget.o [5]
+g_pProductString        0x0000b12c   0x40  Data  Gb  usb_serial_structs.o [1]
+g_pSerialNumberString   0x0000b16c   0x14  Data  Gb  usb_serial_structs.o [1]
+g_pStringDescriptors    0x0000b1e4   0x18  Data  Gb  usb_serial_structs.o [1]
+g_pcTextFields          0x20001944  0x140  Data  Lc  menus.o [1]
+g_pcUSBRxBuffer         0x200036ec  0x100  Data  Gb  usb_serial_structs.o [1]
+g_pcUSBTxBuffer         0x200037ec  0x100  Data  Gb  usb_serial_structs.o [1]
+g_pfTickHandlers        0x20003cfc   0x18  Data  Gb  usbtick.o [9]
+g_pfnUSBModeCallback    0x20002bc4    0x4  Data  Lc  usbmode.o [9]
+g_ppHostClassDrivers    0x0000713c    0x8  Data  Lc  usbstick.o [1]
+g_ppucImage_Splash      0x20002b80   0x14  Data  Gb  images.o [1]
+g_psCDCCompSerSections  0x20002bc8   0x10  Data  Gb  usbdcdc.o [9]
+g_psCDCSerSections      0x20002be4    0xc  Data  Gb  usbdcdc.o [9]
+g_psDaysToMonth         0x00006cb4   0x18  Data  Lc  ustdlib.o [1]
+g_psDefaultCodePointMapTable
+                        0x00009720   0x10  Data  Gb  context.o [5]
+g_psGrLibDefaults       0x20003e5c    0x4  Data  Lc  context.o [5]
+g_psUSBDStdRequests     0x000049f0   0x34  Data  Lc  usbdenum.o [9]
+g_psUSBDevice           0x20003c60   0x54  Data  Gb  usbdenum.o [9]
+g_pucDataBufferIn       0x20003cb8   0x40  Data  Lc  usbdenum.o [9]
+g_pucDictionary         0x20003dc0   0x20  Data  Lc  image.o [5]
+g_pucFontFixed6x8Data   0x0000aa14  0x2f8  Data  Lc  fontfixed6x8.o [5]
+g_pucImage_Splash1      0x0000062c  0x5dc  Data  Gb  images.o [1]
+g_pucImage_Splash2      0x00000c08  0x5e8  Data  Gb  images.o [1]
+g_pucImage_Splash3      0x000011f0  0x5a8  Data  Gb  images.o [1]
+g_pucImage_Splash4      0x00001798  0x5b8  Data  Gb  images.o [1]
+g_pucImage_Splash5      0x00001d50  0x570  Data  Gb  images.o [1]
+g_pucImage_TI_Black     0x0000026c  0x3c0  Data  Gb  images.o [1]
+g_pucOffscreenBufA      0x20000044  0xc38  Data  Gb  menus.o [1]
+g_pucOffscreenBufB      0x20000c7c  0xc38  Data  Gb  menus.o [1]
+g_pucRxBufferWorkspace  0x20003e14   0x10  Data  Gb  usb_serial_structs.o [1]
+g_pucTxBufferWorkspace  0x20003e24   0x10  Data  Gb  usb_serial_structs.o [1]
+g_pulDisRegs            0x00003aa0   0x14  Data  Lc  interrupt.o [4]
+g_pulEnRegs             0x00003a8c   0x14  Data  Lc  interrupt.o [4]
+g_pulPalette            0x20001904   0x40  Data  Gb  menus.o [1]
+g_pulRCGCRegs           0x00003d84    0xc  Data  Lc  sysctl.o [4]
+g_pulSRCRRegs           0x00003d78    0xc  Data  Lc  sysctl.o [4]
+g_pulXtals              0x00003d90   0x6c  Data  Lc  sysctl.o [4]
+g_pvDriverInstance      0x20002a80    0x4  Data  Lc  usbhostenum.o [9]
+g_pvTickInstance        0x20003d14   0x18  Data  Gb  usbtick.o [9]
+g_sAIN0Canvas           0x20002620   0x40  Data  Gb  menus.o [1]
+g_sAIN1Canvas           0x200025e0   0x40  Data  Gb  menus.o [1]
+g_sAIN2Canvas           0x200025a0   0x40  Data  Gb  menus.o [1]
+g_sAIN3Canvas           0x20002560   0x40  Data  Gb  menus.o [1]
+g_sAINContainerCanvas   0x20002660   0x40  Data  Gb  menus.o [1]
+g_sAccelContainerCanvas
+                        0x20002520   0x40  Data  Gb  menus.o [1]
+g_sAccelTitleCanvas     0x200024e0   0x40  Data  Gb  menus.o [1]
+g_sAccelXCanvas         0x200024a0   0x40  Data  Gb  menus.o [1]
+g_sAccelYCanvas         0x20002460   0x40  Data  Gb  menus.o [1]
+g_sAccelZCanvas         0x20002420   0x40  Data  Gb  menus.o [1]
+g_sCDCCompSerConfigHeader
+                        0x0000b3ec    0x8  Data  Gb  usbdcdc.o [9]
+g_sCDCDevice            0x0000b1fc   0x2c  Data  Gb  usb_serial_structs.o [1]
+g_sCDCInstance          0x20003d30   0x2c  Data  Gb  usb_serial_structs.o [1]
+g_sCDCSerCommInterfaceSection
+                        0x0000b3bc    0x8  Data  Gb  usbdcdc.o [9]
+g_sCDCSerConfigHeader   0x0000b3e4    0x8  Data  Gb  usbdcdc.o [9]
+g_sCDCSerConfigSection  0x0000b388    0x8  Data  Gb  usbdcdc.o [9]
+g_sCDCSerDataInterfaceSection
+                        0x0000b3dc    0x8  Data  Gb  usbdcdc.o [9]
+g_sCDCSerDeviceInfo     0x200021f8   0x48  Data  Gb  usbdcdc.o [9]
+g_sCFAL96x64x16         0x0000b474   0x28  Data  Gb  cfal96x64x16.o [1]
+g_sChannelsMenu         0x2000211c   0x1c  Data  Gb  menus.o [1]
+g_sChannelsMenuItems    0x2000207c   0xa0  Data  Gb  menus.o [1]
+g_sClockContainerCanvas
+                        0x20002820   0x40  Data  Gb  menus.o [1]
+g_sClockDateCanvas      0x200027a0   0x40  Data  Gb  menus.o [1]
+g_sClockSetter          0x20002a1c   0x38  Data  Gb  menus.o [1]
+g_sClockTimeCanvas      0x20002760   0x40  Data  Gb  menus.o [1]
+g_sClockTitleCanvas     0x200027e0   0x40  Data  Gb  menus.o [1]
+g_sConfigMenu           0x20002ae8   0x1c  Data  Gb  menus.o [1]
+g_sConfigMenuItems      0x20002290   0x50  Data  Gb  menus.o [1]
+g_sConfigState          0x200038ec   0x20  Data  Lc  qs-logger.o [1]
+g_sConfirmMenu          0x20002b20   0x1c  Data  Gb  menus.o [1]
+g_sConfirmMenuItems     0x20002ba8   0x10  Data  Gb  menus.o [1]
+g_sCurrentContainerCanvas
+                        0x20002720   0x40  Data  Gb  menus.o [1]
+g_sCurrentTitleCanvas   0x200026e0   0x40  Data  Gb  menus.o [1]
+g_sCurrentValueCanvas   0x200026a0   0x40  Data  Gb  menus.o [1]
+g_sDMAControlTable      0x20003c00   0x60  Data  Gb  usbstick.o [1]
+g_sFatFs                0x20003040  0x22c  Data  Lc  usbstick.o [1]
+g_sFileObject           0x2000326c  0x224  Data  Lc  usbstick.o [1]
+g_sFontFixed6x8         0x0000ad0c   0xc8  Data  Gb  fontfixed6x8.o [5]
+g_sIADSerConfigSection  0x0000b390    0x8  Data  Gb  usbdcdc.o [9]
+g_sLineCoding           0x20002bdc    0x8  Data  Lc  usbserial.o [1]
+g_sLoggerState          0x2000390c    0x1  Data  Lc  qs-logger.o [1]
+g_sMainMenu             0x20002acc   0x1c  Data  Gb  menus.o [1]
+g_sMainMenuItems        0x20002240   0x50  Data  Gb  menus.o [1]
+g_sMenuWidget           0x20000000   0x44  Data  Gb  menus.o [1]
+g_sOffscreenDisplayA    0x200018b4   0x28  Data  Gb  menus.o [1]
+g_sOffscreenDisplayB    0x200018dc   0x28  Data  Gb  menus.o [1]
+g_sPeriodMenu           0x20002138   0x1c  Data  Gb  menus.o [1]
+g_sPeriodMenuItems      0x20001ec4   0xf0  Data  Gb  menus.o [1]
+g_sRecordBuf            0x20003d5c   0x20  Data  Lc  acquire.o [1]
+g_sRoot                 0x20002a8c   0x20  Data  Gb  widget.o [5]
+g_sRxBuffer             0x0000b228   0x24  Data  Gb  usb_serial_structs.o [1]
+g_sSeries               0x20001fb4   0xc8  Data  Lc  stripchartmanager.o [1]
+g_sSleepMenu            0x20002170   0x1c  Data  Gb  menus.o [1]
+g_sSleepMenuItems       0x20002aac   0x20  Data  Gb  menus.o [1]
+g_sStatus1Canvas        0x200028e0   0x40  Data  Gb  menus.o [1]
+g_sStatus2Canvas        0x200028a0   0x40  Data  Gb  menus.o [1]
+g_sStatus3Canvas        0x20002860   0x40  Data  Gb  menus.o [1]
+g_sStatusContainerCanvas
+                        0x20002960   0x40  Data  Gb  menus.o [1]
+g_sStatusTitleCanvas    0x20002920   0x40  Data  Gb  menus.o [1]
+g_sStorageMenu          0x20002154   0x1c  Data  Gb  menus.o [1]
+g_sStorageMenuItems     0x200029a0   0x40  Data  Gb  menus.o [1]
+g_sStripChart           0x20001a84   0x4c  Data  Gb  stripchartmanager.o [1]
+g_sTempContainerCanvas  0x200023e0   0x40  Data  Gb  menus.o [1]
+g_sTempExtValueCanvas   0x20002320   0x40  Data  Gb  menus.o [1]
+g_sTempIntValueCanvas   0x20002360   0x40  Data  Gb  menus.o [1]
+g_sTempTitleCanvas      0x200023a0   0x40  Data  Gb  menus.o [1]
+g_sTimeClock            0x20003e4c    0x8  Data  Gb  menus.o [1]
+g_sTxBuffer             0x0000b24c   0x24  Data  Gb  usb_serial_structs.o [1]
+g_sUSBDefaultFIFOConfig
+                        0x0000b310   0x78  Data  Gb  usbdenum.o [9]
+g_sUSBEventDriver       0x0000b524   0x10  Data  Gb  usbstick.o [1]
+g_sUSBHCD               0x20002c0c  0x434  Data  Lc  usbhostenum.o [9]
+g_sUSBHEP0State         0x20002a54   0x18  Data  Lc  usbhostenum.o [9]
+g_sViewMenu             0x20002b04   0x1c  Data  Gb  menus.o [1]
+g_sViewMenuItems        0x2000218c   0x60  Data  Gb  menus.o [1]
+g_ucButtonStates        0x20002c04    0x1  Data  Lc  buttons.o [1]
+g_ucChecked             0x0000a4cc   0x10  Data  Gb  slidemenuwidget.o [1]
+g_ucDisplayInitCommands
+                        0x20002b6c   0x14  Data  Lc  cfal96x64x16.o [1]
+g_ucLtArrow             0x0000a4ac   0x10  Data  Gb  slidemenuwidget.o [1]
+g_ucMQMutex             0x20003e40    0x1  Data  Lc  widget.o [5]
+g_ucRtArrow             0x0000a49c   0x10  Data  Gb  slidemenuwidget.o [1]
+g_ucSeriesData          0x20001b04  0x3c0  Data  Lc  stripchartmanager.o [1]
+g_ucUnchecked           0x0000a4bc   0x10  Data  Gb  slidemenuwidget.o [1]
+g_ulADCCount            0x20003a7c    0x4  Data  Lc  acquire.o [1]
+g_ulADCData             0x20003a24   0x40  Data  Lc  acquire.o [1]
+g_ulADCSeq              0x200022e0   0x40  Data  Gb  acquire.o [1]
+g_ulAlloc               0x20002bf0    0x8  Data  Lc  usbhostenum.o [9]
+g_ulCurrentTick         0x20003e60    0x4  Data  Lc  usbhostenum.o [9]
+g_ulCurrentUSBTick      0x20003d2c    0x4  Data  Gb  usbtick.o [9]
+g_ulDMAPending          0x20002a70    0x4  Data  Gb  usbhostenum.o [9]
+g_ulFlags               0x200035e4    0x4  Data  Lc  usbstick.o [1]
+g_ulItemCount           0x20001afc    0x4  Data  Lc  stripchartmanager.o [1]
+g_ulKeyFocusWidgetHandle
+                        0x20003914    0x4  Data  Lc  qs-logger.o [1]
+g_ulLogPeriod           0x200029e0   0x3c  Data  Lc  menus.o [1]
+g_ulMQRead              0x20003e44    0x4  Data  Lc  widget.o [5]
+g_ulMQWrite             0x20003e48    0x4  Data  Lc  widget.o [5]
+g_ulMSCInstance         0x200035e8    0x4  Data  Gb  usbstick.o [1]
+g_ulMatchPeriod         0x20003a74    0x8  Data  Lc  acquire.o [1]
+g_ulNextMatch           0x20003a6c    0x8  Data  Lc  acquire.o [1]
+g_ulPollRate            0x20002bbc    0x4  Data  Gb  usbmode.o [9]
+g_ulPowerConfig         0x20002bf8    0x4  Data  Lc  usbhostenum.o [9]
+g_ulRTCInts             0x20003a80    0x4  Data  Lc  acquire.o [1]
+g_ulRecordBuf           0x200039a0   0x80  Data  Lc  flashstore.o [1]
+g_ulSelectedCount       0x20001af8    0x4  Data  Lc  stripchartmanager.o [1]
+g_ulSelectedMask        0x20001b00    0x4  Data  Lc  stripchartmanager.o [1]
+g_ulStoreAddr           0x20003e54    0x4  Data  Lc  flashstore.o [1]
+g_ulTickCount           0x20003910    0x4  Data  Lc  qs-logger.o [1]
+g_ulTickms              0x20002a78    0x4  Data  Lc  usbhostenum.o [9]
+g_ulTimeStamp           0x20003a64    0x8  Data  Lc  acquire.o [1]
+g_ulUSBHIntEvents       0x20002a6c    0x4  Data  Gb  usbhostenum.o [9]
+g_ulUSBSOFCount         0x20003e64    0x4  Data  Gb  usbtick.o [9]
+g_ulWaitTicks           0x20002bc0    0x4  Data  Gb  usbmode.o [9]
+g_ulWriteDelay          0x20003e58    0x4  Data  Lc  hibernate.o [4]
+get_cluster             0x00004f3b   0x9a  Code  Lc  ff.o [1]
+get_fattime             0x00005b35    0x4  Code  Gb  fat_usbmsc.o [1]
+main                    0x00008a6b  0x360  Code  Gb  qs-logger.o [1]
+make_dirfile            0x000051ef   0xd0  Code  Lc  ff.o [1]
+memcmp                  0x00005bad         Code  Gb  memcmp.o [7]
+move_window             0x00004ea1   0x6a  Code  Lc  ff.o [1]
+next_dir_entry          0x00005193   0x5c  Code  Lc  ff.o [1]
+pulStack                0x20003e68  0x400  Data  Lc  startup_ewarm.o [1]
+put_cluster             0x00004fe5   0xb8  Code  Lc  ff.o [1]
+remove_chain            0x000050b7   0x40  Code  Lc  ff.o [1]
+reserve_direntry        0x00005385   0xbc  Code  Lc  ff.o [1]
+sAxisX                  0x20002b3c   0x18  Data  Lc  stripchartmanager.o [1]
+sAxisY                  0x20002b54   0x18  Data  Lc  stripchartmanager.o [1]
+sScaling                0x20001ad0   0x28  Data  Gb  stripchartmanager.o [1]
+strcmp                  0x00009ae5         Code  Gb  strcmp.o [7]
+strlen                  0x00007fbd         Code  Gb  strlen.o [7]
+sync                    0x00004f17   0x24  Code  Lc  ff.o [1]
+trace_path              0x000052bf   0xc6  Code  Lc  ff.o [1]
+uDMAChannelAttributeDisable
+                        0x000032b5   0x26  Code  Gb  udma.o [4]
+uDMAChannelControlSet   0x000032db   0x18  Code  Gb  udma.o [4]
+uDMAChannelDisable      0x000032a5   0x10  Code  Gb  udma.o [4]
+uDMAChannelEnable       0x00003295   0x10  Code  Gb  udma.o [4]
+uDMAChannelModeGet      0x00003377   0x28  Code  Gb  udma.o [4]
+uDMAChannelTransferSet  0x000032f3   0x84  Code  Gb  udma.o [4]
+ucmptime                0x00006c0b   0x56  Code  Lc  ustdlib.o [1]
+ulocaltime              0x00006b77   0x94  Code  Gb  ustdlib.o [1]
+umktime                 0x00006c61   0x38  Code  Gb  ustdlib.o [1]
+usnprintf               0x00006b69    0xe  Code  Gb  ustdlib.o [1]
+ustrncpy                0x00006959   0x20  Code  Gb  ustdlib.o [1]
+uvsnprintf              0x00006979  0x1ea  Code  Gb  ustdlib.o [1]
+validate                0x000055e9   0x20  Code  Lc  ff.o [1]
+
+
+[1] = C:\StellarisWare\boards\ek-lm4f232\qs-logger\ewarm\Obj
+[2] = command line
+[3] = dl7M_tln.a
+[4] = driverlib-cm4f.a
+[5] = grlib-cm4f.a
+[6] = m7M_tlv.a
+[7] = rt7M_tl.a
+[8] = shb_l.a
+[9] = usblib-cm4f.a
+
+  35 386 bytes of readonly  code memory
+  13 603 bytes of readonly  data memory
+  16 997 bytes of readwrite data memory
+
+Errors: none
+Warnings: none
