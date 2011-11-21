@@ -1,4 +1,4 @@
-// svm.c - Interface for RC servo PWM, main update tick for system.
+// svm.c - Interface for RC servo PWM.
 // Alex Suchko for ChalkBot
 // November 10,2011
 
@@ -14,7 +14,6 @@
 #include "driverlib/interrupt.h"
                               // NVIC API INT_PWM0
 #include "inc/hw_ints.h"      // NVIC hardware interrupt vector enumerations/aliases
-#include "hbridge.h"          // for debug I/O
 
 // Definitions
 
@@ -120,15 +119,7 @@ void svm_pwm_gen_ISR(void)
                                       // is the timer load interrupt
   ROM_PWMGenIntClear(SVM_PWM_BASE, SVM_PWM_GEN, PWM_INT_CNT_LOAD);
                                       // clear timer load interrupt or else nothiing else will run
-  toggle ^= 0xFF;                     // test code
-  if(toggle)
-  {
-    hbr_set_reset(HBR_LEFT, 1);
-  }
-  else
-  {
-    hbr_set_reset(HBR_LEFT, 0);
-  }
+  // do things here
 }
   
 // * svm_set_pulse ************************************************************

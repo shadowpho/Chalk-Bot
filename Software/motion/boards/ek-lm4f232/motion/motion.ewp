@@ -941,6 +941,9 @@
       <name>$PROJ_DIR$\clocksetwidget.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\encoder.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\..\..\third_party\fatfs\port\fat_usbmsc.c</name>
     </file>
     <file>

@@ -49,6 +49,7 @@ extern void RTCHandler(void);
 extern void SysTickIntHandler(void);
 extern void USB0OTGModeIntHandler(void);
 extern void svm_pwm_gen_ISR(void);                          // from "svm.c"
+extern void enc_2_ISR(void);                                // from "encoder.c"
 
 //*****************************************************************************
 //
@@ -116,7 +117,7 @@ __root const uVectorEntry __vector_table[] @ ".intvec" =
     IntDefaultHandler,                      // PWM Generator 0
     svm_pwm_gen_ISR,                        // PWM Generator 1
     IntDefaultHandler,                      // PWM Generator 2
-    IntDefaultHandler,                      // Quadrature Encoder 0
+    enc_2_ISR,                              // Quadrature Encoder 0
     ADC0SS0Handler,                         // ADC Sequence 0
     IntDefaultHandler,                      // ADC Sequence 1
     IntDefaultHandler,                      // ADC Sequence 2

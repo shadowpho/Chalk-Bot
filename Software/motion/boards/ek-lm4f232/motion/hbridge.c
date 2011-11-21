@@ -27,13 +27,13 @@
 
 #define HBR_OUTPUT_PORT       (SYSCTL_PERIPH_GPIOD)
 #define HBR_OUTPUT_PORT_BASE  (GPIO_PORTD_BASE)
-#define HBR_OUTPUT_PINS       (GPIO_PIN_4 | GPIO_PIN_1 | GPIO_PIN_3 | GPIO_PIN_2 | GPIO_PIN_0 | GPIO_PIN_6 | GPIO_PIN_5) // pin D7 dead 11/15/2011
+#define HBR_OUTPUT_PINS       (GPIO_PIN_4 | GPIO_PIN_1 | GPIO_PIN_3 | GPIO_PIN_2 | GPIO_PIN_0 | GPIO_PIN_5) // pin D7 dead 11/15/2011
 #define HBR_1_RESET           (GPIO_PIN_4)
 #define HBR_1_PWMH            (GPIO_PIN_1)    // this pin will be operated by PWM hardware
 #define HBR_1_PWML            (GPIO_PIN_3)
 #define HBR_1_PHASE           (GPIO_PIN_2)
 #define HBR_2_PWMH            (GPIO_PIN_0)    // this pin will be operated by PWM hardware
-#define HBR_2_PWML            (GPIO_PIN_6)
+#define HBR_2_PWML            (0)//DEAD PIN this pin now used for QEI PhA0, solder jumper and use a different pin for this purpose, perhaps PFx? (was PD6)
 #define HBR_2_PHASE           (GPIO_PIN_5)
                                               // dead pin workaround(s)
 #define HBR_WORKAROUND_PORT   (SYSCTL_PERIPH_GPIOF)   // this port is shared with QEI
