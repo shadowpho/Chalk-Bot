@@ -959,6 +959,9 @@
       <name>$PROJ_DIR$\images.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\imu.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\menus.c</name>
     </file>
     <file>
