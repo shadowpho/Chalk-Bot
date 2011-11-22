@@ -1087,8 +1087,8 @@ main(void)
     hbr_init();                                   // initialize interface
     hbr_set_reset(HBR_LEFT, 1);
     hbr_set_reset(HBR_RIGHT, 1); // right side not going high 11/14/2011 7:19pm
-    hbr_set_effort(HBR_LEFT, 256);
-    hbr_set_effort(HBR_RIGHT, 900);
+    hbr_set_effort(HBR_LEFT, 768);
+    hbr_set_effort(HBR_RIGHT, 256);
     
     svm_init();
     //svm_int_init();

@@ -10,6 +10,14 @@
 // Function Prototypes
 
 void enc_init(void);                  // setup pins and qei hardware
-void enc_2_int_init(void);              // setup and enable interrupts for qei
+void enc_2_int_init(void);            // setup and enable interrupts for qei
+void enc_dir_reverse(unsigned char encoder, unsigned char reverse);
+                                      // specifies option to reverse encoder positive direction
+signed long enc_pos_get(unsigned char encoder);
+                                      // gets current encoder position in pulses
+void enc_pos_set(unsigned char encoder, signed long position);
+                                      // sets current encoder position in pulses
+signed long enc_vel_get(unsigned char encoder);
+                                      // gets current encoder velocity (see important note in "encoder.c")
 
 // EOF
