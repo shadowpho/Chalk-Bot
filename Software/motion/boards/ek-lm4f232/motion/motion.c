@@ -58,6 +58,8 @@
 #include "flashstore.h"
 #include "hbridge.h"                // definition file for hbridge interface
 #include "svm.h"                    // definition file for svm interface and timing tick
+#include "encoder.h"                // encoder interface
+#include "imu.h"                    // inertial measurement interface
 
 //*****************************************************************************
 //
@@ -1096,7 +1098,7 @@ main(void)
     svm_set_us(SVM_2, 2300);
     
     enc_init();
-    enc_2_int_init();
+    //enc_2_int_init();
     
     imu_init();
     imu_poll_gyro();

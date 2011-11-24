@@ -12,7 +12,6 @@
       <file>$PROJ_DIR$\usbserial.h</file>
       <file>$PROJ_DIR$\..\..\..\inc\hw_ints.h</file>
       <file>$PROJ_DIR$\acquire.c</file>
-      <file>$PROJ_DIR$\..\..\..\driverlib\ssi.h</file>
       <file>$PROJ_DIR$\ewarm\Obj\slidemenuwidget.o</file>
       <file>$PROJ_DIR$\..\drivers\slidemenuwidget.h</file>
       <file>$PROJ_DIR$\..\..\..\driverlib\rom.h</file>
@@ -31,20 +30,16 @@
       <file>$PROJ_DIR$\ewarm\Obj\motion.pbd</file>
       <file>$PROJ_DIR$\ewarm\Obj\usbserial.o</file>
       <file>$PROJ_DIR$\..\..\..\utils\ustdlib.h</file>
-      <file>$PROJ_DIR$\..\drivers\buttons.h</file>
-      <file>$PROJ_DIR$\..\drivers\cfal96x64x16.h</file>
       <file>$PROJ_DIR$\..\..\..\driverlib\adc.h</file>
       <file>$PROJ_DIR$\ewarm\Obj\cfal96x64x16.pbi</file>
       <file>$PROJ_DIR$\..\..\..\inc\hw_memmap.h</file>
       <file>$PROJ_DIR$\ewarm\Obj\startup_ewarm.pbi</file>
       <file>$PROJ_DIR$\ewarm\Obj\encoder.pbi</file>
       <file>$PROJ_DIR$\ewarm\Obj\encoder.o</file>
-      <file>$PROJ_DIR$\..\..\..\usblib\host\usbhost.h</file>
       <file>$PROJ_DIR$\svm.c</file>
       <file>$PROJ_DIR$\ewarm\Obj\svm.pbi</file>
       <file>$PROJ_DIR$\hbridge.c</file>
       <file>$TOOLKIT_DIR$\inc\c\stdarg.h</file>
-      <file>$PROJ_DIR$\..\..\..\usblib\usblib.h</file>
       <file>$PROJ_DIR$\..\..\..\inc\hw_types.h</file>
       <file>$PROJ_DIR$\usbserial.c</file>
       <file>$PROJ_DIR$\ewarm\Obj\images.o</file>
@@ -57,7 +52,6 @@
       <file>$PROJ_DIR$\ewarm\Obj\stripchartwidget.o</file>
       <file>$PROJ_DIR$\..\..\..\grlib\canvas.h</file>
       <file>$PROJ_DIR$\ewarm\Obj\startup_ewarm.o</file>
-      <file>$PROJ_DIR$\..\..\..\inc\hw_qei.h</file>
       <file>$PROJ_DIR$\..\drivers\cfal96x64x16.c</file>
       <file>$PROJ_DIR$\..\..\..\driverlib\pin_map.h</file>
       <file>$PROJ_DIR$\ewarm\Obj\buttons.pbi</file>
@@ -65,12 +59,10 @@
       <file>$PROJ_DIR$\ewarm\Obj\ustdlib.pbi</file>
       <file>$PROJ_DIR$\..\..\..\driverlib\debug.h</file>
       <file>$PROJ_DIR$\ewarm\Obj\uartstdio.pbi</file>
-      <file>$PROJ_DIR$\..\..\..\third_party\fatfs\src\ff.h</file>
       <file>$PROJ_DIR$\acquire.h</file>
       <file>$PROJ_DIR$\ewarm\Obj\stripchartmanager.o</file>
       <file>$PROJ_DIR$\ewarm\Obj\menus.pbi</file>
       <file>$PROJ_DIR$\ewarm\Obj\ustdlib.o</file>
-      <file>$PROJ_DIR$\..\..\..\driverlib\interrupt.h</file>
       <file>$TOOLKIT_DIR$\inc\c\DLib_Threads.h</file>
       <file>$PROJ_DIR$\ewarm\Obj\motion.o</file>
       <file>$PROJ_DIR$\usbstick.c</file>
@@ -78,7 +70,6 @@
       <file>$PROJ_DIR$\ewarm\Obj\menus.o</file>
       <file>$PROJ_DIR$\ewarm\Obj\acquire.o</file>
       <file>$PROJ_DIR$\menus.c</file>
-      <file>$PROJ_DIR$\..\..\..\usblib\usbmsc.h</file>
       <file>$PROJ_DIR$\ewarm\Obj\ff.pbi</file>
       <file>$PROJ_DIR$\ewarm\Obj\ff.o</file>
       <file>$PROJ_DIR$\clocksetwidget.c</file>
@@ -90,16 +81,13 @@
       <file>$PROJ_DIR$\ewarm\Obj\clocksetwidget.o</file>
       <file>$PROJ_DIR$\..\..\..\driverlib\gpio.h</file>
       <file>$PROJ_DIR$\ewarm\Obj\slidemenuwidget.pbi</file>
-      <file>$PROJ_DIR$\..\..\..\utils\uartstdio.h</file>
       <file>$PROJ_DIR$\encoder.c</file>
       <file>$PROJ_DIR$\ewarm\Obj\usbstick.pbi</file>
       <file>$PROJ_DIR$\usbstick.h</file>
       <file>$PROJ_DIR$\..\..\..\driverlib\hibernate.h</file>
       <file>$PROJ_DIR$\ewarm\Obj\fat_usbmsc.o</file>
-      <file>$PROJ_DIR$\..\..\..\third_party\fatfs\src\diskio.h</file>
       <file>$PROJ_DIR$\menus.h</file>
       <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
-      <file>$PROJ_DIR$\encoder.h</file>
       <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
       <file>$PROJ_DIR$\ewarm\Obj\hbridge.pbi</file>
       <file>$PROJ_DIR$\ewarm\Obj\usb_serial_structs.o</file>
@@ -115,18 +103,14 @@
       <file>$PROJ_DIR$\..\..\..\utils\ustdlib.c</file>
       <file>$PROJ_DIR$\ewarm\Obj\cfal96x64x16.o</file>
       <file>$PROJ_DIR$\ewarm\Exe\motion.bin</file>
-      <file>$PROJ_DIR$\..\..\..\driverlib\qei.h</file>
       <file>$PROJ_DIR$\ewarm\Exe\motion.out</file>
       <file>$PROJ_DIR$\ewarm\Obj\usb_serial_structs.pbi</file>
       <file>$PROJ_DIR$\startup_ewarm.c</file>
       <file>$PROJ_DIR$\ewarm\Obj\buttons.o</file>
-      <file>$PROJ_DIR$\..\..\..\third_party\fatfs\src\integer.h</file>
-      <file>$PROJ_DIR$\hbridge.h</file>
       <file>$PROJ_DIR$\usb_serial_structs.c</file>
       <file>$PROJ_DIR$\ewarm\Obj\hbridge.o</file>
       <file>$PROJ_DIR$\ewarm\Obj\flashstore.pbi</file>
       <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
-      <file>$PROJ_DIR$\..\..\..\usblib\host\usbhmsc.h</file>
       <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
       <file>$PROJ_DIR$\ewarm\Obj\stripchartwidget.pbi</file>
     </outputs>
@@ -135,11 +119,11 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 41</file>
+          <file> 36</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 47</file>
+          <file> 42</file>
         </tool>
       </outputs>
     </file>
@@ -148,7 +132,7 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 70</file>
+          <file> 62</file>
         </tool>
         <tool>
           <name>BICOMP</name>
@@ -158,7 +142,7 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 46 121 92 119 68 21 65 94 45 39 29 4 98 57 27 82 53 88 105 9 15 20 49 24 37 8 77 14 0 104 87 3 101 91 60</file>
+          <file> 41 105 81 104 60 20 57 82 40 34 26 4 86 51 24 73 47 78 93 8 14 19 44 23 33 7 68 13 0 92 77 3 89 80 53</file>
         </tool>
       </inputs>
     </file>
@@ -167,11 +151,11 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 61</file>
+          <file> 54</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 42</file>
+          <file> 37</file>
         </tool>
       </outputs>
     </file>
@@ -180,11 +164,11 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 19</file>
+          <file> 18</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 58</file>
+          <file> 52</file>
         </tool>
       </outputs>
     </file>
@@ -193,11 +177,11 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 7</file>
+          <file> 6</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 83</file>
+          <file> 74</file>
         </tool>
       </outputs>
     </file>
@@ -206,11 +190,11 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 97</file>
+          <file> 85</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 99</file>
+          <file> 87</file>
         </tool>
       </outputs>
     </file>
@@ -219,30 +203,24 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 113</file>
+          <file> 100</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 54</file>
+          <file> 48</file>
         </tool>
       </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 39 29 105 9 53 82 25</file>
-        </tool>
-      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\svm.c</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 12</file>
+          <file> 11</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 35</file>
+          <file> 31</file>
         </tool>
       </outputs>
     </file>
@@ -251,11 +229,11 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 117</file>
+          <file> 102</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 95</file>
+          <file> 83</file>
         </tool>
       </outputs>
     </file>
@@ -264,11 +242,11 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 23</file>
+          <file> 22</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 18</file>
+          <file> 17</file>
         </tool>
       </outputs>
     </file>
@@ -277,30 +255,24 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 89</file>
+          <file> 79</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 80</file>
+          <file> 71</file>
         </tool>
       </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 39 105 38 72 33 120 90 114 59</file>
-        </tool>
-      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\third_party\fatfs\src\ff.c</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 74</file>
+          <file> 65</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 73</file>
+          <file> 64</file>
         </tool>
       </outputs>
     </file>
@@ -309,30 +281,24 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 107</file>
+          <file> 95</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 28</file>
+          <file> 25</file>
         </tool>
       </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 29 39 82 53 6 105 9 15 26</file>
-        </tool>
-      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\usbstick.c</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 100</file>
+          <file> 88</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 86</file>
+          <file> 76</file>
         </tool>
       </outputs>
     </file>
@@ -341,11 +307,11 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 69</file>
+          <file> 61</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 62</file>
+          <file> 55</file>
         </tool>
       </outputs>
     </file>
@@ -354,30 +320,24 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 81</file>
+          <file> 72</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 78</file>
+          <file> 69</file>
         </tool>
       </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 39 57 84 15 20 24 37 121 92 119 68 21 65 0</file>
-        </tool>
-      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\stripchartwidget.c</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 48</file>
+          <file> 43</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 122</file>
+          <file> 106</file>
         </tool>
       </outputs>
     </file>
@@ -386,11 +346,11 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 66</file>
+          <file> 58</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 102</file>
+          <file> 90</file>
         </tool>
       </outputs>
     </file>
@@ -399,30 +359,24 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 32</file>
+          <file> 29</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 31</file>
+          <file> 28</file>
         </tool>
       </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 39 29 82 53 109 93 51 9 105 64 4 115</file>
-        </tool>
-      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\flashstore.c</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 55</file>
+          <file> 49</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 118</file>
+          <file> 103</file>
         </tool>
       </outputs>
     </file>
@@ -431,11 +385,11 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 63</file>
+          <file> 56</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 56</file>
+          <file> 50</file>
         </tool>
       </outputs>
     </file>
@@ -444,7 +398,7 @@
       <outputs>
         <tool>
           <name>OBJCOPY</name>
-          <file> 108</file>
+          <file> 96</file>
         </tool>
       </outputs>
     </file>
@@ -453,11 +407,11 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 50</file>
+          <file> 45</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 30</file>
+          <file> 27</file>
         </tool>
       </outputs>
     </file>
@@ -466,7 +420,7 @@
       <outputs>
         <tool>
           <name>ILINK</name>
-          <file> 110</file>
+          <file> 97</file>
         </tool>
       </outputs>
     </file>
@@ -475,11 +429,11 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 96</file>
+          <file> 84</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 111</file>
+          <file> 98</file>
         </tool>
       </outputs>
     </file>

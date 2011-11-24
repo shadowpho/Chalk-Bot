@@ -14,6 +14,7 @@
 #include "driverlib/interrupt.h"
                               // NVIC API
 #include "inc/hw_ints.h"      // NVIC hardware interrupt vector enumerations/aliases
+#include "inc/hw_i2c.h"       // access to lower level I2C aliases
 
 // Type definitions
 typedef void(*imu_i2c_xfer_done_t)(unsigned long);        // transfer complete callback type
@@ -38,7 +39,8 @@ void imu_i2c_complete_transaction(void);                  // normal completion o
 #define IMU_SCL_MUX     (GPIO_PA6_I2C1SCL)
 #define IMU_SDA_MUX     (GPIO_PA7_I2C1SDA)
 
-#define IMU_I2C_BASE    (I2C1_MASTER_BASE)                // I2C configuration
+#define IMU_I2C_SYSCTL  (SYSCTL_PERIPH_I2C1)              // I2C configuration
+#define IMU_I2C_BASE    (I2C1_MASTER_BASE)                
 #define IMU_I2C_INTVECT (INT_I2C1)
 #define IMU_I2C_TIMEOUT (0x7D)                            // timeout reload value for clock low timeout
                                                           // value given in StellarisWare manual
@@ -46,6 +48,7 @@ void imu_i2c_complete_transaction(void);                  // normal completion o
                                                           // so it counts at the SCL rate (for low speed, 100kHz)
                                                           // example if 20ms desired, 20ms * 100KHz = 2000 = 0x7D0
                                                           //                          truncate bottom 4b -> 0x7D
+#define IMU_I2C_SYSTEM_FREQUENCY  (50000000UL)            // system clock frequency in Hz
 
                                                           // function return codes
 #define IMU_RET_SUCCESS       (0)                         // success
@@ -86,12 +89,14 @@ void imu_init(void)
                                                           // these are on MinIMU-9 board.
   ROM_GPIODirModeSet(IMU_PORT_BASE, IMU_PINS, GPIO_DIR_MODE_HW); 
                                                           // I2C pin tristates under HW control.
-  ROM_GPIOPadConfigSet(IMU_PORT_BASE, IMU_PINS, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_OD);
+  ROM_GPIOPadConfigSet(IMU_PORT_BASE, IMU_PINS, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_OD_WPU);
                                                           // Note, output drive config only configs
                                                           // pull up/down resistors when pin is input.
   
                                                           // setup I2C for master mode-------------
-  ROM_I2CMasterInitExpClk(IMU_I2C_BASE, ROM_SysCtlClockGet(), false);
+  ROM_SysCtlPeripheralEnable(IMU_I2C_SYSCTL);             // enable clock to our I2C module
+  ROM_SysCtlPeripheralReset(IMU_I2C_SYSCTL);              // reset I2C peripheral
+  ROM_I2CMasterInitExpClk(IMU_I2C_BASE, IMU_I2C_SYSTEM_FREQUENCY, false);
                                                           // setup I2C for master mode 100Kbps
   ROM_I2CMasterTimeoutSet(IMU_I2C_BASE, IMU_I2C_TIMEOUT); // load the reset value for the clock low timeout
                                                           // enable I2C master interrupt-----------
@@ -292,6 +297,7 @@ unsigned char imu_i2c_start_transaction(unsigned char dev_address, unsigned char
   imu_i2c_data_byte_count = data_byte_count;              // initialize data byte count - will downcount during send
   imu_i2c_int_en();                                       // enable interrupts for I2C
   imu_i2c_is_addressing = true;                           // first interrupt will be to finish register addressing stage
+  imu_i2c_in_progress = true;                             // transaction is currently taking place
   imu_i2c_is_multibyte = false;                           // default to single byte
   if(data_byte_count > 1)
   {
@@ -303,8 +309,6 @@ unsigned char imu_i2c_start_transaction(unsigned char dev_address, unsigned char
   ROM_I2CMasterControl(IMU_I2C_BASE, I2C_MASTER_CMD_BURST_SEND_START);
                                                           // instruct hardware to generate start, send dev address, and 'data' (register address in part)
   
-  imu_i2c_in_progress = true;                             // transaction is currently taking place
-  
   return IMU_RET_SUCCESS;                                 // successfully started transfer of register address!
                                                           // now we will wait for interrupt to see what happened
 }
@@ -315,12 +319,16 @@ unsigned char imu_i2c_start_transaction(unsigned char dev_address, unsigned char
 void imu_i2c_abort_transaction(void)
 {
   imu_i2c_int_dis();                                    // disable interrupts
-  if(imu_i2c_is_multibyte)                              // if this is a multibyte transmission, we must first force a stop condition
-  {
+  //if(imu_i2c_is_multibyte)                              // if this is a multibyte transmission, we must first force a stop condition
+  //{
     ROM_I2CMasterControl(IMU_I2C_BASE, I2C_MASTER_CMD_BURST_SEND_ERROR_STOP);
                                                         // above code signals stop for send or receive
-  }
+  //}
   imu_i2c_in_progress = false;                          // transaction aborted
+  ROM_SysCtlPeripheralReset(IMU_I2C_SYSCTL);              // reset I2C peripheral
+  ROM_I2CMasterInitExpClk(IMU_I2C_BASE, IMU_I2C_SYSTEM_FREQUENCY, false);
+                                                          // setup I2C for master mode 100Kbps
+  ROM_I2CMasterTimeoutSet(IMU_I2C_BASE, IMU_I2C_TIMEOUT); // load the reset value for the clock low timeout
   xfer_done_cb(imu_i2c_data_byte_count);                // call user back with number of bytes remaining, txn done
 }
 
