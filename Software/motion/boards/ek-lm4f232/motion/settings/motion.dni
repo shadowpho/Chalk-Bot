@@ -40,10 +40,6 @@ ShowArgs=0
 MixedMode=1
 [BreakpointUsageDialog]
 Placement=_ 502 296 939 574
-[Disassemble mode]
-mode=0
-[Breakpoints]
-Count=0
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
@@ -51,6 +47,18 @@ Category=_ 0
 [TermIOLog]
 LoggingEnabled=_ 0
 LogFile=_ ""
+[CallStackLog]
+Enabled=0
+[DriverProfiling]
+Enabled=0
+Mode=0
+Graph=0
+Symbiont=0
+Exclusions=
+[Disassemble mode]
+mode=0
+[Breakpoints]
+Count=0
 [Aliases]
 A0=_ "C:\cygwin\sandbox\DriverLib\build\DriverLib.test\driverlib\gpio.c" ""
 A1=_ "C:\cygwin\sandbox\DriverLib\build\DriverLib.test\grlib\charmap.c" ""
@@ -60,11 +68,3 @@ A4=_ "C:\cygwin\sandbox\DriverLib\build\DriverLib.test\usblib\device\usbdconfig.
 A5=_ "C:\cygwin\sandbox\DriverLib\build\DriverLib.test\usblib\usbmode.c" ""
 Count=6
 SuppressDialog=1
-[CallStackLog]
-Enabled=0
-[DriverProfiling]
-Enabled=0
-Mode=0
-Graph=0
-Symbiont=0
-Exclusions=

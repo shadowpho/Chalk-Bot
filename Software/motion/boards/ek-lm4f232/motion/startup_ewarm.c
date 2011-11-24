@@ -50,6 +50,7 @@ extern void SysTickIntHandler(void);
 extern void USB0OTGModeIntHandler(void);
 extern void svm_pwm_gen_ISR(void);                          // from "svm.c"
 extern void enc_2_ISR(void);                                // from "encoder.c"
+extern void imu_i2c_ISR(void);                              // from "imu.c"
 
 //*****************************************************************************
 //
@@ -141,7 +142,7 @@ __root const uVectorEntry __vector_table[] @ ".intvec" =
     IntDefaultHandler,                      // SSI1 Rx and Tx
     IntDefaultHandler,                      // Timer 3 subtimer A
     IntDefaultHandler,                      // Timer 3 subtimer B
-    IntDefaultHandler,                      // I2C1 Master and Slave
+    imu_i2c_ISR,                            // I2C1 Master and Slave
     IntDefaultHandler,                      // Quadrature Encoder 1
     IntDefaultHandler,                      // CAN0
     IntDefaultHandler,                      // CAN1

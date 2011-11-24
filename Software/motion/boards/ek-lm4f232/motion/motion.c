@@ -1097,6 +1097,9 @@ main(void)
     
     enc_init();
     enc_2_int_init();
+    
+    imu_init();
+    imu_poll_gyro();
 
     //
     // Forever loop to run the application

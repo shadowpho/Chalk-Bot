@@ -8,5 +8,6 @@
 // Function Prototypes
 
 void imu_init(void);                  // setup pins, I2C interface for imu
+void imu_poll_gyro(void);             // poll gyro
 
 // EOF
