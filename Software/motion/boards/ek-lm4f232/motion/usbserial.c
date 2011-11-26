@@ -30,6 +30,7 @@
 #include "usblib/device/usbdcdc.h"
 #include "usb_serial_structs.h"
 #include "motion.h"                 // prior to 11/10/2011, was qs-logger.h
+#include "usbserial.h"
 
 //*****************************************************************************
 //
@@ -39,12 +40,55 @@
 //
 //*****************************************************************************
 
+// Local definitions
+#define CBUS_DATA_WORD_SIZE     (4)                   // number of bytes in a word, if you change this, check code and update word size (i.e. in holding register space definition
+#define CBUS_BUFFER_SIZE        (64)                  // must be a multiple of 4, buffer size for ChalkBus communication in bytes
+#define CBUS_MAX_REG_COUNT      (14)                  // in this one-buffer max transfer  implementation, this is the max# registers in a given transfer
+#define CBUS_FN_CODE_READ       (0x03)                // cbus function code for multi reg read  (from Modicon Modbus RTU)
+#define CBUS_FN_CODE_WRITE      (0x10)                // cbus function code for multi reg write (from Modicon Modbus RTU)
+#define CBUS_FN_CODE_EXCEPTION  (0x80)                // THIS WILL BE OR-ED WITH OFFENDING FUNCTION CODE and returned as the exception function (i.e. 0x01 in error results in 0x81)
+                                                      //  msb can only be set in an exception return function.
+                                                      // exception codes
+#define CBUS_EX_CODE_FUNCTION   (0x01)                // unknown function code
+#define CBUS_EX_CODE_ADDRESS    (0x02)                // out of range address
+#define CBUS_EX_CODE_NAK        (0x07)                // negative acknowledge (returned here for bad register count, or expected packet size and received total bytes mismatch)
+                                                      // byte wise header sizes for function codes with optional data sections
+#define CBUS_FN_HDR_SIZE_RD_WR  (8)                   // header size for function read or write
+
+// Local type definitions
+                                                      // see comment block for "USBChalkBusPoll" below for more info
+#pragma pack(1)                                       // pack structures on 1B (so we can read buffers with these)
+typedef struct {                                      // function read or write packet format (slave responds with same format, zero data)
+  unsigned char function_code;                        // should be one of the defined function codes (CBUS_FN_CODE_READ or CBUS_FN_CODE_WRITE) above
+  unsigned char reserved_byte_1;                      // padding byte to make alignment 4B for data
+  unsigned short starting_reg;                        // index (address) of first register to perform function on
+  unsigned short reg_count;                           // count of registers (indicies) to operate on
+  unsigned short data_bytes;                          // count of bytes in the optional data stage (zero for no data stage)
+  unsigned long data[];                               // head pointer to optional data stage (using [] to calculate address as offset from structure head 
+                                                      // when dereferenced instead of reading data here and using that as address)
+} cbus_function_read_write_t;
+
+typedef struct {                                      // outgoing slave data response packet (sent with same function code, 0 data as ACK, or with data if data asked for)
+  unsigned char function_code;                        // offending function code (CBUS_FN_CODE_*), OR-ed with 1 in the MSb
+  unsigned char exception_code;                       // exception code per Modicon Modbus RTU standard, above defined (CBUS_EX_CODE_*)
+  unsigned short reserved_short_1;                    // pad to 4B
+} cbus_slave_exception_t;
+#pragma pack()                                        // release packing on 1B
 //*****************************************************************************
 //
-// Global flag indicating that a USB device configuration is made.
+// Global variables
 //
 //*****************************************************************************
 static volatile tBoolean g_bUSBDevConnected = false;
+static volatile tBoolean g_bUSBRxAvailable = false;   // set when Rx available, cleared when read
+unsigned long ChalkBusRegs[CBUS_REG_COUNT];           // holding registers accessible with ChalkBus
+
+// Local variables
+unsigned long ChalkBusBuff[CBUS_BUFFER_SIZE/4];       // make buffer for handling comms to/from host
+
+// Local functions
+void USBChalkBusSendException(unsigned char offending_function, unsigned char code);    
+                                                      // sends an exception to the host, code should be one of CBUS_EX_CODE_*
 
 //*****************************************************************************
 //
@@ -272,11 +316,7 @@ RxHandler(void *pvCBData, unsigned long ulEvent, unsigned long ulMsgValue,
         //
         case USB_EVENT_RX_AVAILABLE:
         {
-            //
-            // We do not ever expect to receive serial data, so just flush
-            // the RX buffer if any data actually comes in.
-            //
-            USBBufferFlush(&g_sRxBuffer);
+            g_bUSBRxAvailable = true;                       // mark that Rx is available
             break;
         }
 
@@ -455,4 +495,160 @@ USBSerialWriteRecord(tLogRecord *pRecord)
     // Return success to the caller
     //
     return(0);
+}
+
+// * USBChalkBusPoll **********************************************************
+// * Handle communication requests from ChalkBus master.                      *
+// *                                                                          *
+// * Communication protocol based off of a subset of the Modicon Modbus RTU   *
+// * protocol developed by Modicon, Inc.                                      *
+// *                                                                          *
+// * Note: Among other changes, multi-byte value endianness has been changed  *
+// *       to little endian in the ChalkBus implementation for efficient      *
+// *       compatibility with the Cortex-M4 core's native little-endian byte  *
+// *       order.                                                             *
+// *                                                                          *
+// * See structures above (cbus_*_t) for definition of packet structures for  *
+// * different functions.                                                     *
+// *                                                                          *
+// * Function codes:                                                          *
+// * 0x03: read registers (pc reading from lm4f)                              *
+// * 0x10: multiple register set (pc writing to lm4f)                         *
+// *                                                                          *
+// * Exception signaling:                                                     *
+// * Offending function code or-ed with 0x80 (msb set), see structure above   *
+// * (cbus_slave_exception_t) for return format.                              *
+// *                                                                          *
+// * Register read/write from ChalkBusRegs[].                                 *
+// * Note: This driver is not written to handle multi-packet transmissions,   *
+// *       overall package size (header, data) must fit within a 64B USB bulk *
+// *       transmission.                                                      *
+// ****************************************************************************
+void USBChalkBusPoll(void)
+{
+  unsigned long buffer_bytes;                               // bytes received from/accepted by buffer
+  cbus_function_read_write_t* cbus_rw_header;               // header for reading/writing a 
+  if(!g_bUSBRxAvailable)                                    // if no Rx is available 
+  {
+    return;                                                 // exit now (we only send solicited responses)
+  }
+                                                            // else new Rx is in the buffer, let's handle it
+  buffer_bytes = USBBufferRead((tUSBBuffer *)&g_sRxBuffer, (unsigned char*)ChalkBusBuff, CBUS_BUFFER_SIZE);
+  //buffer_bytes = USBDCDCPacketRead(&g_sCDCDevice,unsigned char *pcData,unsigned long ulLength,tBoolean bLast)
+                                                            // read data in from the receive buffer
+  g_bUSBRxAvailable = false;                                // we have read the new Rx, no more available
+  if(buffer_bytes == 0)                                     // cancel, there wasn't actually any data
+  {
+    return;
+  }
+                                                            // find out what kind of packet this is, validate it
+  cbus_rw_header = (cbus_function_read_write_t*)ChalkBusBuff;
+                                                            // guess that this function is either read or write to save doing this cast in both cases
+  switch(*((unsigned char*)ChalkBusBuff))                   // read function code
+  {
+    case CBUS_FN_CODE_READ:                                 // function read
+    case CBUS_FN_CODE_WRITE:                                // function write, same validation steps
+      {
+        if((CBUS_FN_HDR_SIZE_RD_WR > buffer_bytes) ||
+           (CBUS_FN_HDR_SIZE_RD_WR + cbus_rw_header->data_bytes != buffer_bytes))
+        {
+          USBChalkBusSendException(cbus_rw_header->function_code, CBUS_EX_CODE_NAK);
+                                                            // throw exception, too few bytes even for header or bytes expected != bytes received
+          return;
+        }
+        if(cbus_rw_header->reg_count > CBUS_MAX_REG_COUNT)  // more registers requested than are allowed in a single request
+        {
+          USBChalkBusSendException(cbus_rw_header->function_code, CBUS_EX_CODE_NAK);
+                                                            // throw exception, more registers requested than are allowed
+          return;
+        }
+        if((cbus_rw_header->function_code == CBUS_FN_CODE_WRITE) &&
+           (cbus_rw_header->reg_count * CBUS_DATA_WORD_SIZE != cbus_rw_header->data_bytes))
+        {
+          USBChalkBusSendException(cbus_rw_header->function_code, CBUS_EX_CODE_NAK);
+                                                            // throw exception, register count not consistent with data bytes count
+          return;
+        }
+        if( (cbus_rw_header->starting_reg >= CBUS_REG_COUNT) ||
+           ((cbus_rw_header->starting_reg + cbus_rw_header->reg_count) > CBUS_REG_COUNT))
+        {                                                   // if starting register or ending register beyond last register
+          USBChalkBusSendException(cbus_rw_header->function_code, CBUS_EX_CODE_ADDRESS);
+                                                            // throw exception, an address is out of range
+          return;
+        }
+      }
+      break;
+    default:                                                // function unknown
+      {
+        USBChalkBusSendException(*((unsigned char*)ChalkBusBuff), CBUS_EX_CODE_FUNCTION);
+                                                            // throw exception, this function code is unknown
+        return;                                             // done
+      }
+  }
+                                                            // handle now validated function
+  switch(*((unsigned char*)ChalkBusBuff))                   // read function code
+  {
+    case CBUS_FN_CODE_READ:                                 // function read
+      {
+        unsigned short count;                               // used to copy data
+        unsigned long* read_ptr;                            // source pointer (holding registers)
+        read_ptr = ChalkBusRegs + (cbus_rw_header->starting_reg);
+                                                            // initialize starting read pointer
+        for(count = 0; count < (cbus_rw_header->reg_count); count++)
+        {                                                   // copy regs a register at a time
+          cbus_rw_header->data[count] = *read_ptr;          // copy data at read_ptr into outgoing packet
+          read_ptr++;                                       // increment read_ptr to next register
+        }
+        cbus_rw_header->data_bytes = cbus_rw_header->reg_count * CBUS_DATA_WORD_SIZE;
+                                                            // load number of bytes written into header before returning
+        buffer_bytes = CBUS_FN_HDR_SIZE_RD_WR + cbus_rw_header->data_bytes;
+                                                            // load count of bytes to be queued for tx to host below
+      }
+      break;
+    case CBUS_FN_CODE_WRITE:                                // function write
+      {
+        unsigned short count;                               // used to copy data
+        unsigned long* write_ptr;                           // destination pointer (holding registers)
+        write_ptr = ChalkBusRegs + (cbus_rw_header->starting_reg);
+                                                            // initialize starting write pointer
+        for(count = 0; count < (cbus_rw_header->reg_count); count++)
+        {                                                   // copy regs a register at a time
+          *write_ptr = cbus_rw_header->data[count];         // copy data from incoming packet to write_ptr
+          write_ptr++;                                      // increment write_ptr to next register
+        }
+        cbus_rw_header->data_bytes = 0;                     // returning zero data in response
+        buffer_bytes = CBUS_FN_HDR_SIZE_RD_WR;              // acknowledge packet's only bytes to return is header with 0 data byte count
+      }
+      break;
+    default:                                                // function unknown
+      {
+        return;                                             // unknown functions should never get here
+      }
+  } 
+  if(g_bUSBDevConnected)                                    // send response if there is a device to listen
+  {
+    USBBufferWrite((tUSBBuffer *)&g_sTxBuffer,(unsigned char*)ChalkBusBuff, buffer_bytes);
+                                                            // queue the data to send
+  }
+}
+            
+// * USBChalkBusSendException *************************************************
+// * Sends an exception to the master.                                        *
+// *                                                                          *
+// * offending_function should be the function code that caused the exception *
+// * code should be the exception code that should be sent to the master,     *
+// *      it's value should be one of CBUS_EX_CODE_*.                         *
+// ****************************************************************************
+void USBChalkBusSendException(unsigned char offending_function, unsigned char code)
+{
+  cbus_slave_exception_t* cbus_exception;                   // will use this to build an exception
+  cbus_exception = (cbus_slave_exception_t*)ChalkBusBuff;   // use ChalkBusBuff to build the exception
+  cbus_exception->function_code = offending_function | CBUS_FN_CODE_EXCEPTION;
+                                                            // exception signaled by setting msb of offending function code
+  cbus_exception->exception_code = code;                    // load the exception code
+  if(g_bUSBDevConnected)                                    // send exception if there is a device to listen
+  {
+    USBBufferWrite((tUSBBuffer *)&g_sTxBuffer,(unsigned char*)ChalkBusBuff, sizeof(cbus_slave_exception_t));
+                                                            // queue the exception to send
+  }
 }

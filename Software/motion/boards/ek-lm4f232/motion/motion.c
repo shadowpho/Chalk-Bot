@@ -1109,6 +1109,10 @@ main(void)
     while(1)
     { 
         static unsigned long ulLastTickCount = 0;
+        
+        USBChalkBusPoll();                                  // poll the ChalkBus interface to the host via USB
+                                                            //  Application protocol modeled after a subset of the
+                                                            //  Modicon Modbus RTU protocol.
 
         //
         // Each time the timer tick occurs, process any button events.

@@ -30,7 +30,7 @@ ActionState=1
 Enabled=0
 ShowSource=1
 [DebugChecksum]
-Checksum=618000473
+Checksum=-84179675
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -40,11 +40,14 @@ ShowArgs=0
 MixedMode=1
 [BreakpointUsageDialog]
 Placement=_ 502 296 939 574
+[array_types]
+Fmt0=unsigned long[16]	4	0
+Fmt1=unsigned long[255]	4	0
 [Disassemble mode]
 mode=0
 [Breakpoints]
-Bp0=_ "STD_CODE" "{$PROJ_DIR$\imu.c}.328.3" 1 0 0 0 "" 0 ""
-Bp1=_ "STD_CODE" "{$PROJ_DIR$\imu.c}.97.3" 1 0 0 0 "" 0 ""
+Bp0=_ "STD_CODE" "{$PROJ_DIR$\imu.c}.328.3" 0 0 0 0 "" 0 ""
+Bp1=_ "STD_CODE" "{$PROJ_DIR$\imu.c}.97.3" 0 0 0 0 "" 0 ""
 Count=2
 [Log file]
 LoggingEnabled=_ 0

@@ -34,6 +34,32 @@
 extern "C"
 {
 #endif
+  
+//*****************************************************************************
+//
+// ChalkBus holding register size and index symbol definitions
+//
+//*****************************************************************************  
+#define CBUS_REG_COUNT                  (255)               // count of holding registers
+  
+                                                            // indicies of data of interest
+#define CBUS_IDX_RESERVED               (0)                 // index 0 is reserved
+#define CBUS_IDX_RAW_ENC_L              (1)                 // read only position of left encoder (signed) [counts]
+#define CBUS_IDX_RAW_VEL_L              (2)                 // read only velocity of left encoder (signed) [60counts/sec]
+#define CBUS_IDX_SCALED_ENC_L           (3)                 // read only position of left encoder (signed) [mm]
+#define CBUS_IDX_SCALED_VEL_L           (4)                 // read only velocity of left encoder (signed) [mm/sec]
+#define CBUS_IDX_RAW_ENC_R              (5)                 // read only position of right encoder (signed) [counts]
+#define CBUS_IDX_RAW_VEL_R              (6)                 // read only velocity of right encoder (signed) [60counts/sec]
+#define CBUS_IDX_SCALED_ENC_R           (7)                 // read only position of right encoder (signed) [mm]
+#define CBUS_IDX_SCALED_VEL_R           (8)                 // read only velocity of right encoder (signed) [mm/sec]
+
+  
+//*****************************************************************************
+//
+// Module externally accessible variables
+//
+//*****************************************************************************  
+extern unsigned long ChalkBusRegs[];                        // holding registers accessible with ChalkBus
 
 //*****************************************************************************
 //
@@ -43,6 +69,7 @@ extern "C"
 extern void USBSerialInit(void);
 extern void USBSerialRun(void);
 extern int USBSerialWriteRecord(tLogRecord *pRecord);
+extern void USBChalkBusPoll(void);                        // polling routine for handling ChalkBus requests (see comments)
 
 //*****************************************************************************
 //
