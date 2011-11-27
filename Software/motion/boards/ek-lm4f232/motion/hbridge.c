@@ -33,12 +33,13 @@
 #define HBR_1_PWML            (GPIO_PIN_3)
 #define HBR_1_PHASE           (GPIO_PIN_2)
 #define HBR_2_PWMH            (GPIO_PIN_0)    // this pin will be operated by PWM hardware
-#define HBR_2_PWML            (0)//DEAD PIN this pin now used for QEI PhA0, solder jumper and use a different pin for this purpose, perhaps PFx? (was PD6)
 #define HBR_2_PHASE           (GPIO_PIN_5)
                                               // dead pin workaround(s)
 #define HBR_WORKAROUND_PORT   (SYSCTL_PERIPH_GPIOF)   // this port is shared with QEI
 #define HBR_WORKAROUND_PORT_BASE  (GPIO_PORTF_BASE)
-#define HBR_2_RESET           (GPIO_PIN_2)    // F2 has been tied to D7 on carrier board 11/15/2011
+#define HBR_WORKAROUND_PINS   (GPIO_PIN_2 | GPIO_PIN_3)
+#define HBR_2_RESET           (GPIO_PIN_2)    // PF2 has been tied to PD7 on carrier board 11/15/2011
+#define HBR_2_PWML            (GPIO_PIN_3)    // Now PF3 performs this function. History: DEAD PIN this pin now used for QEI PhA0, solder jumper and use a different pin for this purpose, perhaps PFx? (was PD6)
                               // pins for outputting to hbridge
 #define HBR_1_PWM_MUX         (GPIO_PD1_M1PWM1)
                               // pin mux setting to access hardware as desired
@@ -80,7 +81,7 @@ void hbr_init(void)
   GPIOPinTypeGPIOOutput(HBR_OUTPUT_PORT_BASE, HBR_OUTPUT_PINS);
   
   ROM_SysCtlPeripheralEnable(HBR_WORKAROUND_PORT);        // configure workaround pin(s) for dead pin(s)
-  GPIOPinTypeGPIOOutput(HBR_WORKAROUND_PORT_BASE, HBR_2_RESET);
+  GPIOPinTypeGPIOOutput(HBR_WORKAROUND_PORT_BASE, HBR_WORKAROUND_PINS);
   
   
                                                           // configure PWM
@@ -149,7 +150,9 @@ void hbr_set_pwml(unsigned char ucHbr, unsigned char new_state)
   if(ucHbr == 1)
     ROM_GPIOPinWrite(HBR_OUTPUT_PORT_BASE,HBR_1_PWML,valtemp & HBR_1_PWML);
   else if(ucHbr == 2)
-    ROM_GPIOPinWrite(HBR_OUTPUT_PORT_BASE,HBR_2_PWML,valtemp & HBR_2_PWML);
+    ROM_GPIOPinWrite(HBR_WORKAROUND_PORT_BASE,HBR_2_PWML,valtemp & HBR_2_PWML);
+                                                            // workaround port for this pin,
+                                                            // was PD6 now PF3 (11/22/2011)
 }
 
 // * hbr_set_phase ************************************************************

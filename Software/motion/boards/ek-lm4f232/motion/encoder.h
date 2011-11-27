@@ -19,5 +19,8 @@ void enc_pos_set(unsigned char encoder, signed long position);
                                       // sets current encoder position in pulses
 signed long enc_vel_get(unsigned char encoder);
                                       // gets current encoder velocity (see important note in "encoder.c")
+unsigned char enc_poll_period_expire(void);
+                                      // polls for if the timer period has expired. returns 1 once after each
+                                      // velocity timer expiration (16.67ms 60.00Hz), else 0.
 
 // EOF

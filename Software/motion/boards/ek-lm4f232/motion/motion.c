@@ -1098,10 +1098,10 @@ main(void)
     svm_set_us(SVM_2, 2300);
     
     enc_init();
-    //enc_2_int_init();
+    enc_2_int_init();
     
     imu_init();
-    imu_poll_gyro();
+    //imu_poll_gyro();
 
     //
     // Forever loop to run the application
@@ -1113,6 +1113,11 @@ main(void)
         USBChalkBusPoll();                                  // poll the ChalkBus interface to the host via USB
                                                             //  Application protocol modeled after a subset of the
                                                             //  Modicon Modbus RTU protocol.
+        
+        if(enc_poll_period_expire())                        // poll for flag set every 16.67ms (60.00Hz)
+        {
+          imu_poll_gyro();                                  // test polling gyro
+        }
 
         //
         // Each time the timer tick occurs, process any button events.

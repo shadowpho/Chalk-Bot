@@ -80,25 +80,28 @@ unsigned char  imu_buff[256];                             // buffer space for co
 // ****************************************************************************
 void imu_init(void)
 {
-                                                          // setup pins for I2C--------------------
-  ROM_SysCtlPeripheralEnable(IMU_PORT);                   // enable clock to GPIO port
-                                                          // configure I/O pads 
-  ROM_GPIOPinConfigure(IMU_SCL_MUX);                      // select mux for I2C input
-  ROM_GPIOPinConfigure(IMU_SDA_MUX);                      // select mux for I2C input
-                                                          // Modified to have no pull up/down resistors,
-                                                          // these are on MinIMU-9 board.
-  ROM_GPIODirModeSet(IMU_PORT_BASE, IMU_PINS, GPIO_DIR_MODE_HW); 
-                                                          // I2C pin tristates under HW control.
-  ROM_GPIOPadConfigSet(IMU_PORT_BASE, IMU_PINS, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_OD_WPU);
-                                                          // Note, output drive config only configs
-                                                          // pull up/down resistors when pin is input.
-  
-                                                          // setup I2C for master mode-------------
   ROM_SysCtlPeripheralEnable(IMU_I2C_SYSCTL);             // enable clock to our I2C module
   ROM_SysCtlPeripheralReset(IMU_I2C_SYSCTL);              // reset I2C peripheral
+  
+                                                          // setup pins for I2C--------------------
+  ROM_SysCtlPeripheralEnable(IMU_PORT);                   // enable clock to GPIO port
+  ROM_GPIODirModeSet(IMU_PORT_BASE, IMU_PINS, GPIO_DIR_MODE_HW); 
+                                                          // I2C pin tristates under HW control.
+                                                          // (GPIOAFSEL)
+  ROM_GPIOPadConfigSet(IMU_PORT_BASE, IMU_PINS, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_OD);//GPIO_PIN_TYPE_OD_WPU);
+                                                          // AFTER ABOVE LINE SCL AND SDA GO LOW, AFTER EXTERNAL (HARDWARE LINE) RESET
+                                                          // Note, output drive config only configs
+                                                          // pull up/down resistors when pin is input.
+  ROM_GPIOPinConfigure(IMU_SCL_MUX);                      // select mux for I2C input
+  ROM_GPIOPinConfigure(IMU_SDA_MUX);                      // select mux for I2C input
+                                                          // (GPIOPCTL) (SDA GOES HIGH HERE)
+  
+                                                          // setup I2C for master mode-------------
   ROM_I2CMasterInitExpClk(IMU_I2C_BASE, IMU_I2C_SYSTEM_FREQUENCY, false);
                                                           // setup I2C for master mode 100Kbps
+                                                          // calculate value and load to I2CMTPR
   ROM_I2CMasterTimeoutSet(IMU_I2C_BASE, IMU_I2C_TIMEOUT); // load the reset value for the clock low timeout
+                                                          // (I2CMCLKOCNT)
                                                           // enable I2C master interrupt-----------
   ROM_IntMasterEnable();                                  // global enable NVIC interrupts
                                                           // I2C interrupts will be enabled on demand
@@ -292,6 +295,7 @@ unsigned char imu_i2c_start_transaction(unsigned char dev_address, unsigned char
   imu_i2c_reg_address = reg_address;                      // store register address
   ROM_I2CMasterSlaveAddrSet(IMU_I2C_BASE, dev_address, false);
                                                           // set the slave address, always transmit first to get register address transmitted
+                                                          // (I2CMSA)
   imu_i2c_dir_is_receive = dir_is_receive;                // make copy of current direction
   imu_i2c_data_buff = data;                               // initialize buffer pointer
   imu_i2c_data_byte_count = data_byte_count;              // initialize data byte count - will downcount during send
@@ -306,8 +310,10 @@ unsigned char imu_i2c_start_transaction(unsigned char dev_address, unsigned char
   }
                                                           // start txn with address and send register address
   ROM_I2CMasterDataPut(IMU_I2C_BASE, imu_i2c_reg_address);// load register address as data
+                                                          // (I2CMDR)
   ROM_I2CMasterControl(IMU_I2C_BASE, I2C_MASTER_CMD_BURST_SEND_START);
                                                           // instruct hardware to generate start, send dev address, and 'data' (register address in part)
+                                                          // (I2CMCS)
   
   return IMU_RET_SUCCESS;                                 // successfully started transfer of register address!
                                                           // now we will wait for interrupt to see what happened

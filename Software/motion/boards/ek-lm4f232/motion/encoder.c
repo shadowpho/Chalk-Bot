@@ -69,7 +69,10 @@
                                                             // (i.e. 0xF yields 17 clock cycles).
 #define ENC_FILT_ENA_BITS (((ENC_FILT_CYC << 16) & QEI_CTL_FILTCNT_M) | QEI_CTL_FILTEN)
 
-// Variables
+// Local Variables
+
+tBoolean enc_period_expired = false;                        // used so low-accuracy timing routines can poll for end of velocity timing
+                                                            // set true on interrupt
 
 // Functions
 
@@ -178,10 +181,11 @@ void enc_2_int_init(void)
 // ****************************************************************************
 void enc_2_ISR(void)
 {
-  static unsigned char toggle = 0;    // test code
-                                      // for now the only thing that can get us here
-                                      // is the timer rollover interrupt
+//  static unsigned char toggle = 0;    // test code
+//                                      // for now the only thing that can get us here
+//                                      // is the timer rollover interrupt
   ROM_QEIIntClear(ENC_2_BASE, ENC_2_INT_FLAGS);
+  enc_period_expired = true;            // flag that the velocity period has expired
 //  toggle ^= 0xFF;                     // test code
 //  if(toggle)
 //  {
@@ -294,6 +298,23 @@ signed long enc_vel_get(unsigned char encoder)
     retval = 0;                                             // return for invalid encoder ID
   }
   return retval;                                            // return the encoder position
+}
+
+// * enc_poll_period_expire ***************************************************
+// * Polls for if the timer period has expired. Returns 1 once after each     *
+// * velocity timer expiration (16.67ms 60.00Hz), else 0.                     *
+// ****************************************************************************
+unsigned char enc_poll_period_expire(void)
+{
+  if(enc_period_expired)                                    // if timer period has expired since previous sample
+  {
+    enc_period_expired = false;                             // clear flag, this is one-shot per period expiration
+    return true;                                            // return true, the period has newly expired
+  }
+  else                                                      // timer has not expired since previous sample
+  {
+    return false;                                           // return false, period has not newly expired
+  }
 }
 
 // EOF
