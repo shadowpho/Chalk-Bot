@@ -88,6 +88,7 @@ void enc_init(void)
                                                           // setup pins for QEI
                                                           // ENC_1-------------------------------
   ROM_SysCtlPeripheralEnable(ENC_1_PORT);                 // enable clock to GPIO port
+  ROM_SysCtlPeripheralReset(ENC_1_PORT);                  // reset to clear any previous configuration
                                                           // configure input pads 
   ROM_GPIOPinConfigure(ENC_1_B_MUX);                      // select mux for qei input
   ROM_GPIOPinConfigure(ENC_1_A_MUX);                      // select mux for qei input
@@ -102,6 +103,7 @@ void enc_init(void)
   
                                                           // ENC_2-------------------------------
   ROM_SysCtlPeripheralEnable(ENC_2_PORT);                 // enable clock to GPIO port
+  ROM_SysCtlPeripheralReset(ENC_2_PORT);                  // reset to clear any previous configuration
                                                           // configure input pads 
   ROM_GPIOPinConfigure(ENC_2_B_MUX);                      // select mux for qei input
   //ROM_GPIOPinConfigure(ENC_2_A_MUX);                      // select mux for qei input WORKAROUND FOR DEAD PIN

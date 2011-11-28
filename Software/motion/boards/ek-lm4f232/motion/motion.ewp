@@ -923,6 +923,9 @@
       <name>$PROJ_DIR$\..\..\..\grlib\ewarm-cm4f\Exe\grlib-cm4f.a</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\..\..\utils\softi2c.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\..\..\usblib\ewarm-cm4f\Exe\usblib-cm4f.a</name>
     </file>
   </group>
@@ -936,6 +939,9 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\drivers\cfal96x64x16.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\chalk.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\clocksetwidget.c</name>

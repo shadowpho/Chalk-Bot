@@ -7,7 +7,7 @@
 #define CHALK_SVM_Z           (SVM_1)               // vertical chalk actuation servo - moves chalk tube up and down
 #define CHALK_SVM_CLAMP       (SVM_2)               // chalk clamp actuation servo - clamps chalk into chalk tube
 
-defined positions here...
+//defined positions here...
 
 // Function Prototypes
 

@@ -1114,10 +1114,10 @@ main(void)
                                                             //  Application protocol modeled after a subset of the
                                                             //  Modicon Modbus RTU protocol.
         
-        if(enc_poll_period_expire())                        // poll for flag set every 16.67ms (60.00Hz)
-        {
+        //DEBUG if(enc_poll_period_expire())                        // poll for flag set every 16.67ms (60.00Hz)
+        //DEBUG {
           imu_poll_gyro();                                  // test polling gyro
-        }
+        //DEBUG }
 
         //
         // Each time the timer tick occurs, process any button events.

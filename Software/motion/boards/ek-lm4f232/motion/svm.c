@@ -69,6 +69,7 @@
 void svm_init(void)
 {
   ROM_SysCtlPeripheralEnable(SVM_OUTPUT_PORT);            // enable clock to GPIO port
+  ROM_SysCtlPeripheralReset(SVM_OUTPUT_PORT);             // reset to clear any previous config
                                                           // configure output pads 
   GPIOPinTypeGPIOOutput(SVM_OUTPUT_PORT_BASE, SVM_OUTPUT_PINS);
   

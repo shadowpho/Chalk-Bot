@@ -20,6 +20,8 @@
 #define CHALK_SW_PIN        (GPIO_PIN_0)              // grounded when chalk sw depressed
 #define CHALK_SW_STATUS()   (!(HWREG(CHALK_SW_PORT_BASE + (GPIO_O_DATA + (CHALK_SW_PINS << 2))) & CHALK_SW_PIN))
                                                       // returns true for chalk switch depressed
+                                                      // code copied+modified from StellarisWare GPIO library
+                                                      // see page 680 of LM4F232H5QD manual, regarding ADDR[9:2] masking
 
 // Variables
 

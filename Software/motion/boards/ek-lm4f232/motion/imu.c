@@ -4,17 +4,18 @@
 
 // Includes
 
+#include <string.h>           // access to memset
 #include "inc/hw_types.h"     // types used throughout this file and it's libraries
 #include "inc/hw_memmap.h"    // memory map, register base addresses
 #include "driverlib/gpio.h"   // gpio abstraction library
-#include "driverlib/i2c.h"    // I2C library
 #include "imu.h"              // definition file for this file
 #include "driverlib/rom.h"    // definitions for rom functions
 #include "driverlib/sysctl.h" // definitions for system control
 #include "driverlib/interrupt.h"
                               // NVIC API
 #include "inc/hw_ints.h"      // NVIC hardware interrupt vector enumerations/aliases
-#include "inc/hw_i2c.h"       // access to lower level I2C aliases
+#include "driverlib/timer.h"  // timer interface driver
+#include "utils/softi2c.h"    // software i2c emulation
 
 // Type definitions
 typedef void(*imu_i2c_xfer_done_t)(unsigned long);        // transfer complete callback type
@@ -36,18 +37,13 @@ void imu_i2c_complete_transaction(void);                  // normal completion o
 #define IMU_PINS        (GPIO_PIN_6 | GPIO_PIN_7)
 #define IMU_SCL         (GPIO_PIN_6)
 #define IMU_SDA         (GPIO_PIN_7)
-#define IMU_SCL_MUX     (GPIO_PA6_I2C1SCL)
-#define IMU_SDA_MUX     (GPIO_PA7_I2C1SDA)
+#define IMU_TIM         (SYSCTL_PERIPH_TIMER2)
+#define IMU_TIM_BASE    (TIMER2_BASE)                     // Note, timer A is used.
 
-#define IMU_I2C_SYSCTL  (SYSCTL_PERIPH_I2C1)              // I2C configuration
-#define IMU_I2C_BASE    (I2C1_MASTER_BASE)                
-#define IMU_I2C_INTVECT (INT_I2C1)
-#define IMU_I2C_TIMEOUT (0x7D)                            // timeout reload value for clock low timeout
-                                                          // value given in StellarisWare manual
-                                                          // note this sets upper 8b of 12b counter on SCL clock
-                                                          // so it counts at the SCL rate (for low speed, 100kHz)
-                                                          // example if 20ms desired, 20ms * 100KHz = 2000 = 0x7D0
-                                                          //                          truncate bottom 4b -> 0x7D
+#define IMU_TIM_SCLRATE (10000)                           // desired scl frequency in Hz
+#define IMU_TIM_INTRATE (IMU_TIM_SCLRATE * 4)             // for softi2c driver, (interrupt rate)/4 = SCL rate
+#define IMU_TIM_INT_VECT (INT_TIMER2A)                    // interrupt vector
+
 #define IMU_I2C_SYSTEM_FREQUENCY  (50000000UL)            // system clock frequency in Hz
 
                                                           // function return codes
@@ -61,6 +57,7 @@ void imu_i2c_complete_transaction(void);                  // normal completion o
 
 
 // Local Variables
+static tSoftI2C g_sI2C;                                   // soft I2C state structure
 tBoolean       imu_i2c_in_progress = false;               // I2C transaction in progress
 tBoolean       imu_i2c_dir_is_receive;                    // true for receive false for transmit
 tBoolean       imu_i2c_is_multibyte = true;               // true for multibyte transaction, false for single byte
@@ -77,34 +74,156 @@ unsigned char  imu_buff[256];                             // buffer space for co
 
 // * imu_init *****************************************************************
 // * Setup pins and I2C interface to communicate with IMU (Pololu MinIMU-9).  *
+// *                                                                          *
+// * NOTE: Also called internally by imu_i2c_abort_transaction during reset   *
+// *       to recover from NAK/error.                                         *
+// *                                                                          *
+// * Portions for initialization of softi2c library copied/modified from      *
+// * "soft_i2c_atmel.c" example code.                                         *
 // ****************************************************************************
 void imu_init(void)
 {
-  ROM_SysCtlPeripheralEnable(IMU_I2C_SYSCTL);             // enable clock to our I2C module
-  ROM_SysCtlPeripheralReset(IMU_I2C_SYSCTL);              // reset I2C peripheral
-  
                                                           // setup pins for I2C--------------------
-  ROM_SysCtlPeripheralEnable(IMU_PORT);                   // enable clock to GPIO port
-  ROM_GPIODirModeSet(IMU_PORT_BASE, IMU_PINS, GPIO_DIR_MODE_HW); 
-                                                          // I2C pin tristates under HW control.
-                                                          // (GPIOAFSEL)
-  ROM_GPIOPadConfigSet(IMU_PORT_BASE, IMU_PINS, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_OD);//GPIO_PIN_TYPE_OD_WPU);
-                                                          // AFTER ABOVE LINE SCL AND SDA GO LOW, AFTER EXTERNAL (HARDWARE LINE) RESET
-                                                          // Note, output drive config only configs
-                                                          // pull up/down resistors when pin is input.
-  ROM_GPIOPinConfigure(IMU_SCL_MUX);                      // select mux for I2C input
-  ROM_GPIOPinConfigure(IMU_SDA_MUX);                      // select mux for I2C input
-                                                          // (GPIOPCTL) (SDA GOES HIGH HERE)
+    SysCtlPeripheralEnable(IMU_PORT);                     // enable GPIO port for IMU
+    SysCtlPeripheralEnable(IMU_TIM);                      // enable timer to use for I2C bit timing
+    SysCtlPeripheralReset(IMU_TIM);                       // reset timer to clear any previous configuration
+    GPIOPinTypeI2C(IMU_PORT_BASE, IMU_PINS);              // configure pins for I2C
+    memset(&g_sI2C, 0, sizeof(g_sI2C));                   // clear record
+    SoftI2CCallbackSet(&g_sI2C, imu_SoftI2CCallback);     // set callback function
+    SoftI2CSCLGPIOSet(&g_sI2C, IMU_PORT_BASE, IMU_SCL);   // set SCL pin
+    SoftI2CSDAGPIOSet(&g_sI2C, IMU_PORT_BASE, IMU_SDA);   // set SDA pin
+    SoftI2CInit(&g_sI2C);                                 // initialize software I2C driver
+    SoftI2CIntEnable(&g_sI2C);                            // enable callback from softi2c
+    
+                                                          // configure timer interrupt
+                                                          // Note, (interrupt rate)/4 = SCL frequency
+    TimerConfigure(IMU_TIM_BASE, TIMER_CFG_32_BIT_PER);   // configure timer for 32b operation
+    TimerLoadSet(IMU_TIM_BASE, TIMER_A, SysCtlClockGet() / IMU_TIM_INTRATE);
+                                                          // configure divider to yield desired interrupt rate
+    TimerIntEnable(IMU_TIM_BASE, TIMER_TIMA_TIMEOUT);     // enable timer wrap interrupt
+    TimerEnable(IMU_TIM_BASE, TIMER_A);                   // enable timer to start counting
+    IntEnable(IMU_TIM_INT_VECT);                          // enable interrupt vector in NVIC
   
-                                                          // setup I2C for master mode-------------
-  ROM_I2CMasterInitExpClk(IMU_I2C_BASE, IMU_I2C_SYSTEM_FREQUENCY, false);
-                                                          // setup I2C for master mode 100Kbps
-                                                          // calculate value and load to I2CMTPR
-  ROM_I2CMasterTimeoutSet(IMU_I2C_BASE, IMU_I2C_TIMEOUT); // load the reset value for the clock low timeout
-                                                          // (I2CMCLKOCNT)
-                                                          // enable I2C master interrupt-----------
-  ROM_IntMasterEnable();                                  // global enable NVIC interrupts
-                                                          // I2C interrupts will be enabled on demand
+}
+
+// * imu_SoftI2CCallback ******************************************************
+// * Callback function for soft I2C driver to give us an event.               *
+// *                                                                          *
+// * Portions for initialization of softi2c library copied/modified from      *
+// * "soft_i2c_atmel.c" example code.                                         *
+// ****************************************************************************
+void imu_SoftI2CCallback(void)
+{   
+  unsigned long errcode;                                  // holds error code
+  
+  SoftI2CIntClear(&g_sI2C);                               // clear softi2c callback
+
+  if(!imu_i2c_in_progress)                                // we shouldn't be here
+  {
+    imu_i2c_int_dis();                                    // try to make sure we don't spuriously get back here again
+    return;
+  }
+  errcode = SoftI2CErr(&g_sI2C);                          // grab error code from softi2c
+  if(errcode != SOFTI2C_ERR_NONE)                         // if error
+  {
+                                                          // could be address nak or data nak
+    imu_i2c_abort_transaction();                          // abort current transaction
+  }
+  else if(imu_i2c_is_addressing)                          // first time here, addressing phase done, now ready for data phase
+  {
+    imu_i2c_is_addressing = false;                        // handled. clear flag.
+    if(imu_i2c_dir_is_receive)                            // data is to be received, need to turn direction around then start data phase
+    {
+      SoftI2CSlaveAddrSet(&g_sI2C, imu_i2c_dev_address, imu_i2c_dir_is_receive);
+                                                          // update R/S'
+      if(imu_i2c_is_multibyte == false)                   // single byte
+        SoftI2CControl(&g_sI2C, SOFTI2C_CMD_SINGLE_RECEIVE);
+                                                          // receive a single byte (START, TRANSMIT, STOP)
+      else                                                // byte stream (>1 bytes)
+      {
+        SoftI2CControl(&g_sI2C, SOFTI2C_CMD_BURST_RECEIVE_START);
+                                                          // start a multi byte receive cycle (START, TRANSMIT...)
+                                                          // (receives first byte as well)
+      }
+    }
+    else                                                  // data is to be sent, already in correct direction, can continue with data phase
+    {
+      SoftI2CDataPut(&g_sI2C, *imu_i2c_data_buff); 
+                                                          // load first data byte
+      if(imu_i2c_is_multibyte == false)                   // single byte
+        SoftI2CControl(&g_sI2C, SOFTI2C_CMD_BURST_SEND_FINISH);
+                                                          // single byte send cycle ((already started) TRANSMIT, STOP)
+      else                                                // byte stream (>1 bytes)
+      {
+        SoftI2CControl(&g_sI2C, SOFTI2C_CMD_BURST_SEND_CONT);
+                                                          // continue a multi byte send cycle ((already started) TRANSMIT...)
+                                                          // (sends first byte as well)
+      }
+    }
+  }
+  else                                                    // no error, transaction completed successfully, continuing with data after addressing
+  {
+    if(imu_i2c_dir_is_receive)                            // received a byte
+    {
+      *imu_i2c_data_buff = (unsigned char)SoftI2CDataGet(&g_sI2C);
+                                                          // grab byte from data register
+      imu_i2c_data_buff++;                                // prepare for next byte
+      imu_i2c_data_byte_count--;                          // another byte received
+      if(imu_i2c_is_multibyte)                            // multibyte transaction
+      {
+        if(imu_i2c_data_byte_count == 1)                  // 1 Byte remaining
+        {
+          SoftI2CControl(&g_sI2C, SOFTI2C_CMD_BURST_RECEIVE_FINISH);
+                                                          // receive one more byte
+        }
+        else if(imu_i2c_data_byte_count == 0)             // transfer complete
+        {
+          imu_i2c_complete_transaction();                 // complete current transaction
+        }
+        else                                              // more bytes to go
+        {
+          SoftI2CControl(&g_sI2C, SOFTI2C_CMD_BURST_RECEIVE_CONT);
+                                                          // receive next byte
+        }
+      }
+      else                                                // single byte transaction
+      {
+        imu_i2c_complete_transaction();                   // complete current transaction
+      }
+    }
+    else                                                  // sent a byte
+    {
+      imu_i2c_data_buff++;                                // prepare to send next byte
+      imu_i2c_data_byte_count--;                          // another byte sent
+      if(imu_i2c_is_multibyte)                            // multibyte transaction
+      {
+        if(imu_i2c_data_byte_count > 0)                   // more byte(s) to go
+        {
+          SoftI2CDataPut(&g_sI2C, *imu_i2c_data_buff);
+                                                          // load next data byte to register
+          if(imu_i2c_data_byte_count == 1)                // one more byte to go
+          {
+            SoftI2CControl(&g_sI2C, SOFTI2C_CMD_BURST_SEND_FINISH);
+                                                          // send last byte and stop
+          }
+          else                                            // more than one byte remaining
+          {
+            SoftI2CControl(&g_sI2C, SOFTI2C_CMD_BURST_SEND_CONT);
+                                                          // send next byte and remain in send state
+          }
+        }
+        else                                              // transfer complete
+        {
+          imu_i2c_complete_transaction();                 // complete current transaction
+        }
+      }
+      else                                                // single byte transaction
+      {
+        imu_i2c_complete_transaction();                   // complete current transaction
+      }
+    }
+  }
+
 }
 
 // * imu_poll_gyro ************************************************************
@@ -126,128 +245,17 @@ void imu_catch_gyro(unsigned long bytes_remain)
   
 }
 
-// * imu_i2c_ISR **************************************************************
-// * ISR for I2C master mode interrupt.                                       *
+// * imu_tim_ISR **************************************************************
+// * ISR for soft i2c tim interrupt.                                          *
+// *                                                                          *
+// * Portions for initialization of softi2c library copied/modified from      *
+// * "soft_i2c_atmel.c" example code.                                         *
 // ****************************************************************************
-void imu_i2c_ISR(void)
+void imu_tim_ISR(void)
 {
-  unsigned long intstat;                                    // holds interrupt status flags
-  unsigned long errcode;                                    // holds error code
-  intstat = ROM_I2CMasterIntStatusEx(IMU_I2C_BASE, true);   // grab current masked interrupt status
-  ROM_I2CMasterIntClearEx(IMU_I2C_BASE, I2C_MASTER_INT_TIMEOUT | I2C_MASTER_INT_DATA);
-                                                            // clear interrupts
-  if(!imu_i2c_in_progress)                                  // we shouldn't be here
-  {
-    imu_i2c_int_dis();                                      // try to make sure we don't spuriously get back here again
-    return;
-  }
-  if(intstat & I2C_MASTER_INT_DATA)                         // interrupt due to transaction complete with or without error
-  {
-    errcode = ROM_I2CMasterErr(IMU_I2C_BASE);               // grab error code from I2C unit
-    if(errcode != I2C_MASTER_ERR_NONE)                      // if error
-    {
-                                                            // could be address nak, data nak, lost arbitration (multi-master I2C networks only)
-      imu_i2c_abort_transaction();                          // abort current transaction
-    }
-    else if(imu_i2c_is_addressing)                          // first time here, addressing phase done, now ready for data phase
-    {
-      imu_i2c_is_addressing = false;                        // handled. clear flag.
-      if(imu_i2c_dir_is_receive)                            // data is to be received, need to turn direction around then start data phase
-      {
-        ROM_I2CMasterSlaveAddrSet(IMU_I2C_BASE, imu_i2c_dev_address, imu_i2c_dir_is_receive);
-                                                            // update R/S'
-        if(imu_i2c_is_multibyte == false)                   // single byte
-          ROM_I2CMasterControl(IMU_I2C_BASE, I2C_MASTER_CMD_SINGLE_RECEIVE);
-                                                            // receive a single byte (START, TRANSMIT, STOP)
-        else                                                // byte stream (>1 bytes)
-        {
-          ROM_I2CMasterControl(IMU_I2C_BASE, I2C_MASTER_CMD_BURST_RECEIVE_START);
-                                                            // start a multi byte receive cycle (START, TRANSMIT...)
-                                                            // (receives first byte as well)
-        }
-      }
-      else                                                  // data is to be sent, already in correct direction, can continue with data phase
-      {
-        ROM_I2CMasterDataPut(IMU_I2C_BASE, *imu_i2c_data_buff); 
-                                                            // load first data byte
-        if(imu_i2c_is_multibyte == false)                   // single byte
-          ROM_I2CMasterControl(IMU_I2C_BASE, I2C_MASTER_CMD_BURST_SEND_FINISH);
-                                                            // single byte send cycle ((already started) TRANSMIT, STOP)
-        else                                                // byte stream (>1 bytes)
-        {
-          ROM_I2CMasterControl(IMU_I2C_BASE, I2C_MASTER_CMD_BURST_SEND_CONT);
-                                                            // continue a multi byte send cycle ((already started) TRANSMIT...)
-                                                            // (sends first byte as well)
-        }
-      }
-    }
-    else                                                    // no error, transaction completed successfully
-    {
-      if(imu_i2c_dir_is_receive)                            // received a byte
-      {
-        *imu_i2c_data_buff = (unsigned char)ROM_I2CMasterDataGet(IMU_I2C_BASE);
-                                                            // grab byte from data register
-        imu_i2c_data_buff++;                                // prepare for next byte
-        imu_i2c_data_byte_count--;                          // another byte received
-        if(imu_i2c_is_multibyte)                            // multibyte transaction
-        {
-          if(imu_i2c_data_byte_count == 1)                  // 1 Byte remaining
-          {
-            ROM_I2CMasterControl(IMU_I2C_BASE, I2C_MASTER_CMD_BURST_RECEIVE_FINISH);
-                                                            // receive one more byte
-          }
-          else if(imu_i2c_data_byte_count == 0)             // transfer complete
-          {
-            imu_i2c_complete_transaction();                 // complete current transaction
-          }
-          else                                              // more bytes to go
-          {
-            ROM_I2CMasterControl(IMU_I2C_BASE, I2C_MASTER_CMD_BURST_RECEIVE_CONT);
-                                                            // receive next byte
-          }
-        }
-        else                                                // single byte transaction
-        {
-          imu_i2c_complete_transaction();                   // complete current transaction
-        }
-      }
-      else                                                  // sent a byte
-      {
-        imu_i2c_data_buff++;                                // prepare to send next byte
-        imu_i2c_data_byte_count--;                          // another byte sent
-        if(imu_i2c_is_multibyte)                            // multibyte transaction
-        {
-          if(imu_i2c_data_byte_count > 0)                   // more byte(s) to go
-          {
-            ROM_I2CMasterDataPut(IMU_I2C_BASE, *imu_i2c_data_buff);
-                                                            // load next data byte to register
-            if(imu_i2c_data_byte_count == 1)                // one more byte to go
-            {
-              ROM_I2CMasterControl(IMU_I2C_BASE, I2C_MASTER_CMD_BURST_SEND_FINISH);
-                                                            // send last byte and stop
-            }
-            else                                            // more than one byte remaining
-            {
-              ROM_I2CMasterControl(IMU_I2C_BASE, I2C_MASTER_CMD_BURST_SEND_CONT);
-                                                            // send next byte and remain in send state
-            }
-          }
-          else                                              // transfer complete
-          {
-            imu_i2c_complete_transaction();                 // complete current transaction
-          }
-        }
-        else                                                // single byte transaction
-        {
-          imu_i2c_complete_transaction();                   // complete current transaction
-        }
-      }
-    }
-  }
-  else if(intstat & I2C_MASTER_INT_TIMEOUT)                 // interrupt due to timeout condition
-  {
-    imu_i2c_abort_transaction();                            // abort current transaction
-  }
+  TimerIntClear(IMU_TIM_BASE, TIMER_TIMA_TIMEOUT);          // clear interrupt
+  
+  SoftI2CTimerTick(&g_sI2C);                                // perform softi2c tick update
 }
 
 // * imu_i2c_int_en ***********************************************************
@@ -256,10 +264,7 @@ void imu_i2c_ISR(void)
 // ****************************************************************************
 void imu_i2c_int_en(void)
 {
-   ROM_I2CMasterIntEnableEx(IMU_I2C_BASE, I2C_MASTER_INT_TIMEOUT | I2C_MASTER_INT_DATA);          
-                                                            // enable timeout and data interrupt signals from I2C
-   ROM_IntEnable(IMU_I2C_INTVECT);                          // enable NVIC vector for our module
-                                                            // interrupt now active, remember to clear on interrupt
+  SoftI2CIntEnable(&g_sI2C);                                // enable softi2c callback
 }
 
 // * imu_i2c_int_dis **********************************************************
@@ -267,10 +272,7 @@ void imu_i2c_int_en(void)
 // ****************************************************************************
 void imu_i2c_int_dis(void)
 {
-   ROM_IntDisable(IMU_I2C_INTVECT);                         // enable NVIC vector for our module
-   ROM_I2CMasterIntDisableEx(IMU_I2C_BASE, I2C_MASTER_INT_TIMEOUT | I2C_MASTER_INT_DATA);          
-                                                            // enable timeout and data interrupt signals from I2C
-                                                            // interrupt now inactive
+  SoftI2CIntDisable(&g_sI2C);                               // disable softi2c callback
 }
 
 // * imu_i2c_start_transaction ************************************************
@@ -279,6 +281,9 @@ void imu_i2c_int_dis(void)
 // * done_callback  Will be called when txn done, argument of # bytes remain, *
 // *                if # bytes remain nonzero, an error occured.              *
 // * Returns 0 for success, 1 for bus busy (send could not be started now).   *
+// *                                                                          *
+// * Portions for initialization of softi2c library copied/modified from      *
+// * "soft_i2c_atmel.c" example code.                                         *
 // ****************************************************************************
 unsigned char imu_i2c_start_transaction(unsigned char dev_address, unsigned char reg_address, unsigned char* data, unsigned int data_byte_count, tBoolean dir_is_receive, imu_i2c_xfer_done_t done_callback)
 {
@@ -286,20 +291,19 @@ unsigned char imu_i2c_start_transaction(unsigned char dev_address, unsigned char
   {                                                       // no data to send or no place to take it from
     return IMU_RET_INVALID_ARGS;                          // invalid argument(s)
   }
-  else if(ROM_I2CMasterBusBusy(IMU_I2C_BASE))             // if bus busy
+  else if(SoftI2CBusy(&g_sI2C))                           // if bus busy
   {
     return IMU_RET_BUSY;                                  // return bus busy
   }
   xfer_done_cb = done_callback;                           // store callback function pointer
   imu_i2c_dev_address = dev_address;                      // store copy of device address for use in interrupt handler
   imu_i2c_reg_address = reg_address;                      // store register address
-  ROM_I2CMasterSlaveAddrSet(IMU_I2C_BASE, dev_address, false);
+  SoftI2CSlaveAddrSet(&g_sI2C, dev_address, false);  
                                                           // set the slave address, always transmit first to get register address transmitted
-                                                          // (I2CMSA)
   imu_i2c_dir_is_receive = dir_is_receive;                // make copy of current direction
   imu_i2c_data_buff = data;                               // initialize buffer pointer
   imu_i2c_data_byte_count = data_byte_count;              // initialize data byte count - will downcount during send
-  imu_i2c_int_en();                                       // enable interrupts for I2C
+  imu_i2c_int_en();                                       // enable 'interrupts' (callbacks) for I2C
   imu_i2c_is_addressing = true;                           // first interrupt will be to finish register addressing stage
   imu_i2c_in_progress = true;                             // transaction is currently taking place
   imu_i2c_is_multibyte = false;                           // default to single byte
@@ -309,11 +313,8 @@ unsigned char imu_i2c_start_transaction(unsigned char dev_address, unsigned char
     imu_i2c_is_multibyte = true;                          // multi byte txn
   }
                                                           // start txn with address and send register address
-  ROM_I2CMasterDataPut(IMU_I2C_BASE, imu_i2c_reg_address);// load register address as data
-                                                          // (I2CMDR)
-  ROM_I2CMasterControl(IMU_I2C_BASE, I2C_MASTER_CMD_BURST_SEND_START);
-                                                          // instruct hardware to generate start, send dev address, and 'data' (register address in part)
-                                                          // (I2CMCS)
+  SoftI2CDataPut(&g_sI2C, imu_i2c_reg_address);           // load register address as data
+  SoftI2CControl(&g_sI2C, SOFTI2C_CMD_BURST_SEND_START);  // instruct softi2c to generate start, send dev address, and 'data' (register address in part)
   
   return IMU_RET_SUCCESS;                                 // successfully started transfer of register address!
                                                           // now we will wait for interrupt to see what happened
@@ -324,18 +325,10 @@ unsigned char imu_i2c_start_transaction(unsigned char dev_address, unsigned char
 // ****************************************************************************
 void imu_i2c_abort_transaction(void)
 {
-  imu_i2c_int_dis();                                    // disable interrupts
-  //if(imu_i2c_is_multibyte)                              // if this is a multibyte transmission, we must first force a stop condition
-  //{
-    ROM_I2CMasterControl(IMU_I2C_BASE, I2C_MASTER_CMD_BURST_SEND_ERROR_STOP);
-                                                        // above code signals stop for send or receive
-  //}
-  imu_i2c_in_progress = false;                          // transaction aborted
-  ROM_SysCtlPeripheralReset(IMU_I2C_SYSCTL);              // reset I2C peripheral
-  ROM_I2CMasterInitExpClk(IMU_I2C_BASE, IMU_I2C_SYSTEM_FREQUENCY, false);
-                                                          // setup I2C for master mode 100Kbps
-  ROM_I2CMasterTimeoutSet(IMU_I2C_BASE, IMU_I2C_TIMEOUT); // load the reset value for the clock low timeout
-  xfer_done_cb(imu_i2c_data_byte_count);                // call user back with number of bytes remaining, txn done
+  imu_i2c_int_dis();                                      // disable interrupts
+  imu_init();                                             // re-init i2c
+  imu_i2c_in_progress = false;                            // transaction aborted
+  xfer_done_cb(imu_i2c_data_byte_count);                  // call user back with number of bytes remaining, txn done
 }
 
 // * imu_i2c_complete_transaction *********************************************

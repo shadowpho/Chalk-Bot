@@ -30,7 +30,7 @@ ActionState=1
 Enabled=0
 ShowSource=1
 [DebugChecksum]
-Checksum=-710254132
+Checksum=-1964254646
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -43,6 +43,14 @@ Placement=_ 502 296 939 574
 [array_types]
 Fmt0=unsigned long[16]	4	0
 Fmt1=unsigned long[255]	4	0
+Fmt2=unsigned long[3]	5	0
+[Disassemble mode]
+mode=0
+[Breakpoints]
+Bp0=_ "STD_CODE" "{$PROJ_DIR$\imu.c}.317.3" 0 0 0 0 "" 0 ""
+Bp1=_ "STD_CODE" "{$PROJ_DIR$\imu.c}.339.3" 1 0 0 0 "" 0 ""
+Bp2=_ "STD_CODE" "{$PROJ_DIR$\imu.c}.170.7" 0 0 0 0 "" 0 ""
+Count=3
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
@@ -50,6 +58,16 @@ Category=_ 0
 [TermIOLog]
 LoggingEnabled=_ 0
 LogFile=_ ""
+[Aliases]
+A0=_ "C:\cygwin\sandbox\DriverLib\build\DriverLib.test\driverlib\gpio.c" ""
+A1=_ "C:\cygwin\sandbox\DriverLib\build\DriverLib.test\grlib\charmap.c" ""
+A2=_ "C:\cygwin\sandbox\DriverLib\build\DriverLib.test\grlib\offscr4bpp.c" ""
+A3=_ "C:\cygwin\sandbox\DriverLib\build\DriverLib.test\grlib\widget.c" ""
+A4=_ "C:\cygwin\sandbox\DriverLib\build\DriverLib.test\usblib\device\usbdcdc.c" ""
+A5=_ "C:\cygwin\sandbox\DriverLib\build\DriverLib.test\usblib\device\usbdconfig.c" ""
+A6=_ "C:\cygwin\sandbox\DriverLib\build\DriverLib.test\usblib\usbmode.c" ""
+Count=7
+SuppressDialog=1
 [CallStackLog]
 Enabled=0
 [DriverProfiling]
@@ -58,16 +76,3 @@ Mode=0
 Graph=0
 Symbiont=0
 Exclusions=
-[Disassemble mode]
-mode=0
-[Breakpoints]
-Count=0
-[Aliases]
-A0=_ "C:\cygwin\sandbox\DriverLib\build\DriverLib.test\driverlib\gpio.c" ""
-A1=_ "C:\cygwin\sandbox\DriverLib\build\DriverLib.test\grlib\charmap.c" ""
-A2=_ "C:\cygwin\sandbox\DriverLib\build\DriverLib.test\grlib\offscr4bpp.c" ""
-A3=_ "C:\cygwin\sandbox\DriverLib\build\DriverLib.test\usblib\device\usbdcdc.c" ""
-A4=_ "C:\cygwin\sandbox\DriverLib\build\DriverLib.test\usblib\device\usbdconfig.c" ""
-A5=_ "C:\cygwin\sandbox\DriverLib\build\DriverLib.test\usblib\usbmode.c" ""
-Count=6
-SuppressDialog=1

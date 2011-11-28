@@ -86,6 +86,7 @@ void hbr_init(void)
   
                                                           // configure PWM
   ROM_SysCtlPeripheralEnable(HBR_PWM_MODULE);             // enable clock to pwm module 0
+  ROM_SysCtlPeripheralReset(HBR_PWM_MODULE);              // reset to clear any previous config
   ROM_SysCtlPWMClockSet(HBR_PWM_FPWM_DIV);                // configure clock divider to derive Fpwm from Fsys
                                                           // wrap 16b PWM counter at 1041 for 3kHz pwm output
   ROM_PWMDeadBandDisable(HBR_PWM_BASE, HBR_PWM_GEN);      // allow PWM0, PWM1 to behave independently

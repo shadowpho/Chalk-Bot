@@ -8,6 +8,7 @@
 // Function Prototypes
 
 void imu_init(void);                  // setup pins, I2C interface for imu
+void imu_SoftI2CCallback(void);       // callback function for soft I2C driver to give us an event
 void imu_poll_gyro(void);             // poll gyro
 
 // EOF
