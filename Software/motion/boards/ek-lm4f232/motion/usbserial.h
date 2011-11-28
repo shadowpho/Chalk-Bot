@@ -52,6 +52,17 @@ extern "C"
 #define CBUS_IDX_RAW_VEL_R              (6)                 // read only velocity of right encoder (signed) [60counts/sec]
 #define CBUS_IDX_SCALED_ENC_R           (7)                 // read only position of right encoder (signed) [mm]
 #define CBUS_IDX_SCALED_VEL_R           (8)                 // read only velocity of right encoder (signed) [mm/sec]
+#define CBUS_IDX_YAW_RATE_MILLIDPS      (9)                 // ro yaw rate of robot (signed) [millidps]
+#define CBUS_IDX_HEADING_MILLIDEGREES   (10)                // ro integrated heading of robot (signed) [millidegrees]
+#define CBUS_IDX_EFFORT_L               (11)                // rw hbridge effort left (signed) [-8192, 8192], 50% power limit
+#define CBUS_IDX_EFFORT_R               (12)                // rw hbridge effort left (signed) [-8192, 8192], 50% power limit
+  
+#define CBUS_IDX_CHLK_MODE              (13)                // rw enum 0=servos off, 1=manual mode, 2=automated mode
+#define CBUS_IDX_CHLK_MAN_SVM_Z         (14)                // rw 700-2300 [us] proportional to position
+#define CBUS_IDX_CHLK_MAN_SVM_CLAMP     (15)                // rw 700-2300 [us] proportional to position
+#define CBUS_IDX_CHLK_AUTO_COMMAND      (16)                // rw enum 0=nop, 1=load(reload if chalk low), 2=store
+#define CBUS_IDX_CHLK_STATUS            (17)                // ro enum manual, idle, reloading, storing, chalk_low
+#define CBUS_IDX_CHLK_SW_STATUS         (18)                // ro enum 1=depressed, 0=released
 
   
 //*****************************************************************************

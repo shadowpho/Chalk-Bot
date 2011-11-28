@@ -51,9 +51,10 @@
 #define HBR_PWM_GEN           (PWM_GEN_0)             // pwm generator reference
 #define HBR_PWM_FPWM_DIV      (SYSCTL_PWMDIV_16)      // div16 to enable ~50Hz PWM output for SVM control
                                                       // when Fsys = 50MHz, yields Fpwm=3.125MHz
-#define HBR_PWM_PERIOD_TICKS  (1024)                  // (desired divide for Fsw on pwm ouptut) - 1, from Fpwm
+#define HBR_PWM_PERIOD_TICKS  (8192)                  // (desired divide for Fsw on pwm ouptut) - 1, from Fpwm
                                                       // specifically, this specifies the pwm counter rollover
-                                                      // 1024 yields Fsw of approximatly 3.049kHz
+                                                      // 1024 yields Fsw of approximately 3.049kHz
+                                                      // 8192 yields Fsw of approximately 381.5 Hz
 #define HBR_1_PWM             (PWM_OUT_1)             // pwm channel for HBR_1
 #define HBR_2_PWM             (PWM_OUT_0)             // pwm channel for HBR_2
 

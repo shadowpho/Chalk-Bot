@@ -21,6 +21,9 @@
 typedef void(*imu_i2c_xfer_done_t)(unsigned long);        // transfer complete callback type
                                                           // argument is number of bytes remaining, if nonzero, error occured
 
+                                                          // Note, initialization adapted from "MinIMU-9-Arduino-AHRS" project 
+
+
 // Local prototypes
 void imu_catch_gyro(unsigned long bytes_remain);          // catch returned data from gyro request, follows imu_i2c_xfer_done_t
 void imu_i2c_int_en(void);                                // enable i2c master interrupt
@@ -55,6 +58,19 @@ void imu_i2c_complete_transaction(void);                  // normal completion o
 #define IMU_ADDR_MAG          (0x1E)                      // magnetometer address  (LSM303DLM)
 #define IMU_ADDR_GYRO         (0x69)                      // gyroscope address     (L3G4200D )
 
+#define IMU_GYRO_CTRL_REG1    (0x20)                      // gyro control reg 1
+#define IMU_GYRO_CTRL_REG4    (0x23)                      // gyro control reg 4
+#define IMU_GYRO_OUT_Z        (0x2C)                      // gyro z value register, TWO BYTES this points a low byte (little endian)
+#define IMU_GYRO_AVERAGES     (10)                        // number of averages to take when finding zero point on gyro
+
+                                                          // conversion factor assuming 60Hz integration rate
+                                                          // full scale 2000dps (16bit 2's complement)
+                                                          // sample period (1/60)s
+                                                          // desired output units milli degrees (x1000)
+                                                          // resulting conversion factor, 1.0172526042
+#define IMU_GYRO_CONVERT_FACTOR (1.0172526042)
+#define IMU_GYRO_YAW_RATE_CONVERT_FACTOR (61.03515625)    // calibrates to millidps
+
 
 // Local Variables
 static tSoftI2C g_sI2C;                                   // soft I2C state structure
@@ -68,7 +84,17 @@ tBoolean       imu_i2c_is_addressing;                     // phase of transmissi
 unsigned char  imu_i2c_dev_address;                       // holds device address
 imu_i2c_xfer_done_t xfer_done_cb;                         // holds transfer done callback function pointer
 
+gyro_machine_state_t gyro_machine_state = GYRO_MACHINE_START_I2C;                  
+                                                          // gyro machine state - handles gyro startup and operation - poll on fixed timebase
+tBoolean txn_done;                                        // transaction done flag for gyro machine
+unsigned long avg_count;                                  // counts number of averages to take when finding zero
+signed long zero_point;                                   // zero point found from averaging at rest
+signed long yaw_rate_millidps;                            // latest heading yaw rate in millidps
+signed long heading_millidegrees;                         // absolute heading in signed millidegrees (0.001degree)
+
+#pragma alignment=4
 unsigned char  imu_buff[256];                             // buffer space for communicating with imu
+#pragma alignment
 
 // Functions
 
@@ -227,12 +253,112 @@ void imu_SoftI2CCallback(void)
 }
 
 // * imu_poll_gyro ************************************************************
-// * poll gyro                                                                *
+// * poll gyro machine                                                        *
 // ****************************************************************************
 void imu_poll_gyro(void)
 {
-  unsigned char retval;                                   // will hold return value from start function call
-  retval = imu_i2c_start_transaction(IMU_ADDR_GYRO, 0x0F, imu_buff, 1, true, imu_catch_gyro);
+  signed long calctemp;                                     // calculation temporary variable
+  float floattemp;                                          // floating point temporary variable
+  //retval = imu_i2c_start_transaction(IMU_ADDR_GYRO, 0x0F, imu_buff, 1, true, imu_catch_gyro);
+  switch(gyro_machine_state)
+  {
+    case GYRO_MACHINE_START_I2C:                            // init I2C state
+      {
+        imu_init();                                         // initialize gyro interface
+
+                                                            // start transactions to be caught by next state
+        txn_done = false;                                   // transaction not done by default
+        imu_buff[0] = 0x0F;                                 // load configuration
+        imu_i2c_start_transaction(IMU_ADDR_GYRO, IMU_GYRO_CTRL_REG1, imu_buff, 1, false, imu_catch_gyro);
+                                                            // start sending first configuration
+        gyro_machine_state = GYRO_MACHINE_CONFIG_1;         // go to first configuration state        
+      }
+      break;
+    case GYRO_MACHINE_CONFIG_1:                             // configuration 1 - init reg 1
+      {
+        //imu_i2c_start_transaction(unsigned char dev_address, unsigned char reg_address, unsigned char* data, unsigned int data_byte_count, tBoolean dir_is_receive, imu_i2c_xfer_done_t done_callback)
+        if(txn_done)                                        // previous config done, next config
+        {
+          txn_done = false;                                   // transaction not done by default
+          imu_buff[0] = 0x20;                                 // load configuration (FULL SCALE 2000degrees/second)
+          imu_i2c_start_transaction(IMU_ADDR_GYRO, IMU_GYRO_CTRL_REG4, imu_buff, 1, false, imu_catch_gyro);
+                                                              // start sending first configuration
+          gyro_machine_state = GYRO_MACHINE_CONFIG_2;         // go to 2nd configuration state         
+        }
+      }
+      break;
+    case GYRO_MACHINE_CONFIG_2:                             // configuration 2 - init reg 4
+      {
+        if(txn_done)                                        // previous config done, next ask for first sample from gyro to start averaging at rest, find zero point
+        {
+          txn_done = false;                                   // transaction not done by default
+          imu_i2c_start_transaction(IMU_ADDR_GYRO, IMU_GYRO_OUT_Z, imu_buff, 2, true, imu_catch_gyro);
+                                                              // start asking for first read
+          avg_count = IMU_GYRO_AVERAGES;                      // load down-counter with how many averages to take
+          zero_point = 0;                                     // clear any previous zero point
+          gyro_machine_state = GYRO_MACHINE_ZEROING;          // go to zeroing state
+        }
+      }
+      break;
+    case GYRO_MACHINE_ZEROING:                              // stationary condition averaging
+      {
+        if(txn_done)                                        // previous config done, next ask for first sample from gyro to start averaging at rest, find zero point
+        {
+          txn_done = false;                                   // transaction not done by default
+          zero_point += ((signed long)(*(signed short*)imu_buff));
+                                                              // accumulate previous rest value
+          imu_i2c_start_transaction(IMU_ADDR_GYRO, IMU_GYRO_OUT_Z, imu_buff, 2, true, imu_catch_gyro);
+                                                              // ask for next rest value
+          avg_count--;                                        // another sample read
+          if(avg_count == 0)
+          {
+            zero_point /= ((signed long)IMU_GYRO_AVERAGES);   // finish average calculation, now have zero point at rest, you can now move the gyro
+            imu_i2c_start_transaction(IMU_ADDR_GYRO, IMU_GYRO_OUT_Z, imu_buff, 2, true, imu_catch_gyro);
+                                                              // ask for next (possibly dynamic) value to begin integrating
+            heading_millidegrees = 0;                         // initialize heading to zero
+            gyro_machine_state = GYRO_MACHINE_RUNNING;        // go to running (integrating) state now that we have the zero point
+          }
+        }
+      }
+      break;
+    case GYRO_MACHINE_RUNNING:                              // normal operation - integrating deltas
+      {
+        if(txn_done)                                        // previous config done, next ask for first sample from gyro to start averaging at rest, find zero point
+        {
+          txn_done = false;                                   // transaction not done by default
+          calctemp = ((signed long)(*(signed short*)imu_buff));
+                                                              // grab 2B 2's complement sample
+          imu_i2c_start_transaction(IMU_ADDR_GYRO, IMU_GYRO_OUT_Z, imu_buff, 2, true, imu_catch_gyro);
+                                                              // ask for next rest value
+          floattemp = (float)(calctemp-zero_point);           // would be better to leave this value raw then convert later to avoid accumulating error but this is faster to implement for now, note subtract out DC offset
+          yaw_rate_millidps = (signed long)(floattemp * ((float)IMU_GYRO_YAW_RATE_CONVERT_FACTOR));
+                                                              // update yaw rate
+          floattemp *= (float)IMU_GYRO_CONVERT_FACTOR;        // multiply delta by conversion factor
+          heading_millidegrees += (signed long)floattemp;     // accumulate/integrate sample
+          
+        }
+      }
+      break;
+    default:
+      gyro_machine_state = GYRO_MACHINE_START_I2C;          // get machine back on track, should never be here
+      break;
+  }
+}
+
+// * imu_get_heading **********************************************************
+// * gets heading in millidegrees relative to where robot started             *
+// ****************************************************************************
+signed long imu_get_heading(void)
+{
+  return(heading_millidegrees);
+}
+
+// * imu_get_yaw_rate *********************************************************
+// * gets yaw rate in millidps                                                *
+// ****************************************************************************
+signed long imu_get_yaw_rate(void)
+{
+  return(yaw_rate_millidps);
 }
 
 // * imu_catch_gyro ***********************************************************
@@ -240,9 +366,9 @@ void imu_poll_gyro(void)
 // ****************************************************************************
 void imu_catch_gyro(unsigned long bytes_remain)
 {
-  unsigned long retval;
-  retval = bytes_remain;
-  
+  //unsigned long retval;
+  //retval = bytes_remain;
+  txn_done = true;                                          // flag that transaction has completed
 }
 
 // * imu_tim_ISR **************************************************************

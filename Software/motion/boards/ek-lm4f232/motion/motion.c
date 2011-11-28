@@ -60,6 +60,7 @@
 #include "svm.h"                    // definition file for svm interface and timing tick
 #include "encoder.h"                // encoder interface
 #include "imu.h"                    // inertial measurement interface
+#include "chalk.h"
 
 //*****************************************************************************
 //
@@ -1089,19 +1090,22 @@ main(void)
     hbr_init();                                   // initialize interface
     hbr_set_reset(HBR_LEFT, 1);
     hbr_set_reset(HBR_RIGHT, 1); // right side not going high 11/14/2011 7:19pm
-    hbr_set_effort(HBR_LEFT, 768);
+    hbr_set_effort(HBR_LEFT, 512);
     hbr_set_effort(HBR_RIGHT, 256);
+    ChalkBusRegs[CBUS_IDX_EFFORT_L] = 8192;
+    ChalkBusRegs[CBUS_IDX_EFFORT_R] = 4096;
     
-    svm_init();
+    //svm_init();
     //svm_int_init();
-    svm_set_us(SVM_1, 700);
-    svm_set_us(SVM_2, 2300);
+    //svm_set_us(SVM_1, 700);
+    //svm_set_us(SVM_2, 2300);
     
     enc_init();
     enc_2_int_init();
     
-    imu_init();
-    //imu_poll_gyro();
+    chalk_init();
+    
+    
 
     //
     // Forever loop to run the application
@@ -1114,10 +1118,20 @@ main(void)
                                                             //  Application protocol modeled after a subset of the
                                                             //  Modicon Modbus RTU protocol.
         
-        //DEBUG if(enc_poll_period_expire())                        // poll for flag set every 16.67ms (60.00Hz)
-        //DEBUG {
-          imu_poll_gyro();                                  // test polling gyro
-        //DEBUG }
+        if(enc_poll_period_expire() || 1)                        // poll for flag set every 16.67ms (60.00Hz)
+        {
+          signed long* sChalkBusRegs = (signed long*)ChalkBusRegs;  // signed long access to chalk bus regs, many values signed
+          imu_poll_gyro();                                  // polling gyro machine
+          sChalkBusRegs[CBUS_IDX_HEADING_MILLIDEGREES] = imu_get_heading();
+          sChalkBusRegs[CBUS_IDX_YAW_RATE_MILLIDPS] = imu_get_yaw_rate();
+          //sChalkBusRegs[CBUS_IDX_RAW_ENC_L] = enc_pos_get(ENC_1);
+//          sChalkBusRegs[CBUS_IDX_RAW_ENC_R] = enc_pos_get(ENC_2);
+//          sChalkBusRegs[CBUS_IDX_RAW_VEL_L] = enc_vel_get(ENC_1);
+//          sChalkBusRegs[CBUS_IDX_RAW_VEL_R] = enc_vel_get(ENC_2);
+          hbr_set_effort(HBR_LEFT, (signed short)(sChalkBusRegs[CBUS_IDX_EFFORT_L]/2));
+          hbr_set_effort(HBR_RIGHT, (signed short)(sChalkBusRegs[CBUS_IDX_EFFORT_R]/2));
+          ChalkBusRegs[CBUS_IDX_CHLK_SW_STATUS] = (unsigned long)chalk_sw_status();
+        }
 
         //
         // Each time the timer tick occurs, process any button events.
