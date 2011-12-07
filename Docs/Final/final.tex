@@ -5,6 +5,8 @@
 \usepackage{float}
 \usepackage{caption}
 \usepackage{appendix}
+\usepackage{gensymb}
+\usepackage{pdfpages}
 
 \newcommand{\figuremine}[2]{
 \begin{figure}[H]
@@ -16,12 +18,11 @@
 
 \setcounter{tocdepth}{3}
 \title{ChalkBot Final Report}
-\author{George Karavaev\\Alex Suchko\\ \normalsize Version 0.1f \\Project\#1}
+\author{George Karavaev\\Alex Suchko\\Project\#1}
 
 \begin{document}
   \maketitle 
- \abstract{ Abstract
-}
+ \abstract{ Chalkbot is a robot that is capable of drawing on  masonry surfaces with off the shelf chalk. Function is to easily do advertisments with chalk.}
 \\
 \\
 {\centering
@@ -32,20 +33,58 @@
 \listoffigures
 \newpage
  \section{Introduction}
- \subsection{Purpose}
+\subsection{Purpose}
+ Benefits to a customer of our product at end of semester include:
+ \begin{itemize}
+  \item Energy efficiency
+  \item Motor Control
+  \item On-board Linux based computing
+  \item Dedicated low-level motion processor
+  \item Power supply monitor/minder
+\end{itemize}
+
 \subsection{Project Functions}
+Features of our product at end of semester include:
+   \begin{itemize}
+  \item Two channels of switch-mode power supply for power efficient operation of power hungry components
+  \item Two channels of full-bridge motor control, with synchronous rectification to reduce diode dissipation
+  \item Two channels of high-frequency quadrature encoder feedback
+  \item Control of chalk mechanism actuators
+  \item Inertial yaw rate sensing (MEMS gyro)
+  \item Extensive self diagnostic sensing, multiple point monitoring of voltage, current, power production/consumption, and temperature of key system components
+  \item Attention to thermal design of high performance components to enable effective passive cooling
+  \item Uses economical and environmentally friendly sidewalk chalk instead of a spray or slurry chalk, distinct from other sidewalk drawing machines that can be found on video sharing sites
+\end{itemize}
+
+
 \subsection{Blocks of work}
+ Our project includes three major catetories. 
  \begin{description}
   \item{\bf HBridge}. Used to drive the main motors of the robot. 
-  \item{\bf Power Supply}. Used to convert VBatt to stable 5 volts.
-  \item{\bf Carrier Board}. Used to connect modules together.
+  \item{\bf Power Supply}. Used to convert battery voltage to stable 5 volts.
+  \item{\bf Carrier Board}. Used to connect modules together. Contains a number of sensors and proccesors for other necessary functions.
 \end{description}
 
 \section{Design}
 \subsection{Design Alternatives}
+The biggest alternatives we had was regarding the chalk mechanism. Our decision to use off the shelf chalk made it easiest to develop a fixed-position chalk mechanism with the robot drawing as it moves. 
 \subsection{General Block Diagram}
+\figuremine{../Proposal/Block_Diagram.png}{Overall Diagram}
+
 \subsection{Detailed desription of design}
+ \subsubsection{Hbridge}
+
+\subsubsection{Switching Power Supply}
+
+
+\subsubsection{Carrier Board}
 \subsection{Schematics}
+ \begin{description}
+  \item{\bf HBridge}. For detailed schematics of the HBridge please refer to Appendix A, part 2. 
+  \item{\bf Power Supply}. For detailed schematics of the Power Supply please refer to Appendix B, part 2.
+  \item{\bf Carrier Board}. For detailed schematics of the Carrier Board please refer to Appendix C, part 2.
+\end{description}
+
 
 \section{Verification}
 \subsection{Testing Procedure}
@@ -54,6 +93,19 @@
 
 \section{Costs}
 \subsection{List of Equipment used}
+\begin{itemize}
+\item{\bf Oscilloscope}
+\item{\bf Power Supply}
+\item{\bf MultiMeter}
+\item{\bf Waveform Generator}
+\item{\bf Power resistors}
+\item{\bf Test Motors}
+\item{\bf Batteries}
+\item{\bf Soldering Iron}
+\item{\bf Microscope}
+\item{\bf IR temperature sensor}
+\item{\bf Teensy 2.0+}
+\end{itemize}
 \subsection{Bill of Materials}
 \subsection{Total Cost}
 
@@ -66,29 +118,9 @@
 \newpage
 \appendix
 \addappheadtotoc
-\section{HBridge}
-\subsection{Notes}
-\subsection{Equations}
-\subsection{Detailed Schematics}
-\subsection{Board Layout}
-\subsection{Bill of Materials}
-
-
-\section{Power Supply Unit}
-\subsection{Notes}
-\subsection{Equations}
-\subsection{Detailed Schematics}
-\subsection{Board Layout}
-\subsection{Bill of Materials}
-
-\section{Carrier Board}
-\subsection{Notes}
-\subsection{Equations}
-\subsection{Detailed Schematics}
-\subsection{Board Layout}
-\subsection{Bill of Materials}
-
-
-
+\includepdf[pages={-}]{./dtsheets/Switch.pdf}
+\newpage
+\includepdf[pages={-}]{./dtsheets/Hbridge.pdf}
+\newpage
 
  \end{document}

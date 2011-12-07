@@ -54,7 +54,7 @@
 CB01 is a full-bridge controller with external power MOSFETs. It is specifically designed to drive our high power brush DC motors. \\
 This part is specifically designed to be modular and completely enclosed, without requirement for any external components. This makes the module easy to test, use and develop for.\\
 We have implemented flexible modes of motor control, allowing various brush DC bridge control strategies, at the discretion of the end designer. This module can be driven with fast or slow decay modes with either diode or synchronous rectification. There is deadtime set at 1 microsecond between turn on of low side mosfets and turn off of high side mosfets,and vice versa.\\
-Integrated diagnostics provide warnings of undervoltage, overtemperature [only on controller], overcurrent, overvoltage, power bridge faults and short circuits. The CB01 is provided in a 1.2"x1.7" footprint module with logical pinouts and motor screw terminals.
+Integrated diagnostics provide warnings of undervoltage, overtemperature [only on controller], overcurrent, overvoltage, power bridge faults and short circuits. The CB01 is provided in a 1.4"x1.7" footprint module with logical pinouts and motor screw terminals.
 \end{minipage}
 } %end mbox
 \\
@@ -75,7 +75,7 @@ Integrated diagnostics provide warnings of undervoltage, overtemperature [only o
 \begin{tabular}{|l | l |c| c|c|c|c|}
 \hline
 Characteristics & Symbol &Test Conditions & Min & Typ & Max & Units \\ \hline
-Functional Voltage& $V_{bb}$& & 7&12&30&V \\ \hline 
+Functional Voltage& $V_{bb}$& & 7&12&20&V \\ \hline 
 Output Current & $I_{motor}$ & TBD& -5 & 0& 5 &A \\ \hline
 MOSFET resistance & $Rds_{on}$  & Datasheet values& & 7 & 8.5 & mOhms\\\hline
 Continuous duty output &$I_{cont}$ & fsw=3kHz, Rm=0.9ohms& TBD&TBD&TBD& A\\ \hline
